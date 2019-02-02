@@ -1,0 +1,98 @@
+Import("*")
+
+# List of (table, primary key) pairs.
+tables = [
+    ["other/ndc_opioid", "NDC", ","],
+    ["ri360/MEDICAID-DIM_AID_CTG_CDE", "AID_CTG_CDE", "|"],
+    ["ri360/RESEARCH_V11-DLT_WAGE", "RECORD_ID", "|"],
+    ["ri360/RESEARCH_V11-EOHHS_RECIP_DEMO", "RECORD_ID", "|"],
+    ["ri360/RESEARCH_V11-EOHHS_RECIP_X_SSN", "RECORD_ID", "|"],
+    ["ri360/RESEARCH_V11-RIIPL_ARRESTS", "None", "|"],
+    ["ri360/RESEARCH_V11-RIIPL_CAR_CRASHES", "None", "|"],
+    ["ri360/RESEARCH_V11-RIIPL_CITATIONS", "None", "|"],
+    ["ri360/RESEARCH_V11-RIIPL_DHS_RELATIONS", "None", "|"],
+    ["ri360/RESEARCH_V11-RIIPL_DOC_EVENTS", "None", "|"],
+    ["ri360/RESEARCH_V11-RIIPL_DOC_SENTENCES", "None", "|"],
+    ["ri360/RESEARCH_V11-RIIPL_MEDICAID_DIAG_CDE", "None", "|"],
+    ["ri360/RESEARCH_V11-RIIPL_MEDICAID_CLAIMS", "None", "|"],
+    ["ri360/RESEARCH_V11-RIIPL_MEDICAID_ENROLLMENT_2", "None", "|"],
+    ["ri360/RESEARCH_V11-RIIPL_MEDICAID_PHARMACY", "None", "|"],
+    ["ri360/RESEARCH_V11-RIIPL_MEDICAID_PROC_CDE", "None", "|"],
+    ["ri360/RESEARCH_V11-RIIPL_POLICE_DEMO", "None", "|"]
+]
+
+for path, pk, delim in tables:
+    if path.startswith("ri360"):
+        name = path.partition("-")[2].replace("RIIPL_", "")
+    else:
+        name = path.partition("/")[2]
+    env.Python(SQLTable("{}_{}".format(env.RIIPL_PROJECT, name)),
+               ["Load.py",
+                "#input/{}.csv".format(path),
+                "#schema/{}.txt".format(path),
+                Value(pk),
+                Value("'{}'".format(delim))],
+               log_path="#output/inputs/load_{}.log".format(name))
+
+# Split RI360 (MEGA) table into smaller chunks
+
+splits = [
+    ["mega_1", "SNAP_PAYMENTS,TANF_PAYMENTS,TDI_PAYMENTS,UI_PAYMENTS,SSI_SUPPLEMENT,GPA_PAYMENTS,CCAP_PAYMENTS"],
+    ["mega_2", "ADDRESS_STATE,ADDRESS_COUNTY,ADDRESS_TRCT,ADDRESS_BLKGRP"],
+    ["mega_3", "AGE,RACE,SEX,BMI,MARITAL_STATUS"]
+]
+
+for name, fields in splits:
+    env.Python("#scratch/inputs/{}.csv".format(name),
+               ["Split.py",
+                "#input/ri360/RESEARCH_V11-RI360.csv",
+                Value(fields)],
+               log_path="#output/inputs/split_{}.log".format(name))
+    env.Python(SQLTable("{}_{}".format(env.RIIPL_PROJECT, name)),
+               ["Load.py",
+                "#scratch/inputs/{}.csv".format(name),
+                "#schema/{}.txt".format(name),
+                Value("RIIPL_ID,MONTH"),
+                Value("'|'")],
+               log_path="#output/inputs/load_{}.log".format(name))
+
+# Workaround for line lengths exceeding maximum size in sqlldr
+splits = [
+    ["doc_if_identification", "doc_ident", "I_DOB,I_RACE,I_SEX,I_SPANISH_LANG"],
+    ["dhs_per", "dhs_per", "SEX,RACIAL_ETHNIC_ORIGIN,PRIM_LANG,BIRTH_DT"]
+]
+
+for name, table, fields in splits:
+    env.Python("#scratch/inputs/{}.csv".format(table),
+               ["Split.py",
+                "#input/ri360/RESEARCH_V11-{}.csv".format(name.upper()),
+                Value(fields)],
+               log_path="#output/inputs/split_{}.log".format(table))
+    env.Python(SQLTable("{}_{}".format(env.RIIPL_PROJECT, table)),
+               ["Load.py",
+                "#scratch/inputs/{}.csv".format(table),
+                "#schema/{}.txt".format(table),
+                Value("RECORD_ID"),
+                Value("'|'")],
+               log_path="#output/inputs/load_{}.log".format(table))
+
+# HDF5 files
+hdf5 = [
+    ["medicaid_diag_cde", "0,3,4", "u4,u4,S7"],
+    ["medicaid_pharmacy", "0,4,7", "u4,u4,u4"],
+    ["medicaid_proc_cde", "0,3,4", "u4,u4,S7"]
+]
+
+for name, columns, dtypes in hdf5:
+    env.Python("#scratch/inputs/{}.h5".format(name),
+               ["HDF5.py",
+                "#input/ri360/RESEARCH_V11-RIIPL_{}.csv".format(name.upper()),
+                Value(columns),
+                Value(dtypes)],
+               log_path="#output/inputs/hdf5_{}.log".format(name))
+
+# build DIM_DATE from scratch
+env.Python(SQLTable("{}_DIM_DATE".format(env.RIIPL_PROJECT)),
+           "DimDate.py")
+
+# vim: syntax=python expandtab sw=4 ts=4

@@ -1,0 +1,40 @@
+Import("*")
+
+seed = Value(env.RANDOM_SEED)
+bootstraps = Value(env.PLOT_BOOTSTRAPS)
+
+# Figure 1
+env.R("#output/figures/Figure1.emf",
+      ["Figure1.R",
+       seed,
+       bootstraps,
+       "#output/models/lstm.all.OUTCOME_ANY.y_pred.csv"])
+
+# Figure 2
+env.R("#output/figures/Figure2.emf",
+      ["Figure2.R",
+       seed,
+       bootstraps,
+       "#output/models/lstm.all.OUTCOME_ANY.y_pred.csv",
+       "#scratch/populations/InitialRX.csv",
+       "#scratch/features/demographics.csv",
+       "#scratch/features/incarceration.csv",
+       "#scratch/features/enrollment.csv"])
+
+# Figure S1
+env.R("#output/figures/FigureS1.emf",
+      ["FigureS1.R",
+       "#scratch/outcomes/all.csv"])
+
+# Figure S2
+env.R("#output/figures/FigureS2.emf",
+      ["FigureS2.R",
+       seed,
+       bootstraps,
+       "#output/models/lstm.all.OUTCOME_ANY.y_pred.csv",
+       "#scratch/populations/InitialRX.csv",
+       "#scratch/features/demographics.csv",
+       "#scratch/features/incarceration.csv",
+       "#scratch/features/enrollment.csv"])
+
+# vim: syntax=python expandtab sw=4 ts=4

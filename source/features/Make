@@ -1,32 +1,50 @@
 Import('*')
 
-features = []
+# Table dependencies
+population          = SQLTable("{}_pop_initialrx".format(env.RIIPL_PROJECT))
+dhs_relations       = SQLTable("{}_dhs_relations".format(env.RIIPL_PROJECT))
+dim_aid_ctg_cde     = SQLTable("{}_dim_aid_ctg_cde".format(env.RIIPL_PROJECT))
+dim_date            = SQLTable("{}_dim_date".format(env.RIIPL_PROJECT))
+dlt_wage            = SQLTable("{}_dlt_wage".format(env.RIIPL_PROJECT))
+doc_events          = SQLTable("{}_doc_events".format(env.RIIPL_PROJECT))
+eohhs_recip_x_ssn   = SQLTable("{}_eohhs_recip_x_ssn".format(env.RIIPL_PROJECT))
+lookback            = SQLTable("{}_lookback".format(env.RIIPL_PROJECT))
+medicaid_diag_cde   = SQLTable("{}_medicaid_diag_cde".format(env.RIIPL_PROJECT))
+medicaid_enrollment = SQLTable("{}_medicaid_enrollment_2".format(env.RIIPL_PROJECT))
+mega1               = SQLTable("{}_mega_1".format(env.RIIPL_PROJECT))
+mega2               = SQLTable("{}_mega_2".format(env.RIIPL_PROJECT))
+mega3               = SQLTable("{}_mega_3".format(env.RIIPL_PROJECT))
+
 manifests = []
 
-def Feature(name, deps, *args):
+def Feature(name, *args):
     """
     Helper function for succinctly specifying a feature file and
     its arguments.
     """
+    global manifests
     env.Python(["#scratch/features/{}.csv".format(name),
                 "#output/features/{}.manifest".format(name)], 
-               ["{}.py".format(name)] + [tables[name] for name in deps] + list(args))
-    env.Python("#scratch/features/{}.normalized.csv".format(name),
-               ["normalize.py", "#scratch/population.csv", "#scratch/features/{}.csv".format(name)],
-               log_path="#output/features/{}.normalize.log".format(name))
-    features.append("#scratch/features/{}.normalized.csv".format(name))
+               ["{}.py".format(name)] + list(args))
     manifests.append("#output/features/{}.manifest".format(name))
 
 
-# Add features here...
+Feature("benefits", population, lookback, mega1)
+Feature("census", population, mega2,
+        "#input/public/ACS_15_5YR_B19013_with_ann.csv",
+        "#input/public/ACS_15_5YR_B17010_with_ann.csv")
+Feature("demographics", population, dim_date, mega3)
+Feature("diagnoses", population, medicaid_diag_cde)
+Feature("enrollment", population, dim_date, medicaid_enrollment, dim_aid_ctg_cde, eohhs_recip_x_ssn)
+Feature("family", population, lookback, dhs_relations)
+Feature("incarceration", population, doc_events)
+Feature("medicaid_id", population, lookback, medicaid_enrollment)
+Feature("wages", population, dlt_wage, dim_date)
 
 # Manifest
 
 env.Command("#output/features/manifest.tsv",
             manifests,
             "cat $SOURCES > $TARGET")
-
-features = {"all": features}
-Export("features")
 
 # vim: syntax=python expandtab sw=4 ts=4

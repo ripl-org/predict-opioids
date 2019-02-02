@@ -7,26 +7,12 @@ try:
 except OSError:
     pass
 
-os.symlink("/data/{0}/{0}v11".format(env.PROJECT_KEY, "input")
+os.symlink("/data/opioid/opioidv11", "input")
 
-exec(compile(open("./source/lib/SCons/setup.py").read(), "./source/lib/SCons/setup.py", "exec"))
+exec(compile(open("./source/lib/SCons/setup.py").read(), "./source/lib/SCons/setup.py", 'exec'))
 
-env.CacheDir("/data/{0}/{0}-cache".format(env.PROJECT_KEY))
+env.CacheDir("/data/opioid/{}-cache".format(env.RIIPL_PROJECT))
 env.Decider("MD5-timestamp")
-
-# Export constant values and a master list of tables.
-constants = dict((k, Value(v)) for k, v in CONSTANTS.items())
-Export("constants")
-
-# List of all tables loaded in inputs
-tables = []
-tables = dict((table, SQLTable("{}_{}".format(env.PROJECT_KEY, table)))
-               for table in tables)
-Export("tables")
-
-# Tests - these are primary for testing modifications
-# to the template and can be removed from production code
-env.SConscript("test/lib/Python/Make")
 
 # Inputs
 env.SConscript("source/inputs/Make")
@@ -40,6 +26,9 @@ env.SConscript("source/outcomes/Make")
 # Features
 env.SConscript("source/features/Make")
 
+# Tensors
+env.SConscript("source/tensors/Make")
+
 # Models
 env.SConscript("source/models/Make")
 
@@ -48,3 +37,5 @@ env.SConscript("source/figures/Make")
 
 # Tables
 env.SConscript("source/tables/Make")
+
+# vim: syntax=python expandtab sw=4 ts=4
