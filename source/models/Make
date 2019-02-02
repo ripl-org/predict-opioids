@@ -36,7 +36,7 @@ for tensor in tensors:
 
 # neural net
 for tensor in tensors:
-    for outcome in ["OUTCOME_ANY"]:
+    for outcome in OUTCOMES:
         env.Python(["#scratch/models/lstm.{}.{}.h5".format(tensor, outcome),
                     "#scratch/models/lstm.{}.{}.png".format(tensor, outcome)],
                    ["lstm.py",
