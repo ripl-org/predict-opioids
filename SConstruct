@@ -11,8 +11,45 @@ os.symlink("/data/opioid/opioidv11", "input")
 
 exec(compile(open("./source/lib/SCons/setup.py").read(), "./source/lib/SCons/setup.py", 'exec'))
 
-env.CacheDir("/data/opioid/{}-cache".format(env.RIIPL_PROJECT))
+env.CacheDir("/data/opioid/{}-cache".format(env.PROJECT_KEY))
 env.Decider("MD5-timestamp")
+
+# Export constant values and a master list of tables.
+constants = dict((k, Value(v)) for k, v in CONSTANTS.items())
+Export("constants")
+
+# List of all tables loaded in inputs
+tables = ["arrests",
+          "car_crashes",
+          "citations",
+          "dhs_per",
+          "dhs_relations",
+          "diag_corr",
+          "dim_aid_ctg_cde",
+          "dim_date",
+          "dlt_wage",
+          "doc_events",
+          "doc_ident",
+          "doc_sentences",
+          "enrolled",
+          "eohhs_recip_demo",
+          "eohhs_recip_x_ssn",
+          "lookback",
+          "medicaid_claims",
+          "medicaid_diag_cde",
+          "medicaid_enrollment_2",
+          "medicaid_pharmacy",
+          "medicaid_proc_cde",
+          "mega_addr",
+          "mega_demo",
+          "mega_pay",
+          "outcomes_all",
+          "police_demo",
+          "population",
+          "proc_corr"]
+tables = dict((table, SQLTable("{}_{}".format(env.PROJECT_KEY, table)))
+               for table in tables)
+Export("tables")
 
 # Inputs
 env.SConscript("source/inputs/Make")

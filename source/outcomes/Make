@@ -1,8 +1,6 @@
 Import("*")
 
-years = Value(env.OUTCOME_YEARS)
-
-OUTCOMES = [
+outcomes = [
     "OUTCOME_ANY",
     "OUTCOME_DEPENDENCE",
     "OUTCOME_ABUSE",
@@ -10,21 +8,34 @@ OUTCOMES = [
     "OUTCOME_POISONING_HEROIN",
     "OUTCOME_PROCEDURE"
 ]
-Export("OUTCOMES")
+Export("outcomes")
 
 # Write separate outcome files.
-for name in OUTCOMES:
+for name in outcomes:
     env.Python("#scratch/outcomes/{}.csv".format(name),
                ["Outcome.py",
                 "#scratch/populations/InitialRX.csv",
                 "#scratch/populations/InitialOutcomes.csv",
                 Value(name),
-                years],
+                constants["OUTCOME_YEARS"]],
                log_path="#output/outcomes/{}.log".format(name))
 
 # Also concatenate all outcomes into a single file.
 env.Python(["#scratch/outcomes/all.csv",
-            SQLTable("popioid_outcomes_all")],
-           ["Concat.py"] + ["#scratch/outcomes/{}.csv".format(name) for name in OUTCOMES])
+            tables["outcomes_all"]],
+           ["Concat.py"] + ["#scratch/outcomes/{}.csv".format(name) for name in outcomes])
+
+# Outcome correlations for diag and proc codes
+
+for cde_type in ["diag", "proc"]:
+    env.Python(tables["{}_corr".format(cde_type)],
+               ["cde_corr.py",
+                tables["population"],
+                tables["lookback"],
+                tables["dim_date"],
+                tables["outcomes_all"],
+                tables["medicaid_{}_cde".format(cde_type)],
+                Value(cde_type)],
+               log_path="#output/outcomes/{}_corr.log".format(cde_type))
 
 # vim: syntax=python expandtab sw=4 ts=4

@@ -3,7 +3,7 @@ import pandas as pd
 import os, sys, time
 from riipl import SaveTensor
 
-nsteps, population, dhs_per, out = sys.argv[1:]
+population, dhs_per, nsteps, out = sys.argv[1:]
 nsteps = int(nsteps)
 
 def main():

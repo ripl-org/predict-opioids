@@ -27,7 +27,7 @@ The code is organized as follows:
 | **source/figures** | Source files for generating Fig. 1-2 and S1-S2. |
 | **source/tables** | Source files for generating Table 1-2 and S1. |
 
-## Authors
+## Contributors
 
 Mark Howison  
 Sarah Inman  

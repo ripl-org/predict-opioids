@@ -1,8 +1,46 @@
 Import("*")
 
-seed = Value(env.RANDOM_SEED)
-nsteps = Value(env.NSTEPS)
-population = SQLTable("{}_pop_initialrx".format(env.RIIPL_PROJECT))
+# model matrix and correlations
+for feature in features:
+    env.R(["#scratch/models/matrix.{}.RData".format(feature),
+           "#scratch/models/matrix.{}.train.txt".format(feature)],
+          ["matrix.R", "#scratch/populations/InitialRX.csv", "#scratch/outcomes/all.csv"] + features[feature],
+          log_path="#output/models/matrix.{}.R.log".format(feature))
+    env.R("#output/models/corr.pairwise.{}.csv".format(feature),
+          ["corr.R",
+           "#scratch/models/matrix.{}.RData".format(feature)],
+          log_path="#output/models/corr.{}.log".format(feature))
+
+# bolasso
+for feature in features:
+    for outcome in ["OUTCOME_ANY"]:
+        for i in range(env.BOLASSO_BOOTSTRAPS):
+            env.R(["#scratch/models/bolasso/gamlr.{}.{}.{}.RData".format(feature, outcome, i),
+                   "#scratch/models/bolasso/gamlr.{}.{}.{}.beta.csv".format(feature, outcome, i)],
+                  ["gamlr-bootstrap.R",
+                   constants["RANDOM_SEED"],
+                   "#scratch/models/matrix.{}.RData".format(feature),
+                   Value(outcome),
+                   Value(i)],
+                  log_path="#output/models/bolasso/gamlr.{}.{}.{}.log".format(feature, outcome, i))
+        env.Python(["#output/models/bolasso.bootstraps.{}.{}.csv".format(feature, outcome),
+                    "#output/models/bolasso.freq.{}.{}.csv".format(feature, outcome)],
+                   ["bolasso.py", "#output/features/manifest.tsv"] + \
+                   ["#scratch/models/bolasso/gamlr.{}.{}.{}.beta.csv".format(feature, outcome, i) 
+                    for i in range(env.BOLASSO_BOOTSTRAPS)],
+                   log_path="#output/models/bolasso.{}.{}.log".format(feature, outcome))
+
+# postlasso
+for feature in features:
+    for outcome in ["OUTCOME_ANY"]:
+        env.R(["#output/models/postlasso.{}.{}.csv".format(feature, outcome),
+               "#output/models/postlasso.{}.{}.y_pred.csv".format(feature, outcome)],
+              ["postlasso.R",
+               constants["RANDOM_SEED"],
+               "#scratch/models/matrix.{}.RData".format(feature),
+               Value(outcome),
+               "#output/models/bolasso.freq.{}.{}.csv".format(feature, outcome)],
+              log_path="#output/models/postlasso.{}.{}.log".format(feature, outcome))
 
 tensors = {
     "DHS":      ["#scratch/tensors/DHS/demographics.p",
@@ -31,28 +69,28 @@ tensors["all"] = sum(tensors.values(), [])
 for tensor in tensors:
     env.Python(["#scratch/models/tensor.{}.p".format(tensor),
                 "#output/models/tensor.{}.manifest.csv".format(tensor)],
-               ["tensor.py", nsteps, population] + tensors[tensor],
+               ["tensor.py", constants["NSTEPS"], tables["population"]] + tensors[tensor],
                log_path="#output/models/tensor.{}.log".format(tensor))
 
 # neural net
-for tensor in tensors:
-    for outcome in OUTCOMES:
-        env.Python(["#scratch/models/lstm.{}.{}.h5".format(tensor, outcome),
-                    "#scratch/models/lstm.{}.{}.png".format(tensor, outcome)],
-                   ["lstm.py",
-                    seed,
-                    "#scratch/populations/InitialRX.csv",
-                    "#scratch/outcomes/{}.csv".format(outcome),
-                    Value(outcome),
-                    "#scratch/models/tensor.{}.p".format(tensor)],
-                   log_path="#output/models/lstm.{}.{}.log".format(tensor, outcome))
-        env.Python(["#output/models/lstm.{}.{}.y_pred.csv".format(tensor, outcome)],
-                   ["lstm_prediction.py",
-                    "#scratch/populations/InitialRX.csv",
-                    "#scratch/outcomes/{}.csv".format(outcome),
-                    Value(outcome),
-                    "#scratch/models/tensor.{}.p".format(tensor),
-                    "#scratch/models/lstm.{}.{}.h5".format(tensor, outcome)],
-                   log_path="#output/models/lstm_prediction.{}.{}.log".format(tensor, outcome))
-
+#for tensor in tensors:
+#    for outcome in outcomes:
+#        env.Python(["#scratch/models/lstm.{}.{}.h5".format(tensor, outcome),
+#                    "#scratch/models/lstm.{}.{}.png".format(tensor, outcome)],
+#                   ["lstm.py",
+#                    constants["RANDOM_SEED"],
+#                    "#scratch/populations/InitialRX.csv",
+#                    "#scratch/outcomes/{}.csv".format(outcome),
+#                    Value(outcome),
+#                    "#scratch/models/tensor.{}.p".format(tensor)],
+#                   log_path="#output/models/lstm.{}.{}.log".format(tensor, outcome))
+#        env.Python(["#output/models/lstm.{}.{}.y_pred.csv".format(tensor, outcome)],
+#                   ["lstm_prediction.py",
+#                    "#scratch/populations/InitialRX.csv",
+#                    "#scratch/outcomes/{}.csv".format(outcome),
+#                    Value(outcome),
+#                    "#scratch/models/tensor.{}.p".format(tensor),
+#                    "#scratch/models/lstm.{}.{}.h5".format(tensor, outcome)],
+#                   log_path="#output/models/lstm_prediction.{}.{}.log".format(tensor, outcome))
+#
 # vim: syntax=python expandtab sw=4 ts=4

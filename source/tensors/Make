@@ -1,82 +1,40 @@
-Import('*')
+Import("*")
 
-# Constant dependencies
-nsteps = Value(env.NSTEPS)
-
-# Table dependencies
-population            = SQLTable("{}_pop_initialrx".format(env.RIIPL_PROJECT))
-lookback              = SQLTable("{}_lookback".format(env.RIIPL_PROJECT))
-enrolled              = SQLTable("{}_enrolled".format(env.RIIPL_PROJECT))
-outcomes_all          = SQLTable("{}_outcomes_all".format(env.RIIPL_PROJECT))
-arrests               = SQLTable("{}_arrests".format(env.RIIPL_PROJECT))
-car_crashes           = SQLTable("{}_car_crashes".format(env.RIIPL_PROJECT))
-citations             = SQLTable("{}_citations".format(env.RIIPL_PROJECT))
-dhs_per               = SQLTable("{}_dhs_per".format(env.RIIPL_PROJECT))
-dim_aid_ctg_cde       = SQLTable("{}_dim_aid_ctg_cde".format(env.RIIPL_PROJECT))
-dim_date              = SQLTable("{}_dim_date".format(env.RIIPL_PROJECT))
-dlt_wage              = SQLTable("{}_dlt_wage".format(env.RIIPL_PROJECT))
-doc_events            = SQLTable("{}_doc_events".format(env.RIIPL_PROJECT))
-doc_ident             = SQLTable("{}_doc_ident".format(env.RIIPL_PROJECT))
-doc_sentences         = SQLTable("{}_doc_sentences".format(env.RIIPL_PROJECT))
-eohhs_recip_demo      = SQLTable("{}_eohhs_recip_demo".format(env.RIIPL_PROJECT))
-eohhs_recip_x_ssn     = SQLTable("{}_eohhs_recip_x_ssn".format(env.RIIPL_PROJECT))
-medicaid_diag_cde     = SQLTable("{}_medicaid_diag_cde".format(env.RIIPL_PROJECT))
-medicaid_claims       = SQLTable("{}_medicaid_claims".format(env.RIIPL_PROJECT))
-medicaid_enrollment   = SQLTable("{}_medicaid_enrollment_2".format(env.RIIPL_PROJECT))
-medicaid_pharmacy     = SQLTable("{}_medicaid_pharmacy".format(env.RIIPL_PROJECT))
-medicaid_proc_cde     = SQLTable("{}_medicaid_proc_cde".format(env.RIIPL_PROJECT))
-mega1                 = SQLTable("{}_mega_1".format(env.RIIPL_PROJECT))
-mega2                 = SQLTable("{}_mega_2".format(env.RIIPL_PROJECT))
-police_demo           = SQLTable("{}_police_demo".format(env.RIIPL_PROJECT))
-
-def Tensor(name, *args):
+def Tensor(name, deps, *args):
     """
     Helper function for succinctly specifying a tensor file and
     its arguments.
     """
     env.Python("#scratch/tensors/{}.p".format(name),
-               ["{}.py".format(name)] + list(args))
+               ["{}.py".format(name)] + [tables[name] for name in deps] + list(args))
 
 
-Tensor("DHS/demographics", nsteps, population, dhs_per)
-Tensor("DHS/payments", population, lookback, mega1)
+Tensor("DHS/demographics", ["population", "dhs_per"], constants["NSTEPS"])
+Tensor("DHS/payments", ["population", "lookback", "mega_pay"])
 
-Tensor("DLT/naics", population, lookback, dlt_wage)
-Tensor("DLT/payments", population, lookback, mega1)
-Tensor("DLT/wages", population, lookback, dlt_wage)
+Tensor("DLT/naics", ["population", "lookback", "dlt_wage"])
+Tensor("DLT/payments", ["population", "lookback", "mega_pay"])
+Tensor("DLT/wages", ["population", "lookback", "dlt_wage"])
 
-Tensor("DOC/demographics", nsteps, population, doc_ident)
-Tensor("DOC/events", population, lookback, doc_events, dim_date)
-Tensor("DOC/sentences", population, lookback, doc_sentences, dim_date)
+Tensor("DOC/demographics", ["population", "doc_ident"], constants["NSTEPS"])
+Tensor("DOC/events", ["population", "lookback", "doc_events", "dim_date"])
+Tensor("DOC/sentences", ["population", "lookback", "doc_sentences", "dim_date"])
 
-Tensor("Medicaid/diag_cde", population, lookback, dim_date, medicaid_diag_cde,
-       SQLTable("{}_diag_corr".format(env.RIIPL_PROJECT)),
+Tensor("Medicaid/diag_cde", ["population", "lookback", "dim_date", "medicaid_diag_cde", "diag_corr"],
        "#input/public/CMS29_DESC_LONG_SHORT_DX_101111u021012.csv")
-Tensor("Medicaid/demographics", nsteps, population, eohhs_recip_x_ssn, eohhs_recip_demo)
-Tensor("Medicaid/enrollment", population, lookback, medicaid_enrollment, dim_aid_ctg_cde, eohhs_recip_x_ssn)
-Tensor("Medicaid/payments", population, lookback, medicaid_enrollment, medicaid_claims)
-Tensor("Medicaid/pharmacy", population, lookback, dim_date, medicaid_pharmacy,
+Tensor("Medicaid/demographics", ["population", "eohhs_recip_x_ssn", "eohhs_recip_demo"], constants["NSTEPS"])
+Tensor("Medicaid/enrollment", ["population", "lookback", "medicaid_enrollment_2", "dim_aid_ctg_cde", "eohhs_recip_x_ssn"])
+Tensor("Medicaid/payments", ["population", "lookback", "medicaid_enrollment_2", "medicaid_claims"])
+Tensor("Medicaid/pharmacy", ["population", "lookback", "dim_date", "medicaid_pharmacy"],
        "#input/other/ashp.csv")
-Tensor("Medicaid/proc_cde", population, lookback, dim_date, medicaid_proc_cde,
-       SQLTable("{}_proc_corr".format(env.RIIPL_PROJECT)),
+Tensor("Medicaid/proc_cde", ["population", "lookback", "dim_date", "medicaid_proc_cde", "proc_corr"],
        "#input/ri360/MEDICAID-DIM_PROC_CDE.csv")
 
-Tensor("Police/arrests", population, lookback, arrests)
-Tensor("Police/calls", "#input/other/riipl_calls_for_service.csv", population, lookback, mega2)
-Tensor("Police/car_crashes", population, lookback, car_crashes)
-Tensor("Police/citations", population, lookback, citations)
-Tensor("Police/demographics", nsteps, population, police_demo)
-
-# Correlation tables for diag and proc codes
-
-for cde_type in ["diag", "proc"]:
-    env.Python([SQLTable("{}_{}_corr".format(env.RIIPL_PROJECT, cde_type)),
-                "#scratch/tensors/Medicaid/{}_corr.csv".format(cde_type)], 
-               ["Medicaid/cde_corr.py",
-                population,
-                outcomes_all,
-                SQLTable("{}_medicaid_{}_cde".format(env.RIIPL_PROJECT, cde_type)),
-                Value(cde_type)],
-               log_path="#output/tensors/Medicaid/{}_corr.log".format(cde_type))
+Tensor("Police/arrests", ["population", "lookback", "arrests"])
+Tensor("Police/calls", ["population", "lookback", "mega_addr"],
+       "#input/other/riipl_calls_for_service.csv")
+Tensor("Police/car_crashes", ["population", "lookback", "car_crashes"])
+Tensor("Police/citations", ["population", "lookback", "citations"])
+Tensor("Police/demographics", ["population", "police_demo"], constants["NSTEPS"])
 
 # vim: syntax=python expandtab sw=4 ts=4

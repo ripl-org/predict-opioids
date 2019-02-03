@@ -3,8 +3,8 @@ Import("*")
 # Table 1
 env.Python("#output/tables/Table1.tsv",
            ["Table1.py",
-            Value(env.RANDOM_SEED),
-            Value(env.PLOT_BOOTSTRAPS),
+            constants["RANDOM_SEED"],
+            constants["PLOT_BOOTSTRAPS"],
             "#output/models/lstm.DHS.OUTCOME_ANY.y_pred.csv",
             "#output/models/tensor.DHS.manifest.csv",
             "#output/models/lstm.DLT.OUTCOME_ANY.y_pred.csv",
@@ -42,12 +42,12 @@ env.R("#output/tables/TableS1.tsv",
 tensors = ["DHS", "DLT", "DOC", "Medicaid", "Police", "all"]
 env.Python("#output/tables/TableS4.tsv",
            ["TableS4.py",
-            Value(env.RANDOM_SEED),
-            Value(env.PLOT_BOOTSTRAPS),
-            Value(",".join(OUTCOMES)),
+            constants["RANDOM_SEED"],
+            constants["PLOT_BOOTSTRAPS"],
+            Value(",".join(outcomes)),
             Value(",".join(tensors))] + \
            ["#output/models/lstm.{}.{}.y_pred.csv".format(tensor, outcome)
             for tensor in tensors
-            for outcome in OUTCOMES])
+            for outcome in outcomes])
 
 # vim: syntax=python expandtab sw=4 ts=4

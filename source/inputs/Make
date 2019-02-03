@@ -25,7 +25,7 @@ for path, pk, delim in tables:
         name = path.partition("-")[2].replace("RIIPL_", "")
     else:
         name = path.partition("/")[2]
-    env.Python(SQLTable("{}_{}".format(env.RIIPL_PROJECT, name)),
+    env.Python(SQLTable("{}_{}".format(env.PROJECT_KEY, name)),
                ["Load.py",
                 "#input/{}.csv".format(path),
                 "#schema/{}.txt".format(path),
@@ -36,9 +36,9 @@ for path, pk, delim in tables:
 # Split RI360 (MEGA) table into smaller chunks
 
 splits = [
-    ["mega_1", "SNAP_PAYMENTS,TANF_PAYMENTS,TDI_PAYMENTS,UI_PAYMENTS,SSI_SUPPLEMENT,GPA_PAYMENTS,CCAP_PAYMENTS"],
-    ["mega_2", "ADDRESS_STATE,ADDRESS_COUNTY,ADDRESS_TRCT,ADDRESS_BLKGRP"],
-    ["mega_3", "AGE,RACE,SEX,BMI,MARITAL_STATUS"]
+    ["mega_addr", "ADDRESS_STATE,ADDRESS_COUNTY,ADDRESS_TRCT,ADDRESS_BLKGRP"],
+    ["mega_demo", "AGE,RACE,SEX,BMI,MARITAL_STATUS,DHS_HH_ID"],
+    ["mega_pay", "SNAP_PAYMENTS,TANF_PAYMENTS,TDI_PAYMENTS,UI_PAYMENTS,SSI_SUPPLEMENT,GPA_PAYMENTS,CCAP_PAYMENTS"]
 ]
 
 for name, fields in splits:
@@ -47,7 +47,7 @@ for name, fields in splits:
                 "#input/ri360/RESEARCH_V11-RI360.csv",
                 Value(fields)],
                log_path="#output/inputs/split_{}.log".format(name))
-    env.Python(SQLTable("{}_{}".format(env.RIIPL_PROJECT, name)),
+    env.Python(SQLTable("{}_{}".format(env.PROJECT_KEY, name)),
                ["Load.py",
                 "#scratch/inputs/{}.csv".format(name),
                 "#schema/{}.txt".format(name),
@@ -67,7 +67,7 @@ for name, table, fields in splits:
                 "#input/ri360/RESEARCH_V11-{}.csv".format(name.upper()),
                 Value(fields)],
                log_path="#output/inputs/split_{}.log".format(table))
-    env.Python(SQLTable("{}_{}".format(env.RIIPL_PROJECT, table)),
+    env.Python(SQLTable("{}_{}".format(env.PROJECT_KEY, table)),
                ["Load.py",
                 "#scratch/inputs/{}.csv".format(table),
                 "#schema/{}.txt".format(table),
@@ -91,7 +91,7 @@ for name, columns, dtypes in hdf5:
                log_path="#output/inputs/hdf5_{}.log".format(name))
 
 # build DIM_DATE from scratch
-env.Python(SQLTable("{}_DIM_DATE".format(env.RIIPL_PROJECT)),
+env.Python(SQLTable("{}_DIM_DATE".format(env.PROJECT_KEY)),
            "DimDate.py")
 
 # vim: syntax=python expandtab sw=4 ts=4

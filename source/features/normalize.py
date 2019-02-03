@@ -4,8 +4,8 @@ import sys
 
 population_file, features_file, out_file = sys.argv[1:]
 
-index = ["SAMPLE_ID"]
-protected = frozenset(("SAMPLE_ID", "SUBSET", "y"))
+index = ["RIIPL_ID"]
+protected = frozenset(("RIIPL_ID", "SUBSET", "y"))
 
 # Load population with partitions
 X = pd.read_csv(population_file, usecols=index+["SUBSET"], index_col=index)

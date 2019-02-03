@@ -3,7 +3,7 @@ import pandas as pd
 import os, sys, time
 from riipl import SaveTensor
 
-cfsfile, population, lookback, mega, out = sys.argv[1:]
+population, lookback, mega, cfsfile, out = sys.argv[1:]
 
 def main():
     """

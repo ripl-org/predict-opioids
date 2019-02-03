@@ -1,44 +1,36 @@
 Import("*")
 
-nsteps = Value(env.NSTEPS)
-
-population = SQLTable("{}_pop_initialrx".format(env.RIIPL_PROJECT))
-lookback   = SQLTable("{}_lookback".format(env.RIIPL_PROJECT))
-enrolled   = SQLTable("{}_enrolled".format(env.RIIPL_PROJECT))
-
-medicaid_enrollment = SQLTable("{}_medicaid_enrollment_2".format(env.RIIPL_PROJECT))
-
 ### InitialOutcomes ###
 
 env.Python("#scratch/populations/InitialOutcomes.csv",
            ["InitialOutcomes.py",
             "#scratch/inputs/medicaid_diag_cde.h5",
             "#scratch/inputs/medicaid_proc_cde.h5",
-            Value(env.INITIAL_OUTCOMES_START),
-            Value(env.INITIAL_OUTCOMES_END)])
+            constants["INITIAL_OUTCOMES_START"],
+            constants["INITIAL_OUTCOMES_END"]])
 
 
 ### InitialRX ###
 
-env.Python([population,
+env.Python([tables["population"],
             "#scratch/populations/InitialRX.csv"],
            ["InitialRX.py",
             "#scratch/inputs/medicaid_pharmacy.h5",
-            Value(env.INITIAL_RX_START),
-            Value(env.INITIAL_RX_END),
+            constants["INITIAL_RX_START"],
+            constants["INITIAL_RX_END"],
             "#input/other/ndc-opioids.csv",
             "#scratch/populations/InitialOutcomes.csv",
-            Value(env.RANDOM_SEED)])
+            constants["RANDOM_SEED"]])
 
-env.Python(lookback,
+env.Python(tables["lookback"],
            ["lookback.py",
-            population,
-            nsteps])
+            tables["population"],
+            constants["NSTEPS"]])
 
-env.Python(enrolled,
+env.Python(tables["enrolled"],
            ["enrolled.py",
-            lookback,
-            medicaid_enrollment])
+            tables["lookback"],
+            tables["medicaid_enrollment_2"]])
 
 
 ### TestCurrentNDC ###
@@ -46,8 +38,8 @@ env.Python(enrolled,
 env.Python("#output/populations/TestCurrentNDC.py.log",
            ["TestCurrentNDC.py",
             "#scratch/inputs/medicaid_pharmacy.h5",
-            Value(env.INITIAL_RX_START),
-            Value(env.INITIAL_RX_END),
+            constants["INITIAL_RX_START"],
+            constants["INITIAL_RX_END"],
             "#input/public/ndc-20180523-product.txt"])
 
 # vim: syntax=python expandtab sw=4 ts=4
