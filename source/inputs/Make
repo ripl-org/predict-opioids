@@ -2,7 +2,6 @@ Import("*")
 
 # List of (table, primary key) pairs.
 tables = [
-    ["other/ndc_opioid", "NDC", ","],
     ["ri360/MEDICAID-DIM_AID_CTG_CDE", "AID_CTG_CDE", "|"],
     ["ri360/RESEARCH_V11-DLT_WAGE", "RECORD_ID", "|"],
     ["ri360/RESEARCH_V11-EOHHS_RECIP_DEMO", "RECORD_ID", "|"],

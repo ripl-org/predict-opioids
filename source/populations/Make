@@ -26,7 +26,7 @@ env.Python([population,
             "#scratch/inputs/medicaid_pharmacy.h5",
             Value(env.INITIAL_RX_START),
             Value(env.INITIAL_RX_END),
-            "#input/other/ndc_opioid.csv",
+            "#input/other/ndc-opioids.csv",
             "#scratch/populations/InitialOutcomes.csv",
             Value(env.RANDOM_SEED)])
 
