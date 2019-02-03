@@ -1,6 +1,6 @@
 Analysis code to reproduce results from the manuscript:
 
-Hastings JS, Howison M, Inman S, Shah M. Deep Learning with Integrated Administrative Data Predicts Adverse Opioid Outcomes.
+Hastings JS, Howison M, Inman S. Improving policy with data and machine learning to prevent opioid dependence.
 
 This project utilizes the [predictive modeling
 template](https://github.com/ripl-org/predictive-template) from [Research
@@ -27,3 +27,8 @@ The code is organized as follows:
 | **source/figures** | Source files for generating Fig. 1-2 and S1-S2. |
 | **source/tables** | Source files for generating Table 1-2 and S1. |
 
+## Authors
+
+Mark Howison  
+Sarah Inman  
+Miraj Shah

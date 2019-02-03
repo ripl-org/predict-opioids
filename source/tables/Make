@@ -1,13 +1,8 @@
-Import('*')
+Import("*")
 
 # Table 1
-env.R("#output/tables/Table1.tsv",
-      ["Table1.R",
-       "#output/models/lstm.all.OUTCOME_ANY.y_pred.csv"])
-
-# Table 2
-env.Python("#output/tables/Table2.tsv",
-           ["Table2.py",
+env.Python("#output/tables/Table1.tsv",
+           ["Table1.py",
             Value(env.RANDOM_SEED),
             Value(env.PLOT_BOOTSTRAPS),
             "#output/models/lstm.DHS.OUTCOME_ANY.y_pred.csv",
@@ -23,6 +18,11 @@ env.Python("#output/tables/Table2.tsv",
             "#output/models/lstm.all.OUTCOME_ANY.y_pred.csv",
             "#output/models/tensor.all.manifest.csv"])
 
+# Table 2
+env.R("#output/tables/Table2.tsv",
+      ["Table2.R",
+       "#output/models/lstm.all.OUTCOME_ANY.y_pred.csv"])
+
 # Table S1
 env.R("#output/tables/TableS1.tsv",
       ["TableS1.R",
@@ -37,5 +37,17 @@ env.R("#output/tables/TableS1.tsv",
        "#scratch/features/diagnoses.csv",
        "#scratch/features/medicaid_id.csv",
        "#input/public/ACS_15_5YR_B17010_with_ann.csv"])
+
+# Table S4
+tensors = ["DHS", "DLT", "DOC", "Medicaid", "Police", "all"]
+env.Python("#output/tables/TableS4.tsv",
+           ["TableS4.py",
+            Value(env.RANDOM_SEED),
+            Value(env.PLOT_BOOTSTRAPS),
+            Value(",".join(OUTCOMES)),
+            Value(",".join(tensors))] + \
+           ["#output/models/lstm.{}.{}.y_pred.csv".format(tensor, outcome)
+            for tensor in tensors
+            for outcome in OUTCOMES])
 
 # vim: syntax=python expandtab sw=4 ts=4
