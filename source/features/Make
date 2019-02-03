@@ -33,10 +33,6 @@ Feature("DOC/events",
         ["population", "lookback", "dim_date", "doc_events"])
 Feature("DOC/sentences",
         ["population", "lookback", "dim_date", "doc_sentences"])
-#Feature("Medicaid/diag_cde",
-#        ["population", "lookback", "dim_date", "medicaid_diag_cde", "diag_corr"],
-#        "#input/public/CMS29_DESC_LONG_SHORT_DX_101111u021012.csv",
-#        "#input/public/icd9-sections.csv")
 Feature("Medicaid/enrollment",
         ["population", "lookback", "medicaid_enrollment_2", "dim_aid_ctg_cde", "eohhs_recip_demo", "eohhs_recip_x_ssn"])
 Feature("Medicaid/payments",
@@ -44,9 +40,12 @@ Feature("Medicaid/payments",
 Feature("Medicaid/pharmacy",
         ["population", "lookback", "dim_date", "medicaid_pharmacy"],
         "#input/other/ashp.csv")
-#Feature("Medicaid/proc_cde",
-#        ["population", "lookback", "dim_date", "medicaid_proc_cde", "proc_corr"],
-#        "#input/ri360/MEDICAID-DIM_PROC_CDE.csv")
+Feature("Medicaid/nmf_topics",
+        ["population"],
+        "#scratch/outcomes/OUTCOME_ANY.csv",
+        "#scratch/inputs/cde_words.csv",
+        "#scratch/inputs/cde_word_counts.mm",
+        constants["RANDOM_SEED"])
 Feature("Mega/addresses",
         ["population", "lookback", "mega_addr"])
 Feature("Mega/births",

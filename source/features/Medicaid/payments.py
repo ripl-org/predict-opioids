@@ -15,7 +15,7 @@ def main():
     sql = """
           SELECT pop.riipl_id,
                  SUM(mc.pay_amt) AS medicaid_payments,
-                 SUM(CASE WHEN mc.src_id IN (4, 8, 16, 17, 26, 27) THEN mc.pay_amt ELSE 0 END) AS medicaid_prof_payments
+                 SUM(CASE WHEN mc.src_id IN (4, 8, 16, 17, 26, 27) THEN mc.pay_amt ELSE 0 END) AS medicaid_prof_payments,
                  SUM(CASE WHEN mc.ed_flag = 1 THEN mc.pay_amt ELSE 0 END) AS medicaid_ed_payments
             FROM {population} pop
        LEFT JOIN {lookback} lb

@@ -1,7 +1,7 @@
 Import("*")
 
 # List of (table, primary key) pairs.
-tables = [
+schema = [
     ["ri360/MEDICAID-DIM_AID_CTG_CDE", "AID_CTG_CDE", "|"],
     ["ri360/RESEARCH_V11-DLT_WAGE", "RECORD_ID", "|"],
     ["ri360/RESEARCH_V11-EOHHS_RECIP_DEMO", "RECORD_ID", "|"],
@@ -20,7 +20,7 @@ tables = [
     ["ri360/RESEARCH_V11-RIIPL_POLICE_DEMO", "None", "|"]
 ]
 
-for path, pk, delim in tables:
+for path, pk, delim in schema:
     if path.startswith("ri360"):
         name = path.partition("-")[2].replace("RIIPL_", "")
     else:
@@ -67,7 +67,7 @@ for name, table, fields in splits:
                 "#input/ri360/RESEARCH_V11-{}.csv".format(name.upper()),
                 Value(fields)],
                log_path="#output/inputs/split_{}.log".format(table))
-    env.Python(SQLTable("{}_{}".format(env.PROJECT_KEY, table)),
+    env.Python(tables[table],
                ["Load.py",
                 "#scratch/inputs/{}.csv".format(table),
                 "#schema/{}.txt".format(table),
@@ -91,7 +91,19 @@ for name, columns, dtypes in hdf5:
                log_path="#output/inputs/hdf5_{}.log".format(name))
 
 # build DIM_DATE from scratch
-env.Python(SQLTable("{}_DIM_DATE".format(env.PROJECT_KEY)),
-           "DimDate.py")
+env.Python(tables["dim_date"], "DimDate.py")
+
+# Medicaid diag_cde and proc_cde words
+env.Python(["#scratch/inputs/cde_words.csv",
+            "#scratch/inputs/cde_word_counts.mm"],
+           ["cde_words.py",
+            tables["population"],
+            tables["lookback"],
+            tables["dim_date"],
+            tables["medicaid_diag_cde"],
+            tables["medicaid_proc_cde"],
+            "#input/public/CMS29_DESC_LONG_SHORT_DX_101111u021012.csv",
+            "#input/public/icd9-sections.csv",
+            "#input/ri360/MEDICAID-DIM_PROC_CDE.csv"])
 
 # vim: syntax=python expandtab sw=4 ts=4

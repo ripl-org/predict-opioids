@@ -27,9 +27,9 @@ capture.output(s, file=out_file)
 
 # Predict on test data
 X_validate <- cbind(1, X_validate[,selected])
-coef <- rbind(1, as.matrix(model$coef)
+coef <- rbind(1, as.matrix(model$coef))
 eta <- as.matrix(X_validate) %*% as.matrix(coef)
 y_pred <- exp(eta)/(1 + exp(eta))
 y_validate <- as.factor(y_validate[,c(outcome_name)])
-print(paste0("auc: ", auc(roc(y_pred, y_validate)))
+print(paste0("auc: ", auc(roc(y_pred, y_validate))))
 write.csv(y_pred, file=pred_file)
