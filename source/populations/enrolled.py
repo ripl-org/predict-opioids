@@ -23,6 +23,15 @@ def enrolled(lookback, medicaid_enrollment, table):
         cxn.execute(sql, verbose=True)
         cxn.save_table(table, ["RIIPL_ID", "TIMESTEP"])
 
+        # Count total population of enrollees
+        print(
+            "Total Medicaid enrollees between 2006 and 2012:",
+            cxn.execute("""
+                SELECT COUNT(DISTINCT riipl_id)
+                  FROM {medicaid_enrollment}
+                 WHERE TO_NUMBER(yrmo) >= 200601 AND
+                       TO_NUMBER(yrmo) <  201201""".format(**locals())).fetchone()[0])
+
 
 if __name__ == "__main__": enrolled(*sys.argv[1:])
 
