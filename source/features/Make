@@ -54,6 +54,12 @@ Feature("Mega/demographics",
         ["population", "lookback", "mega_demo"])
 Feature("Mega/payments",
         ["population", "lookback", "mega_pay"])
+Feature("Police/arrests",
+        ["population", "lookback", "arrests"])
+Feature("Police/car_crashes",
+        ["population", "lookback", "car_crashes"])
+Feature("Police/citations",
+        ["population", "lookback", "citations"])
 
 # Manifest
 
