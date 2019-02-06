@@ -2,6 +2,7 @@ Import("*")
 
 # List of (table, primary key) pairs.
 schema = [
+    ["other/ndc-opioids", "ndc", ","],
     ["ri360/MEDICAID-DIM_AID_CTG_CDE", "AID_CTG_CDE", "|"],
     ["ri360/RESEARCH_V11-DLT_WAGE", "RECORD_ID", "|"],
     ["ri360/RESEARCH_V11-EOHHS_RECIP_DEMO", "RECORD_ID", "|"],
@@ -24,7 +25,7 @@ for path, pk, delim in schema:
     if path.startswith("ri360"):
         name = path.partition("-")[2].replace("RIIPL_", "")
     else:
-        name = path.partition("/")[2]
+        name = path.partition("/")[2].replace("-", "_")
     env.Python(SQLTable("{}_{}".format(env.PROJECT_KEY, name)),
                ["Load.py",
                 "#input/{}.csv".format(path),

@@ -42,4 +42,12 @@ env.Python("#output/populations/TestCurrentNDC.py.log",
             constants["INITIAL_RX_END"],
             "#input/public/ndc-20180523-product.txt"])
 
+### Household ###
+
+env.Python(tables["household"],
+           ["household.py",
+            tables["population"],
+            tables["lookback"],
+            tables["dhs_relations"])
+
 # vim: syntax=python expandtab sw=4 ts=4
