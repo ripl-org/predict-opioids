@@ -41,6 +41,11 @@ for feature in features:
                Value(outcome),
                "#output/models/bolasso.freq.{}.{}.csv".format(feature, outcome)],
               log_path="#output/models/postlasso.{}.{}.log".format(feature, outcome))
+        env.R("#output/models/bagged-lasso.{}.{}.y_pred.csv".format(feature, outcome),
+              ["bagged-lasso.R"] + \
+              ["#scratch/models/bolasso/gamlr.{}.{}.{}.RData".format(feature, outcome, i) 
+                for i in range(env.BOLASSO_BOOTSTRAPS)],
+              log_path="#output/models/bagged-lasso.{}.{}.log".format(feature, outcome))
 
 tensors = {
     "DHS":      ["#scratch/tensors/DHS/demographics.p",

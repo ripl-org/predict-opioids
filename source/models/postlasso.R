@@ -25,11 +25,12 @@ model <- glm.fit(x=X_train, y=y_train, family=binomial())
 s <- summary.glm(model)
 capture.output(s, file=out_file)
 
-# Predict on test data
-X_validate <- cbind(1, X_validate[,selected])
+# Predict on test data with OLS
+X_test <- cbind(1, X_test[,selected])
 coef <- rbind(1, as.matrix(model$coef))
-eta <- as.matrix(X_validate) %*% as.matrix(coef)
+eta <- as.matrix(X_test) %*% as.matrix(coef)
 y_pred <- exp(eta)/(1 + exp(eta))
-y_validate <- as.factor(y_validate[,c(outcome_name)])
-print(paste0("auc: ", auc(roc(y_pred, y_validate))))
+y_test <- as.factor(y_test[,c(outcome_name)])
+print(paste0("auc: ", auc(roc(y_pred, y_test))))
 write.csv(y_pred, file=pred_file)
+
