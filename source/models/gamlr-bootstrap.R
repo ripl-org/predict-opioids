@@ -2,7 +2,7 @@ library(AUC)
 library(gamlr)
 library(Matrix)
 
-gammas <- c(0,1,10,100,1000)
+gammas <- c(0,1,10)
 
 args <- commandArgs(trailingOnly=TRUE)
 
