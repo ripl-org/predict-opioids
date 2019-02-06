@@ -13,14 +13,7 @@ def main():
 
     sql = """
           SELECT pop.riipl_id,
-                 MAX(NVL(domestic, 0) AS arrested_domestic,
-                 MAX(NVL(juvenile, 0) AS arrested_juvenile,
-                 MAX(NVL(dui, 0))     AS arrested_dui,
-                 MAX(CASE WHEN domestic <> 1 AND
-                               juvenile <> 1 AND
-                               dui      <> 1
-                          THEN 1
-                          ELSE 0 END) AS arrested_other
+                 1 AS arrested
             FROM {population} pop
        LEFT JOIN {lookback} lb
               ON pop.riipl_id = lb.riipl_id
@@ -36,10 +29,7 @@ def main():
     features = features.fillna(0)
 
     labels = {
-        "ARRESTED_DOMESTIC" : "arrested for a domestic incident during lookback period",
-        "ARRESTED_JUVENILE" : "arrested as a juvenile during lookback period",
-        "ARRESTED_DUI"      : "arrested for a DUI during lookback period",
-        "ARRESTED_OTHER"    : "arrested for another reason during lookback period"
+        "ARRESTED": "arrested during lookback period"
     }
 
     SaveFeatures(features, out, manifest, population, labels)

@@ -14,7 +14,7 @@ def main():
     sql = """
           SELECT pop.riipl_id,   
                  SUM(cc.car_crash) AS car_crashes,
-                 SUN(cc.injured)   AS car_crash_injuries
+                 SUM(cc.injured)   AS car_crash_injuries
             FROM {population} pop
        LEFT JOIN {lookback} lb
               ON pop.riipl_id = lb.riipl_id
