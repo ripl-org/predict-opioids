@@ -1,3 +1,4 @@
+library(assertthat)
 library(AUC)
 library(Matrix)
 
@@ -19,6 +20,10 @@ selected <- beta[which(beta$freq == 100), "var"]
 print(selected)
 
 X_train <- X_train[,selected]
+
+k <- kappa(X_train, exact=TRUE)
+print(paste0("condition number (kappa): ", k))
+assert_that(k < 30)
 
 model <- glm.fit(x=X_train, y=y_train, family=binomial())
 
