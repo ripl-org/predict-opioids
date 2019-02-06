@@ -48,9 +48,9 @@ Feature("Medicaid/nmf_topics",
         constants["RANDOM_SEED"])
 Feature("Mega/addresses",
         ["population", "lookback", "mega_addr"])
-Feature("Mega/births",
-        ["population", "lookback", "mega_demo"])
 Feature("Mega/demographics",
+        ["population", "lookback", "mega_demo"])
+Feature("Mega/household",
         ["population", "lookback", "mega_demo"])
 Feature("Mega/payments",
         ["population", "lookback", "mega_pay"])
