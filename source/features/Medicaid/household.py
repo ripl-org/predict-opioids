@@ -14,7 +14,7 @@ def main():
 
     sql = """
           SELECT pop.riipl_id,
-                 SUM(no.opioid)          AS dhs_hh_opioid_rx,
+                 SUM(ABS(no.opioid))     AS dhs_hh_opioid_rx,
                  SUM(no.recovery)        AS dhs_hh_recovery_rx,
                  COUNT(o.outcome_any_dt) AS dhs_hh_outcomes
             FROM {population} pop

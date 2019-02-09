@@ -48,6 +48,6 @@ env.Python(tables["household"],
            ["household.py",
             tables["population"],
             tables["lookback"],
-            tables["dhs_relations"])
+            tables["dhs_relations"]])
 
 # vim: syntax=python expandtab sw=4 ts=4

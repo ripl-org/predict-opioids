@@ -35,6 +35,8 @@ Feature("DOC/sentences",
         ["population", "lookback", "dim_date", "doc_sentences"])
 Feature("Medicaid/enrollment",
         ["population", "lookback", "medicaid_enrollment_2", "dim_aid_ctg_cde", "eohhs_recip_demo", "eohhs_recip_x_ssn"])
+Feature("Medicaid/household",
+        ["population", "lookback", "dim_date", "household", "medicaid_pharmacy", "ndc_opioids", "outcomes_all"])
 Feature("Medicaid/payments",
         ["population", "lookback", "dim_date", "medicaid_claims", "medicaid_pharmacy"])
 Feature("Medicaid/pharmacy",

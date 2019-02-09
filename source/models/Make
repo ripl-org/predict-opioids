@@ -30,6 +30,17 @@ for feature in features:
                     for i in range(env.BOLASSO_BOOTSTRAPS)],
                    log_path="#output/models/bolasso.{}.{}.log".format(feature, outcome))
 
+# gbm interactions
+for feature in features:
+    for outcome in ["OUTCOME_ANY"]:
+        env.R("#output/models/gbm.{}.{}.RData".format(feature, outcome),
+              ["gbm.R",
+               constants["RANDOM_SEED"],
+               "#scratch/models/matrix.{}.RData".format(feature),
+               Value(outcome),
+               "#output/models/bolasso.freq.{}.{}.csv".format(feature, outcome)],
+              log_path="#output/models/gbm.{}.{}.log".format(feature, outcome))
+
 # postlasso
 for feature in features:
     for outcome in ["OUTCOME_ANY"]:
