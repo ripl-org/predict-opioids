@@ -40,6 +40,11 @@ for feature in features:
                Value(outcome),
                "#output/models/bolasso.freq.{}.{}.csv".format(feature, outcome)],
               log_path="#output/models/gbm.{}.{}.log".format(feature, outcome))
+        env.R("#output/models/gbm-interact.{}.{}.csv".format(feature, outcome),
+              ["gbm-interact.R",
+               constants["RANDOM_SEED"],
+               "#output/models/gbm.{}.{}.RData".format(feature, outcome)],
+              log_path="#output/models/gbm-interact.{}.{}.log".format(feature, outcome))
 
 # postlasso
 for feature in features:
