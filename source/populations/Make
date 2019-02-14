@@ -47,7 +47,8 @@ env.Python("#output/populations/TestCurrentNDC.py.log",
 env.Python("#output/populations/CompareOpioids.csv",
            ["CompareOpioids.py",
             "#input/other/ashp.csv",
-            "#input/other/ndc-opioids.csv"])
+            "#input/other/ndc-opioids.csv",
+            "#input/other/ndc-ingredients.csv"])
 
 ### Household ###
 
