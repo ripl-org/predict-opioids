@@ -7,6 +7,7 @@ schema = [
     ["ri360/RESEARCH_V11-DLT_WAGE", "RECORD_ID", "|"],
     ["ri360/RESEARCH_V11-EOHHS_RECIP_DEMO", "RECORD_ID", "|"],
     ["ri360/RESEARCH_V11-EOHHS_RECIP_X_SSN", "RECORD_ID", "|"],
+    ["ri360/RESEARCH_V11-RIIPL_ADDRESS", "None", "|"],
     ["ri360/RESEARCH_V11-RIIPL_ARRESTS", "None", "|"],
     ["ri360/RESEARCH_V11-RIIPL_CAR_CRASHES", "None", "|"],
     ["ri360/RESEARCH_V11-RIIPL_CITATIONS", "None", "|"],

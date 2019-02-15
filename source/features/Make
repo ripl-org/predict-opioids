@@ -48,8 +48,10 @@ Feature("Medicaid/nmf_topics",
         "#scratch/inputs/cde_words.csv",
         "#scratch/inputs/cde_word_counts.mm",
         constants["RANDOM_SEED"])
-Feature("Mega/addresses",
-        ["population", "lookback", "mega_addr"])
+Feature("Mega/census",
+        ["population", "lookback", "dim_date", "address"],
+        "#input/public/ACS_15_5YR_B17010_with_ann.csv",
+        "#input/public/ACS_15_5YR_B19013_with_ann.csv")
 Feature("Mega/demographics",
         ["population", "lookback", "mega_demo"])
 Feature("Mega/household",

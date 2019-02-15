@@ -31,20 +31,20 @@ for feature in features:
                    log_path="#output/models/bolasso.{}.{}.log".format(feature, outcome))
 
 # gbm interactions
-for feature in features:
-    for outcome in ["OUTCOME_ANY"]:
-        env.R("#output/models/gbm.{}.{}.RData".format(feature, outcome),
-              ["gbm.R",
-               constants["RANDOM_SEED"],
-               "#scratch/models/matrix.{}.RData".format(feature),
-               Value(outcome),
-               "#output/models/bolasso.freq.{}.{}.csv".format(feature, outcome)],
-              log_path="#output/models/gbm.{}.{}.log".format(feature, outcome))
-        env.R("#output/models/gbm-interact.{}.{}.csv".format(feature, outcome),
-              ["gbm-interact.R",
-               constants["RANDOM_SEED"],
-               "#output/models/gbm.{}.{}.RData".format(feature, outcome)],
-              log_path="#output/models/gbm-interact.{}.{}.log".format(feature, outcome))
+#for feature in features:
+#    for outcome in ["OUTCOME_ANY"]:
+#        env.R("#output/models/gbm.{}.{}.RData".format(feature, outcome),
+#              ["gbm.R",
+#               constants["RANDOM_SEED"],
+#               "#scratch/models/matrix.{}.RData".format(feature),
+#               Value(outcome),
+#               "#output/models/bolasso.freq.{}.{}.csv".format(feature, outcome)],
+#              log_path="#output/models/gbm.{}.{}.log".format(feature, outcome))
+#        env.R("#output/models/gbm-interact.{}.{}.csv".format(feature, outcome),
+#              ["gbm-interact.R",
+#               constants["RANDOM_SEED"],
+#               "#output/models/gbm.{}.{}.RData".format(feature, outcome)],
+#              log_path="#output/models/gbm-interact.{}.{}.log".format(feature, outcome))
 
 # postlasso
 for feature in features:

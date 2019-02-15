@@ -19,7 +19,8 @@ constants = dict((k, Value(v)) for k, v in CONSTANTS.items())
 Export("constants")
 
 # List of all tables loaded in inputs
-tables = ["arrests",
+tables = ["address",
+          "arrests",
           "car_crashes",
           "citations",
           "dhs_per",

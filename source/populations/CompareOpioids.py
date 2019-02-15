@@ -10,6 +10,9 @@ def main():
 
     ndc = pd.read_csv(ndc_opioids_path).rename(columns={"ndc": "NDC9_CODE"})
     ing = pd.read_csv(ndc_ing_path).rename(columns={"ndc": "NDC9_CODE"})
+    ing["NDC9_CODE"] = ing.NDC9_CODE.str.extract("(\d+)")
+    ing = ing[ing.NDC9_CODE.notnull()]
+    ing["NDC9_CODE"] = ing.NDC9_CODE.astype(int)
 
     merged = ndc.merge(ashp, how="outer", on="NDC9_CODE")
 
