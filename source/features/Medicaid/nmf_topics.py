@@ -13,7 +13,8 @@ from statsmodels.api import Logit
 population, outcomes_file, words_file, counts_file, seed, out, manifest = sys.argv[1:]
 seed = int(seed)
 
-ntopics = [10, 20, 40, 80, 160, 320]
+ntopics = [10, 20, 50, 100, 200, 500, 1000, 2000]
+delta = 0.001
 
 def main():
 
@@ -69,9 +70,11 @@ def main():
         y_pred = logit.predict(X_validate)
         auc = roc_auc_score(y_validate, y_pred)
         print("AUC:", auc)
-        if auc > best_auc:
+        if (auc - best_auc) > delta:
             best = i
             best_auc = auc
+        else:
+            break
     print("selected", ntopics[best], "topics")
 
     # Turn best NMF topics into features
