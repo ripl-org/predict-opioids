@@ -19,7 +19,8 @@ def main():
 
     # Load pharmacy claims
     sql = """ 
-          SELECT pop.riipl_id,
+          SELECT DISTINCT
+                 pop.riipl_id,
                  mp.ndc9_code
             FROM {population} pop
        LEFT JOIN {lookback} lb
