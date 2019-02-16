@@ -13,7 +13,7 @@ from statsmodels.api import Logit
 population, outcomes_file, words_file, counts_file, seed, out, manifest = sys.argv[1:]
 seed = int(seed)
 
-ntopics = [5, 10, 20, 40, 80, 160]
+ntopics = [10, 20, 40, 80, 160, 320]
 
 def main():
 
@@ -61,6 +61,9 @@ def main():
         nmf = NMF(n, random_state=seed).fit(counts_train)
         nmfs.append(nmf)
         X_train = pd.DataFrame(nmf.transform(counts_train))
+        m = X_train.mean()
+        s = X_train.std()
+        X_train = X_train.subtract(m).divide(s)
         X_train["intercept"] = 1
         logit = Logit(y_train, X_train).fit(maxiter=1000, method="cg")
         print(logit.summary())

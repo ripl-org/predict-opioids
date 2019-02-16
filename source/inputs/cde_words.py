@@ -19,6 +19,12 @@ stopwords = frozenset(["of", "the", "and", "not", "no", "with", "without",
                        "associated", "complete", "documentation", "requiring", "specify",
                        "minimum", "minimal", "result", "specified", "based", "client",
                        "except", "thre", "nonspecific", "time", "worker", "measu", "type", 
+                       "includes", "including", "excluding", "state", "condition", "conditions",
+                       "elsewhere", "may", "additional", "that", "req", "services", "state",
+                       "mult", "sectio", "who", "cock", "unknown", "need", "reviewfor", "firs",
+                       "month", "months", "year", "years", "contract", "whether",
+                       "contents", "beyond", "provided", "basis", "separately",
+                       "first", "second", "third", "fourth", "fifth", "sixth",
                        "one", "two", "three", "four", "five", "six",
                        "seven", "eight", "nine", "ten", "eleven", "twelve"] + \
                       [chr(i) for i in range(97, 123)])
