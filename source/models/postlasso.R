@@ -15,15 +15,15 @@ pred_file    <- args[6]
 load(matrix_file, verbose=TRUE)
 y_train <- y_train[,c(outcome_name)]
 
-beta <- read.csv(beta_file, sep="\t")
-selected <- beta[which(beta$freq == 100), "var"]
+beta <- read.csv(beta_file, sep="\t", stringsAsFactors=FALSE)
+selected <- beta[which(beta$freq > 90), "var"]
 print(selected)
 
 X_train <- X_train[,selected]
 
 k <- kappa(X_train, exact=TRUE)
 print(paste0("condition number (kappa): ", k))
-assert_that(k < 30)
+assert_that(k < 50)
 
 model <- glm.fit(x=X_train, y=y_train, family=binomial())
 

@@ -8,9 +8,17 @@ icd9_file1, icd9_file2, proc_file, words_file, counts_file = sys.argv[1:]
 
 stopwords = frozenset(["of", "the", "and", "not", "no", "with", "without",
                        "or", "for", "to", "by", "in", "each", "per", "so",
-                       "than", "eg", "on", "any", "andor", "be", "ie",
+                       "than", "eg", "on", "any", "be", "ie", "against",
                        "mg", "from", "as", "at", "cm", "up", "cc", "hg",
                        "but", "an", "sq", "into", "unit", "all", "if",
+                       "which", "these", "this", "must", "include", "following",
+                       "minutes", "hour", "hours", "approximately", "more", "plus",
+                       "requires", "each", "total", "partial", "other", "mention",
+                       "unspecified", "fee", "rate", "only", "class", "use", "grade",
+                       "used", "most", "due", "medical", "diem", "minute", "case",
+                       "associated", "complete", "documentation", "requiring", "specify",
+                       "minimum", "minimal", "result", "specified", "based", "client",
+                       "except", "thre", "nonspecific", "time", "worker", "measu", "type", 
                        "one", "two", "three", "four", "five", "six",
                        "seven", "eight", "nine", "ten", "eleven", "twelve"] + \
                       [chr(i) for i in range(97, 123)])
@@ -24,13 +32,13 @@ def main():
     proc = pd.read_csv(proc_file, sep="|", index_col="PROC_CDE").rename(columns={"DESCRIPTION": "DESC"})
 
     # Remove non-word characters and convert to lowercase
-    icd9["DESC"] = icd9.DESC.str.lower().str.replace("[-/]", " ").str.replace("[^a-z ]", "").str.replace("  +", "")
-    proc["DESC"] = proc.DESC.str.lower().str.replace("[-/]", " ").str.replace("[^a-z ]", "").str.replace("  +", "")
+    icd9["DESC"] = icd9.DESC.str.lower().str.replace("[-/]", " ").str.replace("[^a-z ]", "")
+    proc["DESC"] = proc.DESC.str.lower().str.replace("[-/]", " ").str.replace("[^a-z ]", "")
 
     # Split word lists into a row per word
-    icd9 = pd.DataFrame(icd9.DESC.str.split(" ").tolist(), index=icd9.index).stack()
+    icd9 = pd.DataFrame(icd9.DESC.str.split().tolist(), index=icd9.index).stack()
     icd9 = icd9.reset_index()[["DIAG_CDE", 0]].rename(columns={0: "WORD"})
-    proc = pd.DataFrame(proc.DESC.str.split(" ").tolist(), index=proc.index).stack()
+    proc = pd.DataFrame(proc.DESC.str.split().tolist(), index=proc.index).stack()
     proc = proc.reset_index()[["PROC_CDE", 0]].rename(columns={0: "WORD"})
 
     # Remove stopwords

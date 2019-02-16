@@ -22,11 +22,11 @@ def main():
                       usecols=["Id2", "Estimate; Total:", "Estimate; Income in the past 12 months below poverty level:"])
     fpl.columns = ["GEO_ID", "TOTAL", "FPL"]
     fpl["BLKGRP_BELOWFPL"] = fpl.FPL / fpl.TOTAL
-    fpl = fpl[["BLKGRP_BELOWFPL"]]
+    fpl = fpl[["GEO_ID", "BLKGRP_BELOWFPL"]]
 
     sql = """
           SELECT pop.riipl_id,
-                 STATS_MODE(a.state || a.county || a.trct || a.blkgrp) AS geo_id
+                 TO_NUMBER(STATS_MODE(a.state || a.county || a.trct || a.blkgrp)) AS geo_id
             FROM {population} pop
        LEFT JOIN {lookback} lb
               ON pop.riipl_id = lb.riipl_id
@@ -35,20 +35,21 @@ def main():
       INNER JOIN {address} a
               ON pop.riipl_id = a.riipl_id AND
                  dd.date_dt = a.obs_date
-        GROUP BY lb.yrmo
+        GROUP BY pop.riipl_id, lb.yrmo
           """.format(**globals())
 
     with Connection() as cxn:
         values = pd.read_sql(sql, cxn._connection)
 
     values = values.merge(income, how="left", on="GEO_ID")\
-                   .merge(fpl, how="left", on="GEO_ID")
+                   .merge(fpl, how="left", on="GEO_ID")\
+                   .set_index(index)
 
+    # Take the mean values over the lookback period.
     features = features.join(values.groupby(index).mean()[["BLKGRP_MEDIANINCOME", "BLKGRP_BELOWFPL"]])
 
     # Fill missing values with means
-    missing = features.BLKGRP_MEDIANINCOME.isnull()
-    assert missing.equals(features.BLKGRP_BELOWFPL.isnull())
+    missing = features.BLKGRP_MEDIANINCOME.isnull() & features.BLKGRP_BELOWFPL.isnull()
     means = features.mean(axis=1)
     print("filling missing values with means:", means)
     features = features.fillna(means, axis=1)
@@ -57,7 +58,7 @@ def main():
     labels = {
         "BLKGRP_MEDIANINCOME" : "block group's median annual household income (2015 dollars)",
         "BLKGRP_BELOWFPL"     : "share of block group's residents with annual income below poverty level",
-        "BLKGRP_MISSING"      : "block group is missing"
+        "BLKGRP_MISSING"      : "block group demographics are missing"
     }
 
     SaveFeatures(features, outfile, manifest, population, labels, bool_features=["BLKGRP_MISSING"])

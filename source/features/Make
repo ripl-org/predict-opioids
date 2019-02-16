@@ -50,8 +50,8 @@ Feature("Medicaid/nmf_topics",
         constants["RANDOM_SEED"])
 Feature("Mega/census",
         ["population", "lookback", "dim_date", "address"],
-        "#input/public/ACS_15_5YR_B17010_with_ann.csv",
-        "#input/public/ACS_15_5YR_B19013_with_ann.csv")
+        "#input/public/ACS_15_5YR_B19013_with_ann.csv",
+        "#input/public/ACS_15_5YR_B17010_with_ann.csv")
 Feature("Mega/demographics",
         ["population", "lookback", "mega_demo"])
 Feature("Mega/household",
