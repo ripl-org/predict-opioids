@@ -19,8 +19,7 @@ def main():
 
     # Load pharmacy claims
     sql = """ 
-          SELECT DISTINCT
-                 pop.riipl_id,
+          SELECT pop.riipl_id,
                  mp.ndc9_code
             FROM {population} pop
        LEFT JOIN {lookback} lb
@@ -44,7 +43,7 @@ def main():
 
     # Pivot ASHP categories
     columns = ["RIIPL_ID", "FEATURE"]
-    grouped = values[columns].groupby(columns).size().reset_index().rename(columns={0: "VALUE"})
+    grouped = values[columns].groupby(columns).size().reset_index().rename({0: "VALUE"})
 
     labels = {"ASHP_MISSING": "No mapping from NDC code to ASHP classification"}
     for _, f, desc in ashp_desc.itertuples():
@@ -80,7 +79,7 @@ def main():
             del features[var]
         labels[merged] = " and ".join(map(labels.get, group))
 
-    SaveFeatures(features, out, manifest, population, labels)
+    SaveFeatures(features, out, manifest, population, labels, bool_features=list(labels))
 
 
 # EXECUTE

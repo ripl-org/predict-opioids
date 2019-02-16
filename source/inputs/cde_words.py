@@ -24,6 +24,8 @@ stopwords = frozenset(["of", "the", "and", "not", "no", "with", "without",
                        "mult", "sectio", "who", "cock", "unknown", "need", "reviewfor", "firs",
                        "month", "months", "year", "years", "contract", "whether",
                        "contents", "beyond", "provided", "basis", "separately",
+                       "stated", "medi", "patient", "patiaent", "adultpediatric",
+                       "least", "day", "days", 
                        "first", "second", "third", "fourth", "fifth", "sixth",
                        "one", "two", "three", "four", "five", "six",
                        "seven", "eight", "nine", "ten", "eleven", "twelve"] + \
