@@ -61,9 +61,6 @@ def main():
         nmf = NMF(n, random_state=seed).fit(counts_train)
         nmfs.append(nmf)
         X_train = pd.DataFrame(nmf.transform(counts_train))
-        m = X_train.mean()
-        s = X_train.std()
-        X_train = X_train.subtract(m).divide(s)
         X_train["intercept"] = 1
         logit = Logit(y_train, X_train).fit(maxiter=1000, method="cg")
         print(logit.summary())
