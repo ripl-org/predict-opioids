@@ -50,9 +50,9 @@ def main():
 
     # Fill missing values with means
     missing = features.BLKGRP_MEDIANINCOME.isnull() & features.BLKGRP_BELOWFPL.isnull()
-    means = features.mean(axis=1)
+    means = features.mean()
     print("filling missing values with means:", means)
-    features = features.fillna(means, axis=1)
+    features = features.fillna(means)
     features["BLKGRP_MISSING"] = missing.astype(int)
 
     labels = {
