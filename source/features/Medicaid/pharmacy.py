@@ -43,7 +43,8 @@ def main():
 
     # Pivot ASHP categories
     columns = ["RIIPL_ID", "FEATURE"]
-    grouped = values[columns].groupby(columns).size().reset_index().rename({0: "VALUE"})
+    grouped = values[columns].groupby(columns).size().reset_index()
+    grouped["VALUE"] = 1
 
     labels = {"ASHP_MISSING": "No mapping from NDC code to ASHP classification"}
     for _, f, desc in ashp_desc.itertuples():
@@ -79,7 +80,7 @@ def main():
             del features[var]
         labels[merged] = " and ".join(map(labels.get, group))
 
-    SaveFeatures(features, out, manifest, population, labels, bool_features=list(labels))
+    SaveFeatures(features, out, manifest, population, labels, bool_features)
 
 
 # EXECUTE

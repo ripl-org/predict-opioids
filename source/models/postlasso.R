@@ -23,7 +23,7 @@ X_train <- X_train[,selected]
 
 k <- kappa(X_train, exact=TRUE)
 print(paste0("condition number (kappa): ", k))
-assert_that(k < 50)
+assert_that(k < 100)
 
 model <- glm.fit(x=X_train, y=y_train, family=binomial())
 

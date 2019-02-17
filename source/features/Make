@@ -5,7 +5,6 @@ manifests = []
 
 no_norm = frozenset(("Medicaid/enrollment",
                      "Medicaid/household",
-                     "Medicaid/nmf_topics",
                      "Medicaid/pharmacy",
                      "Police/car_crashes"))
 
