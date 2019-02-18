@@ -62,6 +62,18 @@ for feature in features:
               ["#scratch/models/bolasso/gamlr.{}.{}.{}.RData".format(feature, outcome, i) 
                 for i in range(env.BOLASSO_BOOTSTRAPS)],
               log_path="#output/models/bagged-lasso.{}.{}.log".format(feature, outcome))
+        env.Python("#output/models/postlasso.{}.{}.accuracy.csv".format(feature, outcome),
+                   ["accuracy.py",
+                    "#output/models/postlasso.{}.{}.y_pred.csv".format(feature, outcome),
+                    "#scratch/outcomes/{}.csv".format(outcome),
+                    Value(outcome)],
+                   log_path="#output/models/postlasso.{}.{}.accuracy.log".format(feature, outcome))
+        env.Python("#output/models/bagged-lasso.{}.{}.accuracy.csv".format(feature, outcome),
+                   ["accuracy.py",
+                    "#output/models/bagged-lasso.{}.{}.y_pred.csv".format(feature, outcome),
+                    "#scratch/outcomes/{}.csv".format(outcome),
+                    Value(outcome)],
+                   log_path="#output/models/bagged-lasso.{}.{}.accuracy.log".format(feature, outcome))
 
 tensors = {
     "DHS":      ["#scratch/tensors/DHS/demographics.p",
@@ -94,24 +106,30 @@ for tensor in tensors:
                log_path="#output/models/tensor.{}.log".format(tensor))
 
 # neural net
-#for tensor in tensors:
-#    for outcome in outcomes:
-#        env.Python(["#scratch/models/lstm.{}.{}.h5".format(tensor, outcome),
-#                    "#scratch/models/lstm.{}.{}.png".format(tensor, outcome)],
-#                   ["lstm.py",
-#                    constants["RANDOM_SEED"],
-#                    "#scratch/populations/InitialRX.csv",
-#                    "#scratch/outcomes/{}.csv".format(outcome),
-#                    Value(outcome),
-#                    "#scratch/models/tensor.{}.p".format(tensor)],
-#                   log_path="#output/models/lstm.{}.{}.log".format(tensor, outcome))
-#        env.Python(["#output/models/lstm.{}.{}.y_pred.csv".format(tensor, outcome)],
-#                   ["lstm_prediction.py",
-#                    "#scratch/populations/InitialRX.csv",
-#                    "#scratch/outcomes/{}.csv".format(outcome),
-#                    Value(outcome),
-#                    "#scratch/models/tensor.{}.p".format(tensor),
-#                    "#scratch/models/lstm.{}.{}.h5".format(tensor, outcome)],
-#                   log_path="#output/models/lstm_prediction.{}.{}.log".format(tensor, outcome))
-#
+for tensor in tensors:
+    for outcome in ["OUTCOME_ANY"]:
+        env.Python(["#scratch/models/lstm.{}.{}.h5".format(tensor, outcome),
+                    "#scratch/models/lstm.{}.{}.png".format(tensor, outcome)],
+                   ["lstm.py",
+                    constants["RANDOM_SEED"],
+                    "#scratch/populations/InitialRX.csv",
+                    "#scratch/outcomes/{}.csv".format(outcome),
+                    Value(outcome),
+                    "#scratch/models/tensor.{}.p".format(tensor)],
+                   log_path="#output/models/lstm.{}.{}.log".format(tensor, outcome))
+        env.Python(["#output/models/lstm.{}.{}.y_pred.csv".format(tensor, outcome)],
+                   ["lstm_prediction.py",
+                    "#scratch/populations/InitialRX.csv",
+                    "#scratch/outcomes/{}.csv".format(outcome),
+                    Value(outcome),
+                    "#scratch/models/tensor.{}.p".format(tensor),
+                    "#scratch/models/lstm.{}.{}.h5".format(tensor, outcome)],
+                   log_path="#output/models/lstm_prediction.{}.{}.log".format(tensor, outcome))
+        env.Python("#output/models/lstm.{}.{}.accuracy.csv".format(tensor, outcome),
+                   ["accuracy.py",
+                    "#output/models/lstm.{}.{}.y_pred.csv".format(tensor, outcome),
+                    "#scratch/outcomes/{}.csv".format(outcome),
+                    Value(outcome)],
+                   log_path="#output/models/lstm.{}.{}.accuracy.log".format(tensor, outcome))
+
 # vim: syntax=python expandtab sw=4 ts=4
