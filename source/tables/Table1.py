@@ -19,18 +19,17 @@ def bootstrap(data, N, statistic, seed):
     ci_upper = replicates[int(0.975 * N)]
     return statistic(data), ci_lower, ci_upper
 
-for y_pred_file, manifest_file in zip(infiles[::2], infiles[1::2]):
+for y_pred_file in infiles:
     auc, ci_lower, ci_upper = bootstrap(pd.read_csv(y_pred_file),
                                         n_bootstrap,
                                         lambda df: roc_auc_score(df.y_test, df.y_pred),
                                         seed)
-    out.append((os.path.basename(y_pred_file).split(".")[1],
-                str(len(pd.read_csv(manifest_file))),
+    out.append((os.path.basename(y_pred_file).split(".")[0],
                 "{:.3f}".format(auc),
                 "({:.3f}-{:.3f})".format(ci_lower, ci_upper)))
 
 with open(outfile, "w") as f:
-    print("\t".join(("Agencies/Programs", "# Features", "AUC", "95% C.I.")), file=f)
+    print("\t".join(("Model", "AUC", "95% C.I.")), file=f)
     for row in out:
         print("\t".join(row), file=f)
 
