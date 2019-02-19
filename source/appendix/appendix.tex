@@ -3,11 +3,15 @@
 \usepackage[scaled]{helvet}
 \renewcommand\familydefault{\sfdefault} 
 \usepackage[T1]{fontenc}
+\usepackage{endnotes}
 \usepackage{graphicx}
+\input{references}
 
 \begin{document}
 
-{\huge Appendix}
+\begin{center}
+\huge Appendix
+\end{center}
 
 \section{Experimental Design}
 
@@ -19,7 +23,7 @@ Although our data span the years 2001 to 2017, we construct a panel of individua
 
 \section{Opioid Prescriptions}
 
-To define our panel, we first establish which pharmacy claims correspond to opioid prescriptions. The primary identifier for the dispensed drug is a standardized 11-digit National Drug Code (NDC) from the U.S. Food and Drug Administration's NDC Directory (24). This directory is only available as a current snapshot, and because our claims data start in 2001, there are many unmapped NDCs to the current directory. Out of approximately 14.8 million pharmacy claims between 2006 and 2012, only 66.8 percent join to the current directory. Therefore, we construct a historical NDC directory using a data mining framework that downloads and collates all available Internet Archive snapshots of the FDA's NDC website since 2000 (25). This historical directory also includes full ingredient lists for each NDC, standardized to milligrams. Using this improved directory, 88.1 percent of pharmacy claims between 2006 and 2012 map to an NDC entry. 
+To define our panel, we first establish which pharmacy claims correspond to opioid prescriptions. The primary identifier for the dispensed drug is a standardized 11-digit National Drug Code (NDC) from the U.S. Food and Drug Administration's NDC Directory.\endnote{\refndc} This directory is only available as a current snapshot, and because our claims data start in 2001, there are many unmapped NDCs to the current directory. Out of approximately 14.8 million pharmacy claims between 2006 and 2012, only 66.8 percent join to the current directory. Therefore, we construct a historical NDC directory using a data mining framework that downloads and collates all available Internet Archive snapshots of the FDA's NDC website since 2000 (25). This historical directory also includes full ingredient lists for each NDC, standardized to milligrams. Using this improved directory, 88.1 percent of pharmacy claims between 2006 and 2012 map to an NDC entry. 
 
 We define an opioid prescription as any claim for a drug containing an opioid ingredient at or above the recommended starting dose when initiating opioid therapy for chronic pain management, as established in Washington State's 2015 prescribing guideline (26) and further cited in the Centers for Disease Control's 2016 prescribing guideline (27). Table S2 summarizes these ingredients and the minimum amounts we use to define an opioid drug. Of the 4,359 drugs containing one of these ingredients, 4,175 meet the minimum threshold amount and appear in 3.9 percent of claims.
 
@@ -49,7 +53,7 @@ The DLT tensor includes 31 features for indicators for sector of work derived fr
 
 The DOC tensor includes 16 features for demographics (age and indicators for sex, race, Spanish as a primary language), and indicators for charges, seven categories of sentencing, and commitments and releases from prison.
 
-The Medicaid tensor includes 928 features for demographics (age and indicators for sex, race, and Spanish or Portuguese as a primary language); indicators for eligibility categories, plan type, and payer codes at each month of enrollment; number of claims and total bill and payment amounts for all claims and for Emergency Department claims; the number of prescriptions in each of the 141 second-level categories from the AHFS Pharmacologic/Therapeutic Classification ; and indicators for ICD-9 diagnoses codes and HCPCS procedure codes for all codes that are correlated >0.02 with any adverse outcome in the training population.
+The Medicaid tensor includes 928 features for demographics (age and indicators for sex, race, and Spanish or Portuguese as a primary language); indicators for eligibility categories, plan type, and payer codes at each month of enrollment; number of claims and total bill and payment amounts for all claims and for Emergency Department claims; the number of prescriptions in each of the 141 second-level categories from the AHFS Pharmacologic/Therapeutic Classification;\endnote{\refashp} and indicators for ICD-9 diagnoses codes and HCPCS procedure codes for all codes that are correlated >0.02 with any adverse outcome in the training population.
 
 The police tensor includes 42 features for demographics (age and indicators for sex and officer-observed race); indicators for all arrests, DUI arrests, and domestic-offense arrests; the number of car crashes involved and injured in; the number of and total fines for citations; and the spatio-temporal intensity of calls for service in the individual's home Census block group for 29 categories of calls.
 
@@ -65,6 +69,8 @@ To obtain predictions of adverse outcomes after the initial prescription, we tra
 
 The neural networks are optimized to minimize the binary cross-entropy, also known as log-loss, on the training data. We use the Adam optimization algorithm (34), training with a batch size of 32. We tune the model on a hold-out validation set by allowing the neural network to train for as many epochs as needed until the area under the receiver-operator curve (AUC) from predictions on the validation set do not improve by 0.001. We report the AUC from predictions on the testing set in Table 1 (for the ``any" outcome) and in Table S4 (for each individual outcome).
 
-\section*{References}
+\section*{Notes}
+
+\theendnotes
 
 \end{document}

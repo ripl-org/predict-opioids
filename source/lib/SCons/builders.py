@@ -204,7 +204,7 @@ def build_latex(target, source, env):
 
     ENV["SCONS_LOG_PATH"] = get_log_path(source[0], env)
 
-    command = ["pdflatex", "--jobname", os.path.splitext(source[0])[0], os.path.splitext(target[0])[0]]
+    command = ["pdflatex", "--jobname=" + os.path.splitext(target[0])[0], os.path.splitext(source[0])[0]]
     result = spawn(shell, escape, command[0], command, ENV)
     if result:
         msg = "Error %s" % result
