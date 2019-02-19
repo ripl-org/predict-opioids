@@ -35,7 +35,7 @@ X_test <- cbind(1, X_test[,selected])
 coef <- rbind(1, as.matrix(model$coef))
 eta <- as.matrix(X_test) %*% as.matrix(coef)
 y_pred <- exp(eta)/(1 + exp(eta))
-y_test <- as.factor(y_test[,c(outcome_name)])
-print(paste0("auc: ", auc(roc(y_pred, y_test))))
-write.csv(y_pred, file=pred_file)
+y_test <- y_test[,c(outcome_name)]
+print(paste0("auc: ", auc(roc(y_pred, as.factor(y_test)))))
+write.csv(data.frame(y_pred=y_pred, y_test=y_test), file=pred_file, row.names=FALSE)
 

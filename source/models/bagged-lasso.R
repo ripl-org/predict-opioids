@@ -17,7 +17,7 @@ for (model_file in model_files) {
 }
 
 y_pred_avg <- y_pred_avg / (length(model_files) + 1)
-y_test <- as.factor(y_test)
+colnames(y_pred_avg) <- "y_pred"
 
-print(paste0("auc: ", auc(roc(y_pred_avg, y_test))))
-write.csv(y_pred_avg, file=out_file)
+print(paste0("auc: ", auc(roc(y_pred_avg, as.factor(y_test)))))
+write.csv(data.frame(y_pred=y_pred_avg, y_test=y_test), file=out_file, row.names=FALSE)

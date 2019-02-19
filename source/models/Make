@@ -64,15 +64,11 @@ for feature in features:
               log_path="#output/models/bagged-lasso.{}.{}.log".format(feature, outcome))
         env.Python("#output/models/postlasso.{}.{}.accuracy.csv".format(feature, outcome),
                    ["accuracy.py",
-                    "#output/models/postlasso.{}.{}.y_pred.csv".format(feature, outcome),
-                    "#scratch/outcomes/{}.csv".format(outcome),
-                    Value(outcome)],
+                    "#output/models/postlasso.{}.{}.y_pred.csv".format(feature, outcome)],
                    log_path="#output/models/postlasso.{}.{}.accuracy.log".format(feature, outcome))
         env.Python("#output/models/bagged-lasso.{}.{}.accuracy.csv".format(feature, outcome),
                    ["accuracy.py",
-                    "#output/models/bagged-lasso.{}.{}.y_pred.csv".format(feature, outcome),
-                    "#scratch/outcomes/{}.csv".format(outcome),
-                    Value(outcome)],
+                    "#output/models/bagged-lasso.{}.{}.y_pred.csv".format(feature, outcome)],
                    log_path="#output/models/bagged-lasso.{}.{}.accuracy.log".format(feature, outcome))
 
 tensors = {
@@ -127,9 +123,7 @@ for tensor in tensors:
                    log_path="#output/models/lstm_prediction.{}.{}.log".format(tensor, outcome))
         env.Python("#output/models/lstm.{}.{}.accuracy.csv".format(tensor, outcome),
                    ["accuracy.py",
-                    "#output/models/lstm.{}.{}.y_pred.csv".format(tensor, outcome),
-                    "#scratch/outcomes/{}.csv".format(outcome),
-                    Value(outcome)],
+                    "#output/models/lstm.{}.{}.y_pred.csv".format(tensor, outcome)],
                    log_path="#output/models/lstm.{}.{}.accuracy.log".format(tensor, outcome))
 
 # vim: syntax=python expandtab sw=4 ts=4

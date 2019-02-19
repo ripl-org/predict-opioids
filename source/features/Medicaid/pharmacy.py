@@ -80,7 +80,7 @@ def main():
             del features[var]
         labels[merged] = " and ".join(map(labels.get, group))
 
-    SaveFeatures(features, out, manifest, population, labels, bool_features)
+    SaveFeatures(features, out, manifest, population, labels, bool_features=list(labels))
 
 
 # EXECUTE
