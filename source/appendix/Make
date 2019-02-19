@@ -1,0 +1,7 @@
+Import("*")
+
+env.Command("#output/appendix.pdf",
+            "#source/appendix/appendix.tex",
+            "pdflatex --jobname=${TARGET%.pdf} $SOURCE")
+
+# vim: syntax=python expandtab sw=4 ts=4

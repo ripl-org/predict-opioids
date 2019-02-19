@@ -78,4 +78,7 @@ env.SConscript("source/figures/Make")
 # Tables
 env.SConscript("source/tables/Make")
 
+# Appendix
+env.SConscript("source/appendix/Make")
+
 # vim: syntax=python expandtab sw=4 ts=4
