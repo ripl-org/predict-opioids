@@ -25,6 +25,6 @@ bolasso.to_csv(matrix_file)
 
 bolasso["freq"] = bolasso.sum(axis=1)
 bolasso = bolasso.join(manifest).sort_values("freq", ascending=False).reset_index()
-bolasso[["freq", "var", "desc"]].to_csv(csv_file, sep="\t", index=False)
+bolasso[["freq", "var", "desc"]].to_csv(csv_file, index=False)
 
 # vim: expandtab sw=4 ts=4

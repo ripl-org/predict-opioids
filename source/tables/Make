@@ -26,6 +26,11 @@ env.R("#output/tables/TableA3.tex",
        "#scratch/features/DLT/wages.csv",
        "#input/public/ACS_15_5YR_B17010_with_ann.csv"])
 
+# Table A4 - BOLASSO selected varibales
+env.Python("#output/tables/TableA4.tex",
+           ["TableA4.py",
+            "#output/models/bolasso.freq.all.OUTCOME_ANY.csv"])
+
 # Table A6 - neural net AUCs
 tensors = ["DHS", "DLT", "DOC", "Medicaid", "Police", "all"]
 env.Python("#output/tables/TableA6.tex",

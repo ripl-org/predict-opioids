@@ -27,10 +27,19 @@ for y_pred_file in infiles:
                                         seed)
     cells.append("{:.3f} ({:.3f}-{:.3f})".format(auc, ci_lower, ci_upper))
 
+labels = {
+    "OUTCOME_ANY": "Any",
+    "OUTCOME_DEPENDENCE": "Dependence",
+    "OUTCOME_ABUSE": "Abuse",
+    "OUTCOME_POISONING_RX": "Prescription-Opioid Poisoning",
+    "OUTCOME_POISONING_HEROIN": "Heroin Poisoning",
+    "OUTCOME_TREATMENT": "Treatment"
+}
+
 N = len(outcomes)
 with open(outfile, "w") as f:
     print(r"\begin{tabular}{lllllll}", file=f)
-    print(r" & \em", r" & \em ".join(outcomes), r"\\[0.5em]", file=f)
+    print(r" & \em", r" & \em ".join(labels[outcomes]), r"\\[0.5em]", file=f)
     for i, tensor in enumerate(tensors):
         print(r"\textbf{" + tensor + "} &", " & ".join(cells[i*N:(i+1)*N]), r"\\", file=f)
     print(r"\end{tabular}", file=f)
