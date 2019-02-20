@@ -96,7 +96,7 @@ pop <- demo %>%
        rbind(census %>%
              select(RIIPL_ID, BLKGRP_BELOWFPL) %>%
              melt(id.vars=c("RIIPL_ID")) %>%
-             mutate(value=factor(case_when(value >= belowfpl75 ~ paste("At least", str_replace(percent(belowfpl75), "%", "\\%")),
+             mutate(value=factor(case_when(value >= belowfpl75 ~ paste("At least", percent(belowfpl75)),
                                            is.na(value) ~ "NA",
                                            TRUE ~ "Otherwise")),
                     inner_rank=case_when(value == "NA" ~ 3,
@@ -169,14 +169,18 @@ names(stats_table) <- c("rank", "variable", "inner_rank", "value", "n_negative",
 stats_table <- stats_table %>%
                mutate(n=n_positive + n_negative,
                       p_positive=n_positive / n,
-                      pct_positive=str_replace(percent(p_positive), "%", "\\%")) %>%
+                      pct_positive=percent(p_positive)) %>%
                group_by(rank) %>%
                mutate(rnum=1:n(),
-                      variable=ifelse(rnum == 1, paste0("\textbf{", variable, "}"), "")) %>%
+                      variable=ifelse(rnum == 1, paste0("\\textbf{", variable, "}"), "")) %>%
                ungroup() %>%
                select(variable, value, n, pct_positive)
 
+stats_table$value <- str_replace(stats_table$value, "%", " percent")
+stats_table$pct_positive <- str_replace(stats_table$pct_positive, "%", "")
+
 write("\\begin{tabular}{llrr}", file=out_path)
+write("\\em Variable & \\em Value & \\em N & \\em % Outcome \\\\[0.5em]", file=out_path, append=TRUE)
 write.table(stats_table, file=out_path, append=TRUE,
-            sep=" & ", row.names=FALSE, col.names=FALSE, na="", quote=FALSE, eol=" \\\\\n")
+            sep=" & ", row.names=FALSE, col.names=FALSE, na="", quote=FALSE, eol="\\% \\\\\n")
 write("\\end{tabular}", file=out_path, append=TRUE)

@@ -21,9 +21,9 @@ env.R("#output/figures/Figure2.emf",
        "#scratch/features/incarceration.csv",
        "#scratch/features/enrollment.csv"])
 
-# Figure S1
-env.R("#output/figures/FigureS1.emf",
-      ["FigureS1.R",
+# Figure A1
+env.R("#output/figures/FigureA1.pdf",
+      ["FigureA1.R",
        "#scratch/outcomes/all.csv"])
 
 # Figure S2

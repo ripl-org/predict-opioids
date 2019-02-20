@@ -3,6 +3,7 @@ Import("*")
 env.Latex("#output/appendix.pdf",
           ["#source/appendix/appendix.tex",
            "#source/appendix/references.tex",
-           "#output/tables/TableA3.tex"])
+           "#output/tables/TableA3.tex",
+           "#output/figures/FigureA1.pdf"])
 
 # vim: syntax=python expandtab sw=4 ts=4
