@@ -180,7 +180,7 @@ stats_table$value <- str_replace(stats_table$value, "%", " percent")
 stats_table$pct_positive <- str_replace(stats_table$pct_positive, "%", "")
 
 write("\\begin{tabular}{llrr}", file=out_path)
-write("\\em Variable & \\em Value & \\em N & \\em % Outcome \\\\[0.5em]", file=out_path, append=TRUE)
+write("\\em Variable & \\em Value & \\em N & \\em \\% Outcome \\\\[0.5em]", file=out_path, append=TRUE)
 write.table(stats_table, file=out_path, append=TRUE,
             sep=" & ", row.names=FALSE, col.names=FALSE, na="", quote=FALSE, eol="\\% \\\\\n")
 write("\\end{tabular}", file=out_path, append=TRUE)

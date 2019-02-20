@@ -29,8 +29,10 @@ for y_pred_file in infiles:
 
 N = len(outcomes)
 with open(outfile, "w") as f:
-    print("\t".join(["Agencies/Programs"] + outcomes), file=f)
+    print(r"\begin{tabular}{lllllll}", file=f)
+    print(r" & \em", r" & \em ".join(outcomes), r"\\[0.5em]", file=f)
     for i, tensor in enumerate(tensors):
-        print("\t".join([tensor] + cells[i*N:(i+1)*N]), file=f)
+        print(r"\textbf{" + tensor + "} &", " & ".join(cells[i*N:(i+1)*N]), r"\\", file=f)
+    print(r"\end{tabular}", file=f)
 
 # vim: syntax=python expandtab sw=4 ts=4
