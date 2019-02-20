@@ -47,7 +47,7 @@ pop <- demo %>%
                                      value <  18 ~ "<18",
                                      value <= 45 ~ "18-45",
                                      value <= 60 ~ "45-60",
-                                     TRUE ~ "65+")),
+                                     TRUE ~ ">60")),
               inner_rank=1,
               variable="Age",
               rank=1) %>%
