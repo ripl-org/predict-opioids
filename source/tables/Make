@@ -16,7 +16,7 @@ env.Python(["#scratch/tables/demographics.csv",
             tables["population"],
             tables["dim_date"],
             tables["mega_demo"]])
-env.R("#output/tables/TableA3.tsv",
+env.R("#output/tables/TableA3.tex",
       ["TableA3.R",
        "#scratch/outcomes/all.csv",
        "#scratch/tables/demographics.csv",

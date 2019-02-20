@@ -6,6 +6,7 @@
 \usepackage[scaled]{helvet}
 \renewcommand\familydefault{\sfdefault} 
 \usepackage[T1]{fontenc}
+\usepackage{textcomp}
 
 % Hyperlinks
 \usepackage{hyperref}
@@ -19,18 +20,11 @@
 \usepackage{endnotes}
 \renewcommand{\makeenmark}{\textsuperscript{\theenmark}}
 \makeatletter
-\def\enoteformat{%
-  \rightskip\z@ \leftskip\z@ \parindent=1.8em
-  \leavevmode{\setbox\z@=\lastbox}\llap{\theenmark.\enskip}%
-}
+\def\enoteformat{\textsuperscript{\theenmark}}
 \makeatother
 
-% Tables
-\usepackage{siunitx}
-
 % Paragraphs
-\setlength{\parindent}{0}
-\setlength{\parskip}{1em}
+\usepackage[parfill]{parskip}
 
 % Import references
 \input{source/appendix/references}
@@ -61,7 +55,7 @@ Additionally, we define a recovery prescription as any NDC containing one of fou
 
 For each individual in our panel, we examine all of the Medicaid claims following their initial opioid prescription to construct indicator variables for four types of adverse outcomes: opioid dependence, opioid abuse, prescription-opioid poisoning and heroin poisoning. We include heroin poisoning as an outcome given the increasing use of heroin among those who abuse opioids, and the high proportion (greater than 80 percent) of joint heroin-prescription-opioid users who abused opioids prior to using heroin.\endnote{\refjones}
 
-We determine these outcomes from the claim's ICD (International Classification of Diseases) diagnosis codes, which are used by medical professionals to classify a patient's health conditions following an encounter. Because our data span the transition from the ICD-9 to ICD-10 classification, we include diagnosis codes from both. Table A2 summarizes the exact codes used to indicate each of these four diagnosis-related outcomes. 
+We determine these outcomes from the claim's International Classification of Diseases (ICD) diagnosis codes, which are used by medical professionals to classify a patient's health conditions following an encounter. Because our data span the transition from the ICD-9 to ICD-10 classification, we include diagnosis codes from both. Table A2 summarizes the exact codes used to indicate each of these four diagnosis-related outcomes. 
 
 Not everyone with an opioid use disorder receives a diagnosis code. Though it is unknown precisely what fraction of opioid use disorders go undiagnosed, Carrell {\em et al}. found that diagnosis codes were missing for as many as a quarter of patients for whom their providers were aware of opioid abuse.\endnote{\refcarrell} Similarly, a study by Barocas {\em et al}. estimated that only 44\% of individuals with opioid use disorder were identified as such in claims and administrative records.\endnote{\refbarocas} To address the challenges with diagnoses codes, we define a fifth treatment outcome using procedure codes related to the treatment of opioid use disorder, and more generally for drug rehabilitation and detoxification (Table A2). Finally, we define a sixth ``any" outcome as the union of any of the diagnoses or treatment outcomes, to capture as broad a population of individual with opioid use disorder as possible. Data and measurement limitations notwithstanding, our model demonstrates that administrative data can be combined to form an accurate prediction of these outcomes, suggesting a feasible path forward for utilizing data to inform prescription risk.
 
@@ -103,9 +97,8 @@ The neural networks are optimized to minimize the binary cross-entropy, also kno
 
 \textbf{Table A1.} Minimum amounts of ingredients in a drug to classify it as an opioid prescription or a recovery prescription.
 
-\begin{tabular}{lS[table-format=2.4]}
-\hline
-\em Opioid Ingredient & Minimum Amount (mg) \\
+\begin{tabular}{lc}
+\em Opioid Ingredient & \em Minimum Amount (mg) \\[0.5em]
 Codeine & 30.0 \\
 Fentanyl & 0.0125 \\
 Hydrocodone & 5.0 \\
@@ -115,31 +108,30 @@ Morphine & 10.0 \\
 Oxycodone & 5.0 \\
 Oxymorphone & 5.0 \\
 Tapentadol & 50.0 \\
-Tramadol & 50.0 \\
-\hline
-\em Recovery Ingredient° & Minimum Amount (mg) \\
+Tramadol & 50.0 \\[1em]
+\em Recovery Ingredient° & \em Minimum Amount (mg) \\[0.5em]
 Buprenorphine & 0.0 \\
 Methadone & 0.0 \\
 Naloxone & 0.0 \\
-Naltrexone & 0.0 \\
-\hline
+Naltrexone & 0.0 \\[1em]
 \end{tabular}
 
-\hbox{\footnotesize * Meperidine has no recommended starting dose for treatment of chronic pain because of its risk for complications in older adults; therefore, we consider any amount as evidence that the drug is an opioid.}
-\hbox{\footnotesize ° We consider any amount of a recovery ingredient as evidence that the drug may have been used to treat a prior opioid use disorder.}
+\footnotesize
+* Meperidine has no recommended starting dose for treatment of chronic pain because of its risk for complications in older adults; therefore, we consider any amount as evidence that the drug is an opioid. \\
+° We consider any amount of a recovery ingredient as evidence that the drug may have been used to treat a prior opioid use disorder.
+\normalsize
 
 \newpage
 
 \textbf{Table A2.} Diagnosis and procedure codes used to indicate adverse outcomes when occurring in any claim after the initial opioid prescription.
 
 \begin{tabular}{lll}
-\hline
-\em Outcome & Code & Description \\
+\em Outcome & \em Code & \em Description \\[1em]
 \textbf{Opioid} & 304.0 & Opioid type dependence \\
 \textbf{Dependence} & 304.7 & Combinations of opioid type drug with any other drug dependence \\
- & F11.2* & Opioid dependence \\
+ & F11.2* & Opioid dependence \\[1em]
 \textbf{Opioid Abuse} & 305.0 & Nondependent opioid abuse  \\
- & F11.1* & Opioid abuse \\
+ & F11.1* & Opioid abuse \\[1em]
 \textbf{Prescription-} & 965.00 & Poisoning by opium (alkaloids), unspecified \\
 \textbf{Opioid} & 965.02 & Poisoning by methadone \\
 \textbf{Poisoning} & 965.09 & Poisoning by other opiates and related narcotics \\
@@ -151,11 +143,11 @@ Naltrexone & 0.0 \\
  & E940.1 & Opiate antagonists causing adverse effects in therapeutic use \\
  & T400* & Poisoning by, adverse effect of and underdosing of opium \\
  & T402* & Poisoning by, adverse effect of and underdosing of other opioids \\
- & T403* & Poisoning by, adverse effect of and underdosing of methadone \\
+ & T403* & Poisoning by, adverse effect of and underdosing of methadone \\[1em]
 \textbf{Heroin} & 965.01 & Poisoning by heroin \\
 \textbf{Poisoning} & E850.0 & Accidental poisoning by heroin \\
  & E935.0 & Heroin causing adverse effects in therapeutic use \\
- & T401* & Poisoning by and adverse effects of heroin \\
+ & T401* & Poisoning by and adverse effects of heroin \\[1em]
 \textbf{Treatment} & J2310° & Naloxone HCI Injection, per 1 mg \\
  & J2315° & Naltrexone injection, depot form, 1mg \\
  & J0592° & Buprenorphine HCL injection, 0.1mg \\
@@ -171,11 +163,20 @@ Naltrexone & 0.0 \\
  & 9466° & drug rehabilitation and detoxification \\
  & 9467° & combined alcohol and drug rehabilitation \\
  & 9468° & combined alcohol and drug detoxification \\
- & 9469° & combined alcohol and drug rehabilitation and detoxification \\
-\hline
+ & 9469° & combined alcohol and drug rehabilitation and detoxification \\[1em]
 \end{tabular}
 
-\hbox{\footnotesize * ICD-10 diagnosis code}
-\hbox{\footnotesize ° HCPCS procedure code}
+\hrule
+
+\footnotesize
+* ICD-10 diagnosis code \\
+° HCPCS procedure code
+\normalsize
+
+\newpage
+
+\textbf{Table A3.} Descriptive statistics for the final panel.
+
+\input{output/tables/TableA3}
 
 \end{document}

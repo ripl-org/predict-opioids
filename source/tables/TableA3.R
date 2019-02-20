@@ -96,7 +96,7 @@ pop <- demo %>%
        rbind(census %>%
              select(RIIPL_ID, BLKGRP_BELOWFPL) %>%
              melt(id.vars=c("RIIPL_ID")) %>%
-             mutate(value=factor(case_when(value >= belowfpl75 ~ paste0("At least ", percent(belowfpl75)),
+             mutate(value=factor(case_when(value >= belowfpl75 ~ paste("At least", str_replace(percent(belowfpl75), "%", "\\%")),
                                            is.na(value) ~ "NA",
                                            TRUE ~ "Otherwise")),
                     inner_rank=case_when(value == "NA" ~ 3,
@@ -143,21 +143,21 @@ pop <- demo %>%
                                            value == 1 ~ "1",
                                            TRUE ~ "0 or NA")),
                     inner_rank=1,
-                    variable="# of children in DHS household in previous year",
+                    variable="Children in DHS household in previous year",
                     rank=12)) %>%
        rbind(wages %>%
              select(RIIPL_ID, WAGES_AVG) %>%
              melt(id.vars=c("RIIPL_ID")) %>%
-             mutate(value=factor(case_when(value > 15000 ~ ">$15000",
-                                           value > 7500 ~ "$7500-$15000",
-                                           value > 2500 ~ "$2500-$7500",
-                                           value > 0 ~ "<$2500",
-                                           TRUE ~ "$0 or NA")),
-                    inner_rank=case_when(value == "<$2500" ~ 1,
-                                         value == "$2500-$7500" ~ 2,
-                                         value == "$7500-$15000" ~ 3,
-                                         value == ">$15000" ~ 4,
-                                         value == "$0 or NA" ~ 5),
+             mutate(value=factor(case_when(value > 15000 ~ ">\\$15000",
+                                           value > 7500 ~ "\\$7500-\\$15000",
+                                           value > 2500 ~ "\\$2500-\\$7500",
+                                           value > 0 ~ "<\\$2500",
+                                           TRUE ~ "\\$0 or NA")),
+                    inner_rank=case_when(value == "<\\$2500" ~ 1,
+                                         value == "\\$2500-\\$7500" ~ 2,
+                                         value == "\\$7500-\\$15000" ~ 3,
+                                         value == ">\\$15000" ~ 4,
+                                         value == "\\$0 or NA" ~ 5),
                     variable="Average quarterly wages in previous year",
                     rank=7)) %>%
        mutate(RIIPL_ID=as.numeric(RIIPL_ID)) %>%
@@ -169,12 +169,14 @@ names(stats_table) <- c("rank", "variable", "inner_rank", "value", "n_negative",
 stats_table <- stats_table %>%
                mutate(n=n_positive + n_negative,
                       p_positive=n_positive / n,
-                      pct_positive=percent(p_positive)) %>%
+                      pct_positive=str_replace(percent(p_positive), "%", "\\%")) %>%
                group_by(rank) %>%
                mutate(rnum=1:n(),
-                      variable=ifelse(rnum == 1, variable, "")) %>%
+                      variable=ifelse(rnum == 1, paste0("\textbf{", variable, "}"), "")) %>%
                ungroup() %>%
                select(variable, value, n, pct_positive)
 
-write.table(stats_table, file=out_path,
-            sep="\t", row.names=FALSE, col.names=FALSE, na="", quote=FALSE)
+write("\\begin{tabular}{llrr}", file=out_path)
+write.table(stats_table, file=out_path, append=TRUE,
+            sep=" & ", row.names=FALSE, col.names=FALSE, na="", quote=FALSE, eol=" \\\\\n")
+write("\\end{tabular}", file=out_path, append=TRUE)
