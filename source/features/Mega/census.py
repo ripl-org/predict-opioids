@@ -50,7 +50,10 @@ def main():
         "BLKGRP_BELOWFPL"     : "share of block group's residents with annual income below poverty level"
     }
 
-    SaveFeatures(features, outfile, manifest, population, labels, bool_features=["BLKGRP_MISSING"])
+    # Take the mean values over the lookback period.
+    features = features.join(values.groupby(index)[list(labels)].mean())
+
+    SaveFeatures(features, outfile, manifest, population, labels)
 
 
 # EXECUTE

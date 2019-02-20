@@ -19,11 +19,18 @@
 \usepackage{endnotes}
 \renewcommand{\makeenmark}{\textsuperscript{\theenmark}}
 \makeatletter
-\renewcommand{\@endnotetext}[1]{\theenmark.\enskip #1}
+\def\enoteformat{%
+  \rightskip\z@ \leftskip\z@ \parindent=1.8em
+  \leavevmode{\setbox\z@=\lastbox}\llap{\theenmark.\enskip}%
+}
 \makeatother
 
 % Tables
 \usepackage{siunitx}
+
+% Paragraphs
+\setlength{\parindent}{0}
+\setlength{\parskip}{1em}
 
 % Import references
 \input{source/appendix/references}
@@ -103,14 +110,14 @@ Codeine & 30.0 \\
 Fentanyl & 0.0125 \\
 Hydrocodone & 5.0 \\
 Hydromorphone & 2.0 \\
-Meperidine\textsuperscript{*} & 0.0 \\
+Meperidine* & 0.0 \\
 Morphine & 10.0 \\
 Oxycodone & 5.0 \\
 Oxymorphone & 5.0 \\
 Tapentadol & 50.0 \\
 Tramadol & 50.0 \\
 \hline
-\em Recovery Ingredient\textsuperscript{**} & Minimum Amount (mg) \\
+\em Recovery Ingredient° & Minimum Amount (mg) \\
 Buprenorphine & 0.0 \\
 Methadone & 0.0 \\
 Naloxone & 0.0 \\
@@ -118,10 +125,57 @@ Naltrexone & 0.0 \\
 \hline
 \end{tabular}
 
-{\footnotesize
-\textsuperscript{*} Meperidine has no recommended starting dose for treatment of chronic pain because of its risk for complications in older adults; therefore, we consider any amount as evidence that the drug is an opioid.
+\hbox{\footnotesize * Meperidine has no recommended starting dose for treatment of chronic pain because of its risk for complications in older adults; therefore, we consider any amount as evidence that the drug is an opioid.}
+\hbox{\footnotesize ° We consider any amount of a recovery ingredient as evidence that the drug may have been used to treat a prior opioid use disorder.}
 
-\textsuperscript{**} We consider any amount of a recovery ingredient as evidence that the drug may have been used to treat a prior opioid use disorder.
-}
+\newpage
+
+\textbf{Table A2.} Diagnosis and procedure codes used to indicate adverse outcomes when occurring in any claim after the initial opioid prescription.
+
+\begin{tabular}{lll}
+\hline
+\em Outcome & Code & Description \\
+\textbf{Opioid} & 304.0 & Opioid type dependence \\
+\textbf{Dependence} & 304.7 & Combinations of opioid type drug with any other drug dependence \\
+ & F11.2* & Opioid dependence \\
+\textbf{Opioid Abuse} & 305.0 & Nondependent opioid abuse  \\
+ & F11.1* & Opioid abuse \\
+\textbf{Prescription-} & 965.00 & Poisoning by opium (alkaloids), unspecified \\
+\textbf{Opioid} & 965.02 & Poisoning by methadone \\
+\textbf{Poisoning} & 965.09 & Poisoning by other opiates and related narcotics \\
+ & 970.1 & Poisoning by opiate antagonists \\
+ & E850.1 & Accidental poisoning by methadone \\
+ & E850.2 & Accidental poisoning by other opiates and related narcotics \\
+ & E935.1 & Methadone causing adverse effects in therapeutic use \\
+ & E935.2 & Other opiates and related narcotics causing adverse effects in therapeutic use \\
+ & E940.1 & Opiate antagonists causing adverse effects in therapeutic use \\
+ & T400* & Poisoning by, adverse effect of and underdosing of opium \\
+ & T402* & Poisoning by, adverse effect of and underdosing of other opioids \\
+ & T403* & Poisoning by, adverse effect of and underdosing of methadone \\
+\textbf{Heroin} & 965.01 & Poisoning by heroin \\
+\textbf{Poisoning} & E850.0 & Accidental poisoning by heroin \\
+ & E935.0 & Heroin causing adverse effects in therapeutic use \\
+ & T401* & Poisoning by and adverse effects of heroin \\
+\textbf{Treatment} & J2310° & Naloxone HCI Injection, per 1 mg \\
+ & J2315° & Naltrexone injection, depot form, 1mg \\
+ & J0592° & Buprenorphine HCL injection, 0.1mg \\
+ & X0305° & Methadone detoxification – outpatient \\
+ & X0321° & Methadone maintenance, assessment and evaluation, counseling, treatment \\
+ &  & and review, and lab testing \\
+ & H0020° & Alcohol and or drug services; methadone administration and or service \\
+ & J1230° & Injection, methadone, up to 10mg \\
+ & 83840° & methadone \\
+ & 946° & Alcohol and drug rehabilitation and counseling \\
+ & 9464° & drug rehabilitation \\
+ & 9465° & drug detoxification \\
+ & 9466° & drug rehabilitation and detoxification \\
+ & 9467° & combined alcohol and drug rehabilitation \\
+ & 9468° & combined alcohol and drug detoxification \\
+ & 9469° & combined alcohol and drug rehabilitation and detoxification \\
+\hline
+\end{tabular}
+
+\hbox{\footnotesize * ICD-10 diagnosis code}
+\hbox{\footnotesize ° HCPCS procedure code}
 
 \end{document}

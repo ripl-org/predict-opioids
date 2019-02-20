@@ -39,7 +39,7 @@ pop <- demo %>%
                                      value <  18 ~ "<18",
                                      value <= 45 ~ "18-45",
                                      value <= 60 ~ "45-60",
-                                     TRUE ~ ">60")),
+                                     TRUE ~ "61+")),
               inner_rank=1,
               variable="Age",
               rank=1) %>%
@@ -104,7 +104,7 @@ pop <- demo %>%
                                          TRUE ~ 1),
                     variable="Blockgroup fraction of residents below FPL",
                     rank=6)) %>%
-       rbind(benefits %>%
+       rbind(payments %>%
              select(RIIPL_ID, SNAP_PAYMENTS) %>%
              melt(id.vars=c("RIIPL_ID")) %>%
              mutate(value=factor(ifelse(value > 0, "Yes", "No")),
@@ -112,7 +112,7 @@ pop <- demo %>%
                                          value == "No" ~ 2),
                     variable="Received SNAP in previous year",
                     rank=8)) %>%
-       rbind(benefits %>%
+       rbind(payments %>%
              select(RIIPL_ID, SSI_SUPPLEMENT) %>%
              melt(id.vars=c("RIIPL_ID")) %>%
              mutate(value=factor(ifelse(value > 0, "Yes", "No")),
@@ -120,7 +120,7 @@ pop <- demo %>%
                                          value == "No" ~ 2),
                     variable="Received SSI in previous year",
                     rank=9)) %>%
-       rbind(benefits %>%
+       rbind(payments %>%
              select(RIIPL_ID, UI_PAYMENTS) %>%
              melt(id.vars=c("RIIPL_ID")) %>%
              mutate(value=factor(ifelse(value > 0, "Yes", "No")),
@@ -128,7 +128,7 @@ pop <- demo %>%
                                          value == "No" ~ 2),
                     variable="Received UI in previous year",
                     rank=10)) %>%
-       rbind(benefits %>%
+       rbind(payments %>%
              select(RIIPL_ID, TDI_PAYMENTS) %>%
              melt(id.vars=c("RIIPL_ID")) %>%
              mutate(value=factor(ifelse(value > 0, "Yes", "No")),
