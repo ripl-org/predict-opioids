@@ -45,20 +45,9 @@ def main():
                    .merge(fpl, how="left", on="GEO_ID")\
                    .set_index(index)
 
-    # Take the mean values over the lookback period.
-    features = features.join(values.groupby(index).mean()[["BLKGRP_MEDIANINCOME", "BLKGRP_BELOWFPL"]])
-
-    # Fill missing values with means
-    missing = features.BLKGRP_MEDIANINCOME.isnull() & features.BLKGRP_BELOWFPL.isnull()
-    means = features.mean()
-    print("filling missing values with means:", means)
-    features = features.fillna(means)
-    features["BLKGRP_MISSING"] = missing.astype(int)
-
     labels = {
         "BLKGRP_MEDIANINCOME" : "block group's median annual household income (2015 dollars)",
-        "BLKGRP_BELOWFPL"     : "share of block group's residents with annual income below poverty level",
-        "BLKGRP_MISSING"      : "block group demographics are missing"
+        "BLKGRP_BELOWFPL"     : "share of block group's residents with annual income below poverty level"
     }
 
     SaveFeatures(features, outfile, manifest, population, labels, bool_features=["BLKGRP_MISSING"])

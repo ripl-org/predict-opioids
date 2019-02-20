@@ -9,27 +9,19 @@ args <- commandArgs(trailingOnly=TRUE)
 outcomes_path  <- args[1]
 demo_path      <- args[2]
 census_path    <- args[3]
-wages_path     <- args[4]
-benefits_path  <- args[5]
-family_path    <- args[6]
-incarc_path    <- args[7]
-ma_enroll_path <- args[8]
-diagnoses_path <- args[9]
-ma_ids_path    <- args[10]
-fpl_path       <- args[11]
-out_path       <- args[12]
+household_path <- args[4]
+payments_path  <- args[5]
+wages_path     <- args[6]
+fpl_path       <- args[7]
+out_path       <- args[8]
 
 # Load inputs
 outcomes  <- read_csv(outcomes_path)
 demo      <- read_csv(demo_path)
 census    <- read_csv(census_path)
+household <- read_csv(household_path)
+payments  <- read_csv(payments_path)
 wages     <- read_csv(wages_path)
-benefits  <- read_csv(benefits_path)
-family    <- read_csv(family_path)
-incarc    <- read_csv(incarc_path)
-ma_enroll <- read_csv(ma_enroll_path)
-diagnoses <- read_csv(diagnoses_path)
-ma_ids    <- read_csv(ma_ids_path)
 fpl       <- read_csv(fpl_path)
 
 # Calculate top quantile for FPL
@@ -62,7 +54,7 @@ pop <- demo %>%
                                          value == "Hispanic" ~ 3,
                                          value == "Other" ~ 4,
                                          value == "NA" ~ 5),
-                    variable="Race",
+                    variable="Race/Ethnicity",
                     rank=2)) %>%
        rbind(demo %>%
              select(RIIPL_ID, SEX) %>%
@@ -112,21 +104,6 @@ pop <- demo %>%
                                          TRUE ~ 1),
                     variable="Blockgroup fraction of residents below FPL",
                     rank=6)) %>%
-       rbind(wages %>%
-             select(RIIPL_ID, WAGES_SUM) %>%
-             melt(id.vars=c("RIIPL_ID")) %>%
-             mutate(value=factor(case_when(value > 15000 ~ ">$15000",
-                                           value > 7500 ~ "$7500-$15000",
-                                           value > 2500 ~ "$2500-$7500",
-                                           value > 0 ~ "<$2500",
-                                           TRUE ~ "$0 or NA")),
-                    inner_rank=case_when(value == "<$2500" ~ 1,
-                                         value == "$2500-$7500" ~ 2,
-                                         value == "$7500-$15000" ~ 3,
-                                         value == ">$15000" ~ 4,
-                                         value == "$0 or NA" ~ 5),
-                    variable="Wages in previous year",
-                    rank=7)) %>%
        rbind(benefits %>%
              select(RIIPL_ID, SNAP_PAYMENTS) %>%
              melt(id.vars=c("RIIPL_ID")) %>%
@@ -159,44 +136,30 @@ pop <- demo %>%
                                          value == "No" ~ 2),
                     variable="Received TDI in previous year",
                     rank=11)) %>%
-       rbind(family %>%
-             select(RIIPL_ID, N_CHILD) %>%
+       rbind(household %>%
+             select(RIIPL_ID, DHS_HH_SIZE) %>%
              melt(id.vars=c("RIIPL_ID")) %>%
              mutate(value=factor(case_when(value >= 2 ~ "2+",
                                            value == 1 ~ "1",
                                            TRUE ~ "0 or NA")),
                     inner_rank=1,
-                    variable="# of children in SNAP household in previous year",
+                    variable="# of children in DHS household in previous year",
                     rank=12)) %>%
-       rbind(incarc %>%
-             select(RIIPL_ID, INCARC_EVER) %>%
+       rbind(wages %>%
+             select(RIIPL_ID, WAGES_AVG) %>%
              melt(id.vars=c("RIIPL_ID")) %>%
-             mutate(value=factor(ifelse(value > 0, "Yes", "No")),
-                    inner_rank=case_when(value == "Yes" ~ 1,
-                                         value == "No" ~ 2),
-                    variable="Incarcerated in previous year",
-             rank=13)) %>%
-       rbind(ma_enroll %>%
-             select(RIIPL_ID, DISABLED) %>%
-             melt(id.vars=c("RIIPL_ID")) %>%
-             mutate(value=factor(ifelse(value > 0, "Disabled", "Not disabled")),
-                    inner_rank=1,
-                    variable="Medicaid-eligible due to disablement",
-                    rank=14)) %>%
-       rbind(diagnoses %>%
-             select(RIIPL_ID, MENTAL_HEALTH) %>%
-             melt(id.vars=c("RIIPL_ID")) %>%
-             mutate(value=factor(ifelse(value > 0, "1+", "0")),
-                    inner_rank=1,
-                    variable="# of mental health diagnoses in previous year",
-                    rank=15)) %>%
-       rbind(ma_ids %>%
-          select(RIIPL_ID, N_ID) %>%
-          melt(id.vars=c("RIIPL_ID")) %>%
-          mutate(value=factor(ifelse(value > 1, "2+", 1)),
-                 inner_rank=1,
-                 variable="# of Medicaid IDs",
-                 rank=16)) %>%
+             mutate(value=factor(case_when(value > 15000 ~ ">$15000",
+                                           value > 7500 ~ "$7500-$15000",
+                                           value > 2500 ~ "$2500-$7500",
+                                           value > 0 ~ "<$2500",
+                                           TRUE ~ "$0 or NA")),
+                    inner_rank=case_when(value == "<$2500" ~ 1,
+                                         value == "$2500-$7500" ~ 2,
+                                         value == "$7500-$15000" ~ 3,
+                                         value == ">$15000" ~ 4,
+                                         value == "$0 or NA" ~ 5),
+                    variable="Average quarterly wages in previous year",
+                    rank=7)) %>%
        mutate(RIIPL_ID=as.numeric(RIIPL_ID)) %>%
        inner_join(outcomes, by="RIIPL_ID")
 

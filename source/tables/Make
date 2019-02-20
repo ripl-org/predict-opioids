@@ -1,6 +1,6 @@
 Import("*")
 
-# Table 1
+# Table 1 - comparison of AUCs
 env.Python("#output/tables/Table1.tsv",
            ["Table1.py",
             constants["RANDOM_SEED"],
@@ -9,22 +9,24 @@ env.Python("#output/tables/Table1.tsv",
             "#output/models/bagged-lasso.all.OUTCOME_ANY.y_pred.csv",
             "#output/models/lstm.all.OUTCOME_ANY.y_pred.csv"])
 
-# Table S1
-env.R("#output/tables/TableS1.tsv",
-      ["TableS1.R",
+# Table A3 - sample characteristics
+env.Python(["#scratch/tables/demographics.csv",
+            "#scratch/tables/demographics.manifest"],
+           ["demographics.py",
+            tables["population"],
+            tables["dim_date"],
+            tables["mega_demo"]])
+env.R("#output/tables/TableA3.tsv",
+      ["TableA3.R",
        "#scratch/outcomes/all.csv",
-       "#scratch/features/demographics.csv",
-       "#scratch/features/census.csv",
-       "#scratch/features/wages.csv",
-       "#scratch/features/benefits.csv",
-       "#scratch/features/family.csv",
-       "#scratch/features/incarceration.csv",
-       "#scratch/features/enrollment.csv",
-       "#scratch/features/diagnoses.csv",
-       "#scratch/features/medicaid_id.csv",
+       "#scratch/tables/demographics.csv",
+       "#scratch/features/Mega/census.csv",
+       "#scratch/features/Mega/household.csv",
+       "#scratch/features/Mega/payments.csv",
+       "#scratch/features/DLT/wages.csv",
        "#input/public/ACS_15_5YR_B17010_with_ann.csv"])
 
-# Table A4
+# Table A4 - neural net AUCs
 tensors = ["DHS", "DLT", "DOC", "Medicaid", "Police", "all"]
 env.Python("#output/tables/TableA4.tsv",
            ["TableA4.py",
