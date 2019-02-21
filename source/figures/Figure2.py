@@ -1,29 +1,30 @@
 import matplotlib.pyplot as plt
-import pandas as pd
 import os
+import pandas as pd
 import seaborn as sns
 import sys
 
 infile, outfile = sys.argv[1:]
 
-table = pd.read_csv(infile)
+data = pd.read_csv(infile)
 
-categories = ["Medicaid", "Demographics", "Labor & Training", "Criminal History", "Social Services"]
-odds = dict((c, []) for c in categories)
-
-for row in table.itertuples():
-    if row.var.startswith("MEDICAID") or row.var.starts("ASHP"):
-        odds["Medicaid"].append(row.odds)
-    elif row.var.startswith("DOC") or row.var == "CITATIONS":
-        odds["Criminal History"].append(row.odds)
-    elif row.var.startswith("DHS") or row.var.startswith("SNAP"):
-        odds["Social Services"].append(row.odds)
-    elif row.var.startswith("WAGE") or row.var.startswith("UI") or row.var == "UNEMP_RI":
-        odds["Labor & Training"].append(row.odds)
+def classify(var):
+    if var.startswith("MEDICAID") or var.startswith("ASHP"):
+        return "Medicaid"
+    elif var.startswith("DOC") or var == "CITATIONS":
+        return "Criminal History"
+    elif var.startswith("DHS") or var.startswith("SNAP"):
+        return "Social Services"
+    elif var.startswith("WAGE") or var.startswith("UI") or var == "UNEMP_RI":
+        return "Labor & Training"
     else:
-        odds["Demographics"].append(row.odds)
+        return "Demographics"
 
-sns.swarmplot(x=[odds[c] for c in categories], y=categories)
+data["category"] = data.var.apply(classify)
+
+plt.figure(figsize=(6, 6))
+sns.stripplot(x="odds", y="category", orient="h")
+plt.tight_layout()
 plt.savefig(outfile)
 
 # vim: syntax=python expandtab sw=4 ts=4
