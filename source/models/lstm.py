@@ -37,6 +37,14 @@ SparseTensor = namedtuple("SparseTensor", "nsamples nsteps nfeatures index value
 with open(tensorfile, "rb") as f:
     X_train, X_validate, X_test = pickle.load(f)
 
+# Setup dense validation data
+stride = X_validate.nsteps * X_validate.nfeatures
+X_val_dense = np.tile(X_validate.fill_values, X_validate.nsamples*X_validate.nsteps)
+for k in range(X_validate.nsamples):
+    if X_validate.index[k] is not None:
+         X_val_dense[X_validate.index[k] + k*stride] = X_validate.values[k]
+X_val_dense = X_val_dense.reshape(X_validate.nsamples, X_validate.nsteps, X_validate.nfeatures)
+
 def batch_generator(X, y, batch_size):
     assert X.nsamples == y.shape[0]
     stride = X.nsteps * X.nfeatures
@@ -54,39 +62,35 @@ def batch_generator(X, y, batch_size):
             i = (i + 1) % X.nsamples
         yield (X_batch.reshape(batch_size, X.nsteps, X.nfeatures), y.iloc[idx])
 
-def auroc(y_true, y_pred):
-    return tf.py_func(lambda y_true, y_pred: roc_auc_score(y_true, y_pred).astype("float32"),
-                      [y_true, y_pred],
-                      "float32",
-                      stateful=False,
-                      name="auroc")
-
-def auprc(y_true, y_pred):
-    return tf.py_func(lambda y_true, y_pred: average_precision_score(y_true, y_pred).astype("float32"),
-                      [y_true, y_pred],
-                      "float32",
-                      stateful=False,
-                      name="auprc")
+class auroc(Callback):
+    def __init__(self, X, y):
+        self.X = X
+        self.y = y
+    def on_epoch_end(self, epoch, logs={}):
+        y_pred = self.model.predict_proba(self.X, verbose=0)
+        val_auroc = roc_auc_score(self.y, y_pred)
+        logs["val_auroc"] = val_auroc
+        print(" - val_auroc: {}".format(round(val_auroc, 5)))
 
 # Define model
-batch_size = 32
+batch_size = 16
 model = models.Sequential()
-model.add(layers.LSTM(1, return_sequences=True, input_shape=(X_train.nsteps, X_train.nfeatures), dropout=0.25))
-model.add(layers.LSTM(150, input_shape=(X_train.nsteps, X_train.nfeatures), dropout=0.25))
+model.add(layers.LSTM(10, return_sequences=True, input_shape=(X_train.nsteps, X_train.nfeatures), dropout=0.25))
+model.add(layers.LSTM(10, input_shape=(X_train.nsteps, X_train.nfeatures), dropout=0.25))
 model.add(layers.Dropout(0.25))
 model.add(layers.Dense(1, activation="sigmoid"))
 model.compile(loss="binary_crossentropy", optimizer="adam")
 
-early_stopping = EarlyStopping(monitor="loss",
+early_stopping = EarlyStopping(monitor="val_auroc",
                                min_delta=0.001,
                                patience=5,
                                verbose=1,
-                               mode="min")
+                               mode="max")
 
 history = model.fit_generator(generator=batch_generator(X_train, y_train, batch_size),
                               epochs=1000,
                               steps_per_epoch=X_train.nsamples/batch_size,
-                              callbacks=[early_stopping],
+                              callbacks=[auroc(X_val_dense, y_validate), early_stopping],
                               verbose=2)
 model.save(modelfile)
 
