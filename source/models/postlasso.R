@@ -26,8 +26,10 @@ print(paste0("condition number (kappa): ", k))
 assert_that(k < 100)
 
 model <- glm.fit(x=X_train, y=y_train, family=binomial())
+params <- summary.glm(model)$coefficients
 
-write.csv(data.frame(var=variables.names(model), odds=exp(model$coef)), file=out_file, row.names=FALSE)
+write.csv(data.frame(var=selected, odds=exp(params[,1]), beta=params[,1], se=params[,2], z=params[,3], p=params[,4]),
+          file=out_file, row.names=FALSE)
 
 # Predict on test data with OLS
 X_test <- cbind(1, X_test[,selected])

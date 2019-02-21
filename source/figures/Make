@@ -9,6 +9,11 @@ env.Python("#output/figures/Figure1.csv",
             "#output/models/bagged-lasso.all.OUTCOME_ANY.y_pred.csv",
             "#output/models/lstm.all.OUTCOME_ANY.y_pred.csv"])
 
+# Figure 2 - summary of logit
+env.Python("#output/figures/Figure2.pdf",
+           ["Figure2.py",
+            "#output/models/postlasso.all.OUTCOME_ANY.csv"])
+
 # Figure 3 - cost-benefit ratio
 env.R("#output/figures/Figure3.pdf",
       ["Figure3.R",
