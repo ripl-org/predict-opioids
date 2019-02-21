@@ -1,26 +1,32 @@
 Import("*")
 
-seed = Value(env.RANDOM_SEED)
-bootstraps = Value(env.PLOT_BOOTSTRAPS)
+# Figure 1 - comparison of AUCs
+env.Python("#output/figures/Figure1.csv",
+           ["Figure1.py",
+            constants["RANDOM_SEED"],
+            constants["PLOT_BOOTSTRAPS"],
+            "#output/models/postlasso.all.OUTCOME_ANY.y_pred.csv",
+            "#output/models/bagged-lasso.all.OUTCOME_ANY.y_pred.csv",
+            "#output/models/lstm.all.OUTCOME_ANY.y_pred.csv"])
 
-# Figure 1
-env.R("#output/figures/Figure1.emf",
-      ["Figure1.R",
-       seed,
-       bootstraps,
-       "#output/models/lstm.all.OUTCOME_ANY.y_pred.csv"])
+# Figure 3 - cost-benefit ratio
+env.R("#output/figures/Figure3.pdf",
+      ["Figure3.R",
+       constants["RANDOM_SEED"],
+       constants["PLOT_BOOTSTRAPS"],
+       "#output/models/postlasso.all.OUTCOME_ANY.y_pred.csv"])
 
-# Figure 4
+# Figure 4 - FDR
 env.R("#output/figures/Figure4.csv",
       ["Figure4.py",
        constants["RANDOM_SEED"],
-       constants["N_BOOTSTRAPS"],
+       constants["PLOT_BOOTSTRAPS"],
        "#output/models/postlasso.all.OUTCOME_ANY.y_pred.csv",
        "#scratch/features/Mega/demographics.csv",
        "#scratch/features/DOC/events.csv",
        "#scratch/features/Medicaid/enrollment.csv"])
 
-# Figure A1
+# Figure A1 - outcomes
 env.R("#output/figures/FigureA1.pdf",
       ["FigureA1.R",
        "#scratch/outcomes/all.csv"])

@@ -1,14 +1,5 @@
 Import("*")
 
-# Table 1 - comparison of AUCs
-env.Python("#output/tables/Table1.tsv",
-           ["Table1.py",
-            constants["RANDOM_SEED"],
-            constants["PLOT_BOOTSTRAPS"],
-            "#output/models/postlasso.all.OUTCOME_ANY.y_pred.csv",
-            "#output/models/bagged-lasso.all.OUTCOME_ANY.y_pred.csv",
-            "#output/models/lstm.all.OUTCOME_ANY.y_pred.csv"])
-
 # Table A3 - sample characteristics
 env.Python(["#scratch/tables/demographics.csv",
             "#scratch/tables/demographics.manifest"],

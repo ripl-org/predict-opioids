@@ -1,6 +1,5 @@
 library(boot)
 library(dplyr)
-library(devEMF)
 library(ggplot2)
 library(readr)
 library(scales)
@@ -42,7 +41,7 @@ df <- data.frame(threshold=thresholds,
                  ci_max=bootstraps[,3])
 print(df)
 
-emf(out_path, width=6, height=4)
+pdf(out_path, width=6, height=4)
 df %>% ggplot() +
        geom_ribbon(aes(x=threshold, ymin=ci_min, ymax=ci_max), fill="gray") +
        geom_line(aes(x=threshold, y=cost_ratio), color="black") +
