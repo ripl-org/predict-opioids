@@ -30,7 +30,7 @@ for(col in cols) {
 # Print % for OUTCOME_ANY
 print(subset(df, var == "OUTCOME_ANY"))
 
-pdf(out_path, width=5, height=5)
+pdf(out_path, width=6, height=6)
 df %>% ggplot(aes(y=fail, x=x, color=var)) +
        geom_line() +
        scale_x_continuous(breaks=seq(0, years, 1)) +

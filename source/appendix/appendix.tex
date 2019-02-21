@@ -1,5 +1,5 @@
 \documentclass[11pt, letter]{article}
-\usepackage[left=1in, right=1in, top=1in, bottom=1in]{geometry}
+\usepackage[left=0.5in, right=0.5in, top=0.5in, bottom=0.5in]{geometry}
 \usepackage{graphicx}
 
 % Helvetica font
@@ -185,13 +185,15 @@ Naltrexone & 0.0 \\[1em]
 
 \textbf{Table A4.} Variables selected by BOLASSO as occurring in more than 90\% of LASSO replicates.
 
+\tiny
 \input{output/tables/TableA4}
+\normalsize
 
 \newpage
 
 \textbf{Table A6.} Area Under the Receiver-Operating Characteristic Curve (AUC) of neural network models using different subsets of administrative data and outcome definitions. Confidence intervals are calculated from 100 bootstrap replicates.
 
-\footnotesize
+\tiny
 \input{output/tables/TableA6}
 \normalsize
 
@@ -199,6 +201,6 @@ Naltrexone & 0.0 \\[1em]
 
 \textbf{Figure A1.} Cumulative frequency of adverse outcomes over time since initial opioid prescription. Adverse outcomes are indicated by the diagnosis and procedure codes in Medicaid claims following the initial prescription. An individual may experience multiple types of adverse outcomes, and ``any" is the union of the five specific outcome types. Opioid dependence is the most prevalent of the types.
 
-\includegraphics[width=1\linewidth]{output/figures/FigureA1}
+\includegraphics[width=6in]{output/figures/FigureA1}
 
 \end{document}

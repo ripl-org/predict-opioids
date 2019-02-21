@@ -10,31 +10,19 @@ env.R("#output/figures/Figure1.emf",
        bootstraps,
        "#output/models/lstm.all.OUTCOME_ANY.y_pred.csv"])
 
-# Figure 2
-env.R("#output/figures/Figure2.emf",
-      ["Figure2.R",
-       seed,
-       bootstraps,
-       "#output/models/lstm.all.OUTCOME_ANY.y_pred.csv",
-       "#scratch/populations/InitialRX.csv",
-       "#scratch/features/demographics.csv",
-       "#scratch/features/incarceration.csv",
-       "#scratch/features/enrollment.csv"])
+# Figure 4
+env.R("#output/figures/Figure4.csv",
+      ["Figure4.py",
+       constants["RANDOM_SEED"],
+       constants["N_BOOTSTRAPS"],
+       "#output/models/postlasso.all.OUTCOME_ANY.y_pred.csv",
+       "#scratch/features/Mega/demographics.csv",
+       "#scratch/features/DOC/events.csv",
+       "#scratch/features/Medicaid/enrollment.csv"])
 
 # Figure A1
 env.R("#output/figures/FigureA1.pdf",
       ["FigureA1.R",
        "#scratch/outcomes/all.csv"])
-
-# Figure S2
-env.R("#output/figures/FigureS2.emf",
-      ["FigureS2.R",
-       seed,
-       bootstraps,
-       "#output/models/lstm.all.OUTCOME_ANY.y_pred.csv",
-       "#scratch/populations/InitialRX.csv",
-       "#scratch/features/demographics.csv",
-       "#scratch/features/incarceration.csv",
-       "#scratch/features/enrollment.csv"])
 
 # vim: syntax=python expandtab sw=4 ts=4
