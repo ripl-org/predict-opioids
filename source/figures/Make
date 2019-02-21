@@ -17,14 +17,14 @@ env.R("#output/figures/Figure3.pdf",
        "#output/models/postlasso.all.OUTCOME_ANY.y_pred.csv"])
 
 # Figure 4 - FDR
-env.R("#output/figures/Figure4.csv",
-      ["Figure4.py",
-       constants["RANDOM_SEED"],
-       constants["PLOT_BOOTSTRAPS"],
-       "#output/models/postlasso.all.OUTCOME_ANY.y_pred.csv",
-       "#scratch/features/Mega/demographics.csv",
-       "#scratch/features/DOC/events.csv",
-       "#scratch/features/Medicaid/enrollment.csv"])
+env.Python("#output/figures/Figure4.csv",
+           ["Figure4.py",
+            constants["RANDOM_SEED"],
+            constants["PLOT_BOOTSTRAPS"],
+            "#output/models/postlasso.all.OUTCOME_ANY.y_pred.csv",
+            "#scratch/features/Mega/demographics.csv",
+            "#scratch/features/DOC/events.csv",
+            "#scratch/features/Medicaid/enrollment.csv"])
 
 # Figure A1 - outcomes
 env.R("#output/figures/FigureA1.pdf",
