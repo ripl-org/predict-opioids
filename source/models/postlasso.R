@@ -27,8 +27,7 @@ assert_that(k < 100)
 
 model <- glm.fit(x=X_train, y=y_train, family=binomial())
 
-s <- summary.glm(model)
-capture.output(s, file=out_file)
+write.csv(data.frame(var=variables.names(model), odds=exp(model$coef)), file=out_file, row.names=FALSE)
 
 # Predict on test data with OLS
 X_test <- cbind(1, X_test[,selected])

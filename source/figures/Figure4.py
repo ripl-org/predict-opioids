@@ -43,7 +43,7 @@ with open(out_file, "w") as f:
         for selection in selections:
             group = data[data[selection[2]] == 1]
             if len(group) >= 11:
-                estimates = bootstrap(group, n_bootstrap, fdr, seed)
+                estimates = map("{:.3f}".format, bootstrap(group, n_bootstrap, fdr, seed))
             else:
                 estimates = ["", "", ""]
             print(i, selection[0], selection[1], len(group), *estimates, sep=",", file=f)
