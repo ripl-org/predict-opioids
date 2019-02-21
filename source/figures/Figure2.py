@@ -8,6 +8,9 @@ infile, outfile = sys.argv[1:]
 
 data = pd.read_csv(infile)
 
+outliers = ["DOC_RELEASED", "MEDICAID_PAYER_RIPAE", "RACE_HISPANIC", "MEDICAID_CTG_NEEDY",
+            "UNEMP_RI", "SNAP_PAYMENTS"]
+
 def classify(var):
     if var.startswith("MEDICAID") or var.startswith("ASHP"):
         return "Medicaid"
@@ -20,10 +23,25 @@ def classify(var):
     else:
         return "Demographics"
 
-data["category"] = data.var.apply(classify)
+data["category"] = data["var"].apply(classify)
 
-plt.figure(figsize=(6, 6))
-sns.stripplot(x="odds", y="category", orient="h")
+categories = dict((c, i) for i, c in enumerate(data.category.unique()))
+
+plt.figure(figsize=(8, 6))
+sns.stripplot(x="odds", y="category", data=data, orient="h", jitter=0.2)
+plt.title("Logit odds ratios for BOLASSO-selected predictors, by category", loc="left")
+plt.xlabel("")
+plt.ylabel("")
+plt.grid(True, which="major", axis="x", color="k", linestyle=".")
+plt.grid(True, which="minor", axis="y", color="w", linewidth=10)
+plt.axvline(1.0, color="k", linewidth=1.5)
+
+# Annotate outliers
+for var in outliers:
+    row = data[data["var"] == var]
+    xy = (row.odds, categories[row.category])
+    plt.annotate(var, xy)
+
 plt.tight_layout()
 plt.savefig(outfile)
 
