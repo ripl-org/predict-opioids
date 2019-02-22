@@ -14,19 +14,19 @@ env.Python("#output/figures/Figure2.pdf",
            ["Figure2.py",
             "#output/models/postlasso.all.OUTCOME_ANY.csv"])
 
-# Figure 3 - cost-benefit ratio
-env.R("#output/figures/Figure3.pdf",
-      ["Figure3.R",
-       constants["RANDOM_SEED"],
-       constants["PLOT_BOOTSTRAPS"],
-       "#output/models/postlasso.all.OUTCOME_ANY.y_pred.csv"])
+# Figure 3 - cost ratio
+env.Python("#output/figures/Figure3.csv",
+           ["Figure3.py",
+            constants["RANDOM_SEED"],
+            constants["PLOT_BOOTSTRAPS"],
+            "#output/models/lstm.all.OUTCOME_ANY.y_pred.csv"])
 
 # Figure 4 - FDR
 env.Python("#output/figures/Figure4.csv",
            ["Figure4.py",
             constants["RANDOM_SEED"],
             constants["PLOT_BOOTSTRAPS"],
-            "#output/models/postlasso.all.OUTCOME_ANY.y_pred.csv",
+            "#output/models/lstm.all.OUTCOME_ANY.y_pred.csv",
             "#scratch/features/Mega/demographics.csv",
             "#scratch/features/DOC/events.csv",
             "#scratch/features/Medicaid/enrollment.csv"])
