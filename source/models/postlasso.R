@@ -28,7 +28,11 @@ assert_that(k < 100)
 model <- glm.fit(x=X_train, y=y_train, family=binomial())
 params <- summary.glm(model)$coefficients
 
-write.csv(data.frame(var=selected, odds=exp(params[,1]), beta=params[,1], se=params[,2], z=params[,3], p=params[,4]),
+# Convert coefficients to odds ratios and standard errors to 95% C.I.
+odds <- exp(params[,1])
+ci_lower <- exp(params[,1] - 1.96*params[,2])
+ci_upper <- exp(params[,1] + 1.96*params[,2])
+write.csv(data.frame(var=selected, odds=odds, ci_lower=ci_lower, ci_upper=ci_upper, p=params[,4]),
           file=out_file, row.names=FALSE)
 
 # Predict on test data with OLS

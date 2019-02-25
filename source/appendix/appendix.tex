@@ -99,7 +99,7 @@ Exhibit A6 lists the summary features selected by the BOLASSO. Exhibit A7 provid
 
 To obtain predictions of adverse outcomes after the initial prescription, we train a neural network model for each tensor using the Python package Keras (https://keras.io), which provides an interface to the TensorFlow\endnote{\refabadi} library. We specifically choose to train a recurrent neural network (RNN), since RNNs have the ability to model temporal patterns in the input data. We input our training data into a two-layer network of 16x16 Long Short-Term Memory (LSTM)\endnote{\refhochreiter} units and use the tanh activation function. We input the last LSTM layer into a dense layer that applies a sigmoid activation function to the weighted sum of the 16 inputs in order to produce a single predicted probability of adverse outcome. We employ regularization prior to each layer in the form of a dropout factor of 0.25, which causes a random deactivation of units within the layer during training with a fixed probability of 0.25.\endnote{\refsrivastava}
 
-The neural networks are optimized to minimize the binary cross-entropy, also known as log-loss, on the training data. We use the Adam\endnote{\refkingma} optimization algorithm, training with a batch size of 16. We tune the model on a hold-out validation set by allowing the neural network to train for as many epochs as needed until the area under the receiver-operator curve (AUC) from predictions on the validation set do not improve by 0.001. In Exhibit A8, we report the AUC from predictions on the testing set for each data source and each individual outcome.
+The neural networks are optimized to minimize the binary cross-entropy, also known as log-loss, on the training data. We use the Adam\endnote{\refkingma} optimization algorithm, training with a batch size of 16. We tune the model on a hold-out validation set by allowing the neural network to train for as many epochs as needed until the area under the receiver-operator curve (AUC) from predictions on the validation set does not improve by 0.001. In Exhibit A8, we report the AUC from predictions on the testing set for each data source and each individual outcome.
 
 \theendnotes
 
@@ -135,7 +135,7 @@ Naltrexone & 0.0 \\[1em]
 
 \newpage
 
-\textbf{Table A2.} Diagnosis and procedure codes used to indicate adverse outcomes when occurring in any claim after the initial opioid prescription.
+\textbf{Exhibit A2.} Diagnosis and procedure codes used to indicate adverse outcomes when occurring in any claim after the initial opioid prescription.
 
 \begin{tabular}{lll}
 \em Outcome & \em Code & \em Description \\[1em]
@@ -187,38 +187,46 @@ Naltrexone & 0.0 \\[1em]
 
 \newpage
 
-\textbf{Table A3.} Descriptive statistics for the final panel.
+\textbf{Exhibit A3.} Cumulative frequency of adverse outcomes over time since initial opioid prescription. Adverse outcomes are indicated by the diagnosis and procedure codes in Medicaid claims following the initial prescription. An individual may experience multiple types of adverse outcomes, and ``any" is the union of the five specific outcome types. Opioid dependence is the most prevalent of the types.
 
-\input{output/tables/TableA3}
+\includegraphics[width=6in]{output/figures/FigureA3}
 
 \newpage
 
-\textbf{Table A4.} Variables selected by BOLASSO as occurring in more than 90\% of LASSO replicates.
+\textbf{Exhibit A4.} Descriptive statistics for the final panel.
 
-\tiny
 \input{output/tables/TableA4}
-\normalsize
 
 \newpage
 
-\textbf{Table A5.} Summary of BOLASSO/Logit model.
+\textbf{Exhibit A5.} Low-dosage prescription opioids identified by the ASHP category for opiate agonists.
+
+\input{output/tables/TableA5}
+
+\newpage
+
+\textbf{Exhibit A6.} Features selected by BOLASSO as occurring in more than 90\% of LASSO replicates.
 
 \tiny
-\input{output/tables/TableA5}
-\normalsize
-
-\newpage
-
-\textbf{Table A6.} Area Under the Receiver-Operating Characteristic Curve (AUC) of neural network models using different subsets of administrative data and outcome definitions. Confidence intervals are calculated from 100 bootstrap replicates.
-
-\scriptsize
 \input{output/tables/TableA6}
 \normalsize
 
 \newpage
 
-\textbf{Figure A1.} Cumulative frequency of adverse outcomes over time since initial opioid prescription. Adverse outcomes are indicated by the diagnosis and procedure codes in Medicaid claims following the initial prescription. An individual may experience multiple types of adverse outcomes, and ``any" is the union of the five specific outcome types. Opioid dependence is the most prevalent of the types.
+\textbf{Exhibit A7.} Regression output for the BOLASSO Logit model.
 
-\includegraphics[width=6in]{output/figures/FigureA1}
+\tiny
+\input{output/tables/TableA7}
+\normalsize
+
+\newpage
+
+\textbf{Exhibit A8.} Area Under the Receiver-Operating Characteristic Curve (AUC) of neural network models using different subsets of administrative data and outcome definitions. Confidence intervals are calculated from 100 bootstrap replicates.
+
+\scriptsize
+\input{output/tables/TableA8}
+\normalsize
+
+\newpage
 
 \end{document}
