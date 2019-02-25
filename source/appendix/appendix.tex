@@ -97,7 +97,7 @@ Exhibit A6 lists the summary features selected by the BOLASSO. Exhibit A7 provid
 
 \subsection{Neural Networks}
 
-To obtain predictions of adverse outcomes after the initial prescription, we train a neural network model for each tensor using the Python package Keras (https://keras.io), which provides an interface to the TensorFlow\endnote{\refabadi} library. We specifically choose to train a recurrent neural network (RNN), since RNNs have the ability to model temporal patterns in the input data. We input our training data into a two-layer network of 16x16 Long Short-Term Memory (LSTM)\endnote{\refhochreiter} units and use the tanh activation function. We input the last LSTM layer into a dense layer that applies a sigmoid activation function to the weighted sum of the 16 inputs in order to produce a single predicted probability of adverse outcome. We employ regularization prior to each layer in the form of a dropout factor of 0.25, which causes a random deactivation of units within the layer during training with a fixed probability of 0.25.\endnote{\refsrivastava}
+To obtain predictions of adverse outcomes after the initial prescription, we train a neural network model for each tensor using the Python package Keras (https://keras.io), which provides an interface to the TensorFlow\endnote{\refabadi} library. We specifically choose to train a recurrent neural network (RNN), since RNNs have the ability to model temporal patterns in the input data. We input our training data into a two-layer network of 10x10 Long Short-Term Memory (LSTM)\endnote{\refhochreiter} units and use the tanh activation function. We input the last LSTM layer into a dense layer that applies a sigmoid activation function to the weighted sum of the 16 inputs in order to produce a single predicted probability of adverse outcome. We employ regularization prior to each layer in the form of a dropout factor of 0.25, which causes a random deactivation of units within the layer during training with a fixed probability of 0.25.\endnote{\refsrivastava}
 
 The neural networks are optimized to minimize the binary cross-entropy, also known as log-loss, on the training data. We use the Adam\endnote{\refkingma} optimization algorithm, training with a batch size of 16. We tune the model on a hold-out validation set by allowing the neural network to train for as many epochs as needed until the area under the receiver-operator curve (AUC) from predictions on the validation set does not improve by 0.001. In Exhibit A8, we report the AUC from predictions on the testing set for each data source and each individual outcome.
 
@@ -200,6 +200,12 @@ Naltrexone & 0.0 \\[1em]
 \newpage
 
 \textbf{Exhibit A5.} Low-dosage prescription opioids identified by the ASHP category for opiate agonists.
+
+\hrule
+
+\footnotesize
+* NDC code exists in ASHP categoriation but does not exist in NDC Directory
+\normalsize
 
 \input{output/tables/TableA5}
 

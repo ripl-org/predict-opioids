@@ -26,6 +26,11 @@ env.R("#output/tables/TableA4.tex",
        "#scratch/features/DLT/wages.csv",
        "#input/public/ACS_15_5YR_B17010_with_ann.csv"])
 
+# Table A5 - low-dosage opioids
+env.Python("#output/tables/TableA5.tex",
+           ["TableA5.py",
+            "#output/populations/CompareOpioids.csv"])
+
 # Table A6 - BOLASSO selected varibales
 env.Python("#output/tables/TableA6.tex",
            ["TableA6.py",
