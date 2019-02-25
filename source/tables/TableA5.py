@@ -1,31 +1,38 @@
 import pandas as pd
 import os
 import sys
+from itertools import zip_longest
 
 infile, outfile = sys.argv[1:]
 
 table = pd.read_csv(infile)
-opioids = frozenset(("codeine", "oxycodone", "tramadol"))
+table = table[table.DESC == "Opiate Agonists"]
+
+opioids = frozenset(("codeine", "oxycodone", "tramadol", "opium", "opium,",
+                     "hydromorphone", "fentanyl", "morphine"))
 
 with open(outfile, "w") as f:
     print(r"\begin{tabular}{lll}", file=f)
-    print(r"\em NDC Code & \em Opioid Ingredients & \em Other Ingredients\\[0.5em]", file=f)
-    for ndc, group in table.groupby("NDC9_CODE"):
+    print(r"\em NDC Code & \em Opioid Ingredients & \em Other Ingredients \\", file=f)
+    print(r"\hline", file=f)
+    for (ndc, ingredient), group in table.groupby("NDC9_CODE"):
         ndc = "{:09d}".format(ndc)
-        opioid = []
-        other = []
-        for row in group.itertuples():
+        opioid = set()
+        other = set()
+        for row in group[group.ingredient.notnull()].itertuples():
             ingredient = row.ingredient.lower()
-            summary = "{} ({}{})".format(ingredient, row.amount, row.unit.lower())
-            if ingredient.partition()[0] in opioids:
+            summary = "{} ({:g}{})".format(ingredient, row.amount, row.unit.lower()).replace("%", r"\%")
+            if ingredient.partition(" ")[0] in opioids:
                 opioid.append(summary)
             else:
                 other.append(summary)
-        if opioid or other:
-            missing = ""
+        f.write(r"\textbf{{{}-{}}}".format(ndc[:5], ndc[5:]))
+        if not (opioid or other):
+            print(r"* & & \\", file=f)
         else:
-            missing = "*"
-        print(r"{}-{}{} & {} & {} \\".format(ndc[:5], ndc[5:], missing, "; ".join(opioid), "; ".join(other)), file=f)
+            for opioid, other in zip_longest(sorted(opioid), sorted(other), fillvalue=""):
+                print(r" & {} & {} \\".format(opioid, other), file=f)
+        print(r"\hline", file=f)
     print(r"\end{tabular}", file=f)
 
 # vim: syntax=python expandtab sw=4 ts=4

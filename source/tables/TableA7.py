@@ -7,7 +7,7 @@ infile, outfile = sys.argv[1:]
 table = pd.read_csv(infile).sort_values("odds", ascending=False)
 
 with open(outfile, "w") as f:
-    print(r"\begin{tabular}{lr}", file=f)
+    print(r"\begin{tabular}{lccc}", file=f)
     print(r"\em Variable & \em Odds Ratio & \em 95\% C.I. & \em p-value\\[0.5em]", file=f)
     for row in table.itertuples():
         print(r"{} & {:.3f} & ({:.3f} - {:.3f}) & {:.3f} \\".format(
