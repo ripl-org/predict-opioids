@@ -1,18 +1,16 @@
 Import("*")
 
-# Figure 1 - comparison of AUCs
-env.Python("#output/figures/Figure1.csv",
+# Figure 1 - summary of logit odds ratios
+env.Python("#output/figures/Figure1.pdf",
            ["Figure1.py",
-            constants["RANDOM_SEED"],
-            constants["PLOT_BOOTSTRAPS"],
-            "#output/models/postlasso.all.OUTCOME_ANY.y_pred.csv",
-            "#output/models/bagged-lasso.all.OUTCOME_ANY.y_pred.csv",
-            "#output/models/lstm.all.OUTCOME_ANY.y_pred.csv"])
-
-# Figure 2 - summary of logit
-env.Python("#output/figures/Figure2.pdf",
-           ["Figure2.py",
             "#output/models/postlasso.all.OUTCOME_ANY.csv"])
+
+# Figure 2 - fraction of true positives
+env.Python("#output/figures/Figures2.csv",
+           ["Figure2.py",
+            "#output/models/postlasso.all.OUTCOME_ANY.accuracy.csv",
+            "#output/models/bagged-lasso.all.OUTCOME_ANY.accuracy.csv",
+            "#output/models/lstm.all.OUTCOME_ANY.accuracy.csv"])
 
 # Figure 3 - cost ratio
 env.Python("#output/figures/Figure3.csv",

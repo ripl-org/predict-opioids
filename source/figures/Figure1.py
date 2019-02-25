@@ -1,36 +1,63 @@
-import pandas as pd
+import matplotlib.pyplot as plt
 import os
+import pandas as pd
+import seaborn as sns
 import sys
-from sklearn.metrics import roc_auc_score
 
-seed        = int(sys.argv[1])
-n_bootstrap = int(sys.argv[2])
-infiles     = sys.argv[3:-1]
-outfile     = sys.argv[-1]
+infile, outfile = sys.argv[1:]
 
-out = []
+data = pd.read_csv(infile)
 
-def bootstrap(data, N, statistic, seed):
-    replicates = sorted(statistic(data.sample(n=len(data),
-                                              replace=True,
-                                              random_state=seed+i))
-                        for i in range(N))
-    ci_lower = replicates[int(0.025 * N)]
-    ci_upper = replicates[int(0.975 * N)]
-    return statistic(data), ci_lower, ci_upper
+outliers = ["MEDICAID_PAYER_RIPAE",
+            "MEDICAID_CTG_NEEDY",
+            "ASHP_12200400",
+            "ASHP_28160804",
+            "RACE_HISPANIC",
+            "UNEMP_RI",
+            "DOC_RELEASED",
+            "DHS_HH_SIZE"]
 
-for y_pred_file in infiles:
-    auc, ci_lower, ci_upper = bootstrap(pd.read_csv(y_pred_file),
-                                        n_bootstrap,
-                                        lambda df: roc_auc_score(df.y_test, df.y_pred),
-                                        seed)
-    out.append((os.path.basename(y_pred_file).split(".")[0],
-                "{:.3f}".format(auc),
-                "({:.3f}-{:.3f})".format(ci_lower, ci_upper)))
+def classify(var):
+    if var.startswith("MEDICAID") or var.startswith("ASHP"):
+        return "Medicaid"
+    elif var.startswith("DOC") or var == "CITATIONS":
+        return "Criminal History"
+    elif var.startswith("DHS") or var.startswith("SNAP"):
+        return "Social Services"
+    elif var.startswith("WAGE") or var.startswith("UI") or var == "UNEMP_RI":
+        return "Labor & Training"
+    else:
+        return "Demographics"
 
-with open(outfile, "w") as f:
-    print("\t".join(("Model", "AUC", "95% C.I.")), file=f)
-    for row in out:
-        print("\t".join(row), file=f)
+data["category"] = data["var"].apply(classify)
+print(data.category.values_counts())
+
+categories = dict((c, i) for i, c in enumerate(data.category.unique()))
+
+plt.figure(figsize=(8.5, 5))
+sns.stripplot(x="odds", y="category", data=data, orient="h")
+sns.despine(left=True)
+plt.xlim([0, 2])
+plt.title("Odds ratios for BOLASSO-selected predictors by category", loc="left", fontsize=14)
+plt.xlabel("")
+plt.ylabel("")
+plt.grid(True, which="major", axis="y", color="lightgray", linewidth=50)
+for x in [0.25, 0.5, 0.75, 1.25, 1.5, 1.75]:
+    plt.axvline(x, color="w", linewidth=2, linestyle="dotted")
+for x in [0, 1, 2]:
+    plt.axvline(x, color="w", linewidth=2)
+
+# Annotate outliers
+for i, var in enumerate(outliers):
+    row = data[data["var"] == var].iloc[0]
+    xy = (row.odds, categories[row.category])
+    plt.annotate(chr(97+i), xy,
+                 xycoords="data",
+                 xytext=(xy[0], xy[1]-0.2),
+                 weight="bold",
+                 arrowprops=dict(arrowstyle="->"))
+
+plt.tight_layout()
+plt.savefig(outfile)
 
 # vim: syntax=python expandtab sw=4 ts=4
