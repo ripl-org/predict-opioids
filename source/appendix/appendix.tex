@@ -47,7 +47,7 @@ Although our data span the years 2001 to 2017, we construct a panel of individua
 
 To define our panel, we first establish which pharmacy claims correspond to opioid prescriptions. The primary identifier for the dispensed drug is a standardized 11-digit National Drug Code (NDC) from the U.S. Food and Drug Administration's NDC Directory.\endnote{\refndc} This directory is only available as a current snapshot, and because our claims data start in 2001, there are many unmapped NDCs to the current directory. Out of approximately 14.8 million pharmacy claims between 2006 and 2012, only 66.8 percent join to the current directory. Therefore, we construct a historical NDC directory using a data mining framework that downloads and collates all available Internet Archive snapshots of the FDA's NDC website since 2000.\endnote{\refhistoricalndc} This historical directory also includes full ingredient lists for each NDC, standardized to milligrams. Using this improved directory, 88.1 percent of pharmacy claims between 2006 and 2012 map to an NDC entry. 
 
-We define an opioid prescription as any claim for a drug containing an opioid ingredient at or above the recommended starting dose when initiating opioid therapy for chronic pain management, as established in Washington State's 2015 prescribing guideline and further cited in the Centers for Disease Control's 2016 prescribing guideline.\endnote{\refamdg}\textsuperscript{,}\endnote{\refdowell} Table A1 summarizes these ingredients and the minimum amounts we use to define an opioid drug. Of the 4,359 drugs containing one of these ingredients, 4,175 meet the minimum threshold amount and appear in 3.9 percent of claims.
+We define an opioid prescription as any claim for a drug containing an opioid ingredient at or above the recommended starting dose when initiating opioid therapy for chronic pain management, as established in Washington State's 2015 prescribing guideline and further cited in the Centers for Disease Control's 2016 prescribing guideline.\endnote{\refamdg}\textsuperscript{,}\endnote{\refdowell} Exhibit A1 lists these ingredients and the minimum amounts we use to define an opioid drug. Of the 4,359 drugs containing one of these ingredients, 4,175 meet the minimum threshold amount and appear in 3.9 percent of claims.
 
 Additionally, we define a recovery prescription as any NDC containing one of four ingredients commonly used in medication-assisted treatment of an opioid use disorder, which identifies 412 such drugs that appear in 0.5 percent of claims. These prescriptions may indicate that an individual has a preexisting opioid use disorder.
 
@@ -55,17 +55,25 @@ Additionally, we define a recovery prescription as any NDC containing one of fou
 
 For each individual in our panel, we examine all of the Medicaid claims following their initial opioid prescription to construct indicator variables for four types of adverse outcomes: opioid dependence, opioid abuse, prescription-opioid poisoning and heroin poisoning. We include heroin poisoning as an outcome given the increasing use of heroin among those who abuse opioids, and the high proportion (greater than 80 percent) of joint heroin-prescription-opioid users who abused opioids prior to using heroin.\endnote{\refjones}
 
-We determine these outcomes from the claim's International Classification of Diseases (ICD) diagnosis codes, which are used by medical professionals to classify a patient's health conditions following an encounter. Because our data span the transition from the ICD-9 to ICD-10 classification, we include diagnosis codes from both. Table A2 summarizes the exact codes used to indicate each of these four diagnosis-related outcomes. 
+We determine these outcomes from the claim's International Classification of Diseases (ICD) diagnosis codes, which are used by medical professionals to classify a patient's health conditions following an encounter. Because our data span the transition from the ICD-9 to ICD-10 classification, we include diagnosis codes from both. Exhibit A2 lists the exact codes used to indicate each of these four diagnosis-related outcomes. 
 
-Not everyone with an opioid use disorder receives a diagnosis code. Though it is unknown precisely what fraction of opioid use disorders go undiagnosed, Carrell {\em et al}. found that diagnosis codes were missing for as many as a quarter of patients for whom their providers were aware of opioid abuse.\endnote{\refcarrell} Similarly, a study by Barocas {\em et al}. estimated that only 44\% of individuals with opioid use disorder were identified as such in claims and administrative records.\endnote{\refbarocas} To address the challenges with diagnoses codes, we define a fifth treatment outcome using procedure codes related to the treatment of opioid use disorder, and more generally for drug rehabilitation and detoxification (Table A2). Finally, we define a sixth ``any" outcome as the union of any of the diagnoses or treatment outcomes, to capture as broad a population of individual with opioid use disorder as possible. Data and measurement limitations notwithstanding, our model demonstrates that administrative data can be combined to form an accurate prediction of these outcomes, suggesting a feasible path forward for utilizing data to inform prescription risk.
+Not everyone with an opioid use disorder receives a diagnosis code. Though it is unknown precisely what fraction of opioid use disorders go undiagnosed, Carrell {\em et al}. found that diagnosis codes were missing for as many as a quarter of patients for whom their providers were aware of opioid abuse.\endnote{\refcarrell} Similarly, a study by Barocas {\em et al}. estimated that only 44\% of individuals with opioid use disorder were identified as such in claims and administrative records.\endnote{\refbarocas} To address the challenges with diagnoses codes, we define a fifth treatment outcome using procedure codes related to the treatment of opioid use disorder, and more generally for drug rehabilitation and detoxification (Exhibit A2). Finally, we define a sixth ``any" outcome as the union of any of the diagnoses or treatment outcomes, to capture as broad a population of individual with opioid use disorder as possible. Data and measurement limitations notwithstanding, our model demonstrates that administrative data can be combined to form an accurate prediction of these outcomes, suggesting a feasible path forward for utilizing data to inform prescription risk. Exhibit A3 shows the accumulating fraction of adverse outcomes over the five year period following initial prescription.
 
 \section{Final Panel}
 
-Out of 400,024 distinct Medicaid enrollees between 2006 and 2012, our panel initially contains 74,213 individuals who received at least one opioid prescription in that period. We exclude 511 individuals who received a recovery prescription before their initial opioid prescription, since this indicates they may have been seeking treatment for an opioid use disorder. We exclude 3,549 individuals with an adverse outcome prior to their initial opioid prescription, since we assume they were already receiving opioids from another source, such as through private insurance before enrolling in Medicaid. Our final panel includes 70,153 individuals. Table A3 shows the incidence of adverse outcomes among these individuals, by baseline characteristics from the RI360\endnote{\refhastings} database.
+Out of 400,024 distinct Medicaid enrollees between 2006 and 2012, our panel initially contains 74,213 individuals who received at least one opioid prescription in that period. We exclude 511 individuals who received a recovery prescription before their initial opioid prescription, since this indicates they may have been seeking treatment for an opioid use disorder. We exclude 3,549 individuals with an adverse outcome prior to their initial opioid prescription, since we assume they were already receiving opioids from another source, such as through private insurance before enrolling in Medicaid. Our final panel includes 70,153 individuals. Exhibit A4 shows the incidence of adverse outcomes among these individuals by baseline characteristics.
 
-\section{Feature Engineering}
+\section{Summary Features}
 
-\section{Tensor Representation}
+
+\subsection{Topic Modeling}
+
+\subsection{Low-Dosage Opioids}
+
+Exhibit A5 lists all 75 of these 
+
+
+\section{Tensor Features}
 
 We construct tensors of monthly values for a given feature for each of the individuals in our panel in the 12 months prior to the individual's initial prescription. Missing values are imputed using mean values from the training population.
 
@@ -75,27 +83,29 @@ The DLT tensor includes 31 features for indicators for sector of work derived fr
 
 The DOC tensor includes 16 features for demographics (age and indicators for sex, race, Spanish as a primary language), and indicators for charges, seven categories of sentencing, and commitments and releases from prison.
 
-The Medicaid tensor includes 928 features for demographics (age and indicators for sex, race, and Spanish or Portuguese as a primary language); indicators for eligibility categories, plan type, and payer codes at each month of enrollment; number of claims and total bill and payment amounts for all claims and for Emergency Department claims; the number of prescriptions in each of the 141 second-level categories from the AHFS Pharmacologic/Therapeutic Classification;\endnote{\refashp} and indicators for ICD-9 diagnoses codes and HCPCS procedure codes for all codes that are correlated >0.02 with any adverse outcome in the training population.
+The Medicaid tensor includes 683 features for demographics (age and indicators for sex, race, and Spanish or Portuguese as a primary language); indicators for eligibility categories, plan type, and payer codes at each month of enrollment; number of claims and total bill and payment amounts for all claims and for Emergency Department claims; the number of prescriptions in each of the 141 second-level categories from the AHFS Pharmacologic/Therapeutic Classification;\endnote{\refashp} and indicators for ICD-9 diagnoses codes and HCPCS procedure codes for all codes that are correlated >0.02 with any adverse outcome in the training population.
 
 The police tensor includes 42 features for demographics (age and indicators for sex and officer-observed race); indicators for all arrests, DUI arrests, and domestic-offense arrests; the number of car crashes involved and injured in; the number of and total fines for citations; and the spatio-temporal intensity of calls for service in the individual's home Census block group for 29 categories of calls.
 
-Finally, we construct an integrated tensor including all of the 1,030 features from the DHS, DLT, DOC, Medicaid, and police tensors. The dimension of this integrated tensor are 70,153 individuals x 12 months x 1,030 features.
+Finally, we construct an integrated tensor including all of the 785 features from the DHS, DLT, DOC, Medicaid, and police tensors. The dimension of this integrated tensor are 70,153 individuals x 12 months x 785 features.
 
 \section{Models}
 
 \subsection{Linear}
 
+Exhibit A6 lists the summary features selected by the BOLASSO. Exhibit A7 provides the full regression output of the BOLASSO Logit model.
+
 \subsection{Neural Networks}
 
-To obtain predictions of adverse outcomes after the initial prescription, we train a neural network model for each tensor using the Python package Keras (https://keras.io), which provides an interface to the TensorFlow\endnote{\refabadi} library. We specifically choose to train a recurrent neural network (RNN), since RNNs have the ability to model temporal patterns in the input data. We input our training data into a two-layer network of 1x150 Long Short-Term Memory (LSTM)\endnote{\refhochreiter} units and use the tanh activation function. We input last LSTM layer into a dense layer that applies a sigmoid activation function to the weighted sum of the 150 inputs in order to produce a single predicted probability of adverse outcome. We employ regularization prior to each layer in the form of a dropout factor of 0.25, which causes a random deactivation of units within the layer during training with a fixed probability of 0.25.\endnote{\refsrivastava}
+To obtain predictions of adverse outcomes after the initial prescription, we train a neural network model for each tensor using the Python package Keras (https://keras.io), which provides an interface to the TensorFlow\endnote{\refabadi} library. We specifically choose to train a recurrent neural network (RNN), since RNNs have the ability to model temporal patterns in the input data. We input our training data into a two-layer network of 16x16 Long Short-Term Memory (LSTM)\endnote{\refhochreiter} units and use the tanh activation function. We input the last LSTM layer into a dense layer that applies a sigmoid activation function to the weighted sum of the 16 inputs in order to produce a single predicted probability of adverse outcome. We employ regularization prior to each layer in the form of a dropout factor of 0.25, which causes a random deactivation of units within the layer during training with a fixed probability of 0.25.\endnote{\refsrivastava}
 
-The neural networks are optimized to minimize the binary cross-entropy, also known as log-loss, on the training data. We use the Adam\endnote{\refkingma} optimization algorithm, training with a batch size of 32. We tune the model on a hold-out validation set by allowing the neural network to train for as many epochs as needed until the area under the receiver-operator curve (AUC) from predictions on the validation set do not improve by 0.001. In Table A6, we report the AUC from predictions on the testing set for each data source and each individual outcome.
+The neural networks are optimized to minimize the binary cross-entropy, also known as log-loss, on the training data. We use the Adam\endnote{\refkingma} optimization algorithm, training with a batch size of 16. We tune the model on a hold-out validation set by allowing the neural network to train for as many epochs as needed until the area under the receiver-operator curve (AUC) from predictions on the validation set do not improve by 0.001. In Exhibit A8, we report the AUC from predictions on the testing set for each data source and each individual outcome.
 
 \theendnotes
 
 \newpage
 
-\textbf{Table A1.} Minimum amounts of ingredients in a drug to classify it as an opioid prescription or a recovery prescription.
+\textbf{Exhibit A1.} Minimum amounts of ingredients in a drug to classify it as an opioid prescription or a recovery prescription.
 
 \begin{tabular}{lc}
 \em Opioid Ingredient & \em Minimum Amount (mg) \\[0.5em]

@@ -30,7 +30,7 @@ def classify(var):
         return "Demographics"
 
 data["category"] = data["var"].apply(classify)
-print(data.category.values_counts())
+print(data.category.value_counts())
 
 categories = dict((c, i) for i, c in enumerate(data.category.unique()))
 

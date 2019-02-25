@@ -9,15 +9,15 @@ env.Python("#output/tables/Table1.csv",
             "#output/models/bagged-lasso.all.OUTCOME_ANY.y_pred.csv",
             "#output/models/lstm.all.OUTCOME_ANY.y_pred.csv"])
 
-# Table A3 - sample characteristics
+# Table A4 - baseline characteristics
 env.Python(["#scratch/tables/demographics.csv",
             "#scratch/tables/demographics.manifest"],
            ["demographics.py",
             tables["population"],
             tables["dim_date"],
             tables["mega_demo"]])
-env.R("#output/tables/TableA3.tex",
-      ["TableA3.R",
+env.R("#output/tables/TableA4.tex",
+      ["TableA4.R",
        "#scratch/outcomes/all.csv",
        "#scratch/tables/demographics.csv",
        "#scratch/features/Mega/census.csv",
@@ -26,20 +26,20 @@ env.R("#output/tables/TableA3.tex",
        "#scratch/features/DLT/wages.csv",
        "#input/public/ACS_15_5YR_B17010_with_ann.csv"])
 
-# Table A4 - BOLASSO selected varibales
-env.Python("#output/tables/TableA4.tex",
-           ["TableA4.py",
-            "#output/models/bolasso.freq.all.OUTCOME_ANY.csv"])
-
-# Table A5 - logit summary
-env.Python("#output/tables/TableA5.tex",
-           ["TableA5.py",
-            "#output/models/postlasso.all.OUTCOME_ANY.csv"])
-
-# Table A6 - neural net AUCs
-tensors = ["DHS", "DLT", "DOC", "Medicaid", "Police", "all"]
+# Table A6 - BOLASSO selected varibales
 env.Python("#output/tables/TableA6.tex",
            ["TableA6.py",
+            "#output/models/bolasso.freq.all.OUTCOME_ANY.csv"])
+
+# Table A7 - logit summary
+env.Python("#output/tables/TableA7.tex",
+           ["TableA7.py",
+            "#output/models/postlasso.all.OUTCOME_ANY.csv"])
+
+# Table A8 - neural net AUCs
+tensors = ["DHS", "DLT", "DOC", "Medicaid", "Police", "all"]
+env.Python("#output/tables/TableA8.tex",
+           ["TableA8.py",
             constants["RANDOM_SEED"],
             constants["PLOT_BOOTSTRAPS"],
             Value(",".join(outcomes)),
