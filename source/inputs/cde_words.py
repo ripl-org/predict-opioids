@@ -31,6 +31,8 @@ stopwords = frozenset(["of", "the", "and", "not", "no", "with", "without",
                        "seven", "eight", "nine", "ten", "eleven", "twelve"] + \
                       [chr(i) for i in range(97, 123)])
 
+print("stopwords:", len(stopwords))
+
 def main():
 
     icd9 = pd.concat([pd.read_csv(icd9_file1).rename(columns={"DIAGNOSIS CODE": "DIAG_CDE", "LONG DESCRIPTION": "DESC"}),
@@ -59,6 +61,7 @@ def main():
     words = words.value_counts().reset_index().rename(columns={"index": "WORD", "WORD": "N"})
     words["WORD_ID"] = np.arange(len(words))
     words[["WORD_ID", "WORD", "N"]].to_csv(words_file, index=False)
+    print("distinct words:", len(words))
 
     icd9 = icd9.merge(words[["WORD", "WORD_ID"]], how="inner", on="WORD")
     proc = proc.merge(words[["WORD", "WORD_ID"]], how="inner", on="WORD")
@@ -111,6 +114,7 @@ def main():
     pop["ROW_ID"] = np.arange(len(pop))
 
     values = values.merge(pop, on="RIIPL_ID")[["ROW_ID", "WORD_ID", "N"]]
+    print("total occurrences:", values.N.sum())
 
     # MM uses 1-based indexing
     values["ROW_ID"] += 1
