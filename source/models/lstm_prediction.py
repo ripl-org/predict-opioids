@@ -35,10 +35,10 @@ for k in range(X_test.nsamples):
          X_dense[X_test.index[k] + k*stride] = X_test.values[k]
 X_dense = X_dense.reshape(X_test.nsamples, X_test.nsteps, X_test.nfeatures)
 
-y_pred = model.predict_proba(X_dense)
+y_pred = model.predict(X_dense)[:,0]
 
 print("AUROC", roc_auc_score(y_test, y_pred))
 print("AUPRC", average_precision_score(y_test, y_pred))
 
-pd.DataFrame({"y_pred": y_pred, "y_test": y_test}).to_csv(predfile, index=False)
+pd.DataFrame({"RIIPL_ID": population[test].index, "y_pred": y_pred, "y_test": y_test}).to_csv(predfile, index=False)
 
