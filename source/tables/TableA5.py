@@ -22,9 +22,13 @@ with open(outfile, "w") as f:
         ndc = "{:09d}".format(ndc)
         opioid = set()
         other = set()
-        for row in group[group.ingredient.notnull()].itertuples():
-            ingredient = row.ingredient.lower()
-            summary = "{} ({:g}{})".format(ingredient, row.amount, row.unit.lower()).replace("%", r"\%")
+        for (ingredient, unit), amounts in group[group.ingredient.notnull()].groupby(["ingredient", "unit"]):
+            ingredient = ingredient.lower()
+            unit = unit.lower().replace("%", r"\%")
+            if len(amounts) == 1:
+                summary = "{} ({:g}{})".format(ingredient, amounts["amount"].iloc[0], unit)
+            else:
+                summary = "{} ({:g}-{:g}{})".format(ingredient, amounts["amount"].min(), amounts["amount"].max(), unit)
             if ingredient.partition(" ")[0] in opioids:
                 opioid.add(summary)
             else:

@@ -93,7 +93,7 @@ The DLT tensor includes 31 features for indicators for sector of work derived fr
 
 The DOC tensor includes 16 features for demographics (age and indicators for sex, race, Spanish as a primary language), and indicators for charges, seven categories of sentencing, and commitments and releases from prison.
 
-The Medicaid tensor includes 683 features for demographics (age and indicators for sex, race, and Spanish or Portuguese as a primary language); indicators for eligibility categories, plan type, and payer codes at each month of enrollment; number of claims and total bill and payment amounts for all claims and for Emergency Department claims; the number of prescriptions in each of the 141 second-level categories from the AHFS Pharmacologic/Therapeutic Classification;\footnotemark[\ref{ashp}] and indicators for ICD-9 diagnosis codes and HCPCS procedure codes for all codes that are correlated >0.02 with any adverse outcome in the training population.
+The Medicaid tensor includes 683 features for demographics (age and indicators for sex, race, and Spanish or Portuguese as a primary language); indicators for eligibility categories, plan type, and payer codes at each month of enrollment; number of claims and total bill and payment amounts for all claims and for Emergency Department claims; the number of prescriptions in each of 265 categories from the AHFS Pharmacologic/Therapeutic Classification; and indicators for ICD-9 diagnosis codes and HCPCS procedure codes for all codes that are correlated >0.02 with any adverse outcome in the training population.
 
 The police tensor includes 42 features for demographics (age and indicators for sex and officer-observed race); indicators for all arrests, DUI arrests, and domestic-offense arrests; the number of car crashes involved and injured in; the number of and total fines for citations; and the spatio-temporal intensity of calls for service in the individual's home Census block group for 29 categories of calls.
 
@@ -114,6 +114,8 @@ We define two linear models based on the BOLASSO. The first model, called BOLASS
 We train a neural network model for each tensor using the Python package Keras,\endnote{\refchollet} which provides an interface to the TensorFlow library.\endnote{\refabadi} Specifically, we train a recurrent neural network (RNN), since RNNs have the ability to model temporal patterns in the input data. We input our training data into a two-layer network of 10x10 Long Short-Term Memory (LSTM)\endnote{\refhochreiter} units with the tanh activation function. We input the last LSTM layer into a dense layer that applies a sigmoid activation function to the weighted sum of the 10 inputs in order to produce a single predicted probability of adverse outcome. We employ regularization prior to each layer in the form of a dropout factor of 0.25, which causes a random deactivation of units within the layer during training with a fixed probability of 0.25.\endnote{\refsrivastava}
 
 The neural networks are optimized to minimize the binary cross-entropy, also known as log-loss, on the training data. We use the Adam\endnote{\refkingma} optimization algorithm, training with a batch size of 16. We tune the model on the validation set by allowing the neural network to train for as many epochs as needed until the area under the receiver-operating curve (AUC) from predictions on the validation set does not improve by 0.001. Exhibit A8 shows the AUC from predictions on the testing set for each data source and each individual outcome.
+
+\newpage
 
 \theendnotes
 
@@ -213,12 +215,12 @@ Naltrexone & 0.0 \\[1em]
 
 \newpage
 
-\textbf{Exhibit A5.} Low-dosage prescription opioids identified by the ASHP category for opiate agonists.
+\textbf{Exhibit A5.} Low-dosage prescription opioids identified by the AHFS Pharmacologic/Therapeutic Classification category for opiate agonists.
 
 \tiny
 \input{output/tables/TableA5}
 
-* NDC code exists in ASHP categoriation but does not exist in NDC Directory
+* NDC code exists in AHFS Pharmacologic/Therapeutic Classification but does not exist in NDC directory
 \normalsize
 
 \newpage
