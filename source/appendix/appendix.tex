@@ -77,21 +77,11 @@ The largest set of features comes from the Medicaid data. These include indicato
 
 Within the prescription drug categories, there is a category for opiate agonists. By construction of our panel, no individuals should have previously received an opioid prescription. However, the opiate agonist category includes 152 drugs that were not identified in the 4,175 opioid drugs from our historical NDC directory, and which are listed in Exhibit A5. These drugs either contain an opioid ingredient at a lower amount than the minimum thresholds defined by the Washington State prescribing guidelines, or contain an ingredient not identified in those guidelines (e.g., ``opium''). Therefore, the opiate agonist feature indicates that the individual received a drug that was not likely for initiating opioid therapy, but nonetheless contains a small amount of an opioid ingredient. Most of these drugs are over-the-counter cough syrups or painkillers combined with small amounts of an opioid ingredient. Of the 152, there are eight that are not present in the historical NDC directory, possibly because they were on the market for a short enough time that they do not occur in any of the available historical snapshots of the NDC directory.
 
-We construct the topic models using a technique called non-negative matrix factorization, which is commonly used in text analysis to discover latent topic structure in documents. In this application, we treat each individual's concatenated text descriptions of diagnosis and procedure codes as a document to learn the latent topic structure across individuals' health histories. Our topic models are trained on 70,153 documents comprised of distinct words from the code descriptions, after removing uninformative words using a stopword list.
+We construct the topic models using a technique called non-negative matrix factorization (NMF), which is commonly used in text analysis to discover latent topic structure in documents. In this application, we treat each individual's concatenated text descriptions of diagnosis and procedure codes as a document to learn the latent topic structure across individuals' health histories. Our topic models summarize 70,153 documents comprised of 16,367 distinct words from the code descriptions, after removing 173 uninformative words using a stopword list. The total corpus consists of over 20.5 million words.
 
-Because the number of latent topics is not known \emph{a priori}, we tune this parameter based on 
+NMF works by factorizing the non-negative $d \times w$ matrix of the documents' word frequencies into non-negative matrices $d \times t$ and $t \times w$, where $d$ is the number of documents, $w$ is the number of distinct words, and $t$ is the number of topics. We apply a term frequency-inverse document frequency (TF-IDF) transformation to the $d \times w$ matrix to reweight the word frequencies by their overall frequencies in the entire corpus, which is common practice when implementing NMF. The $d \times t$ matrix represents the weighting of topics for each document, and the $t \times w$ matrix represents the weighting of words for each topic. We summarize each topic using the 10 words with the greatest frequency in the $t \times w$ matrix.
 
-This tuning achieves AUCs of 0.660 for 10 topics, 0.674 for 20 topics, 0.703 for 50 topics, 0.714 for 100 topics, 0.716 for 200 topics, and 0.696 for 500 topics. Therefore, we select the model with 200 topics as the final features.
-
-It involves factorizing a d x w matrix into a d x t matrix and a t x w matrix such that all three matrices have only non-negative entries, where 
-
-When used in text analysis, it involves factorising a matrix containing the number of observations of word w_i in document d_j into a matrix containing the propensity of word w_i to appear in topic t_k and a matrix showing the likelihood that document d_j is assigned to topic t_k.
-
-There are two key reasons why this is useful to our model. The first is dimensionality reduction: as t can be much lower than w, using the d x t matrix instead of the d x w matrix can greatly decrease the dimensionality of our feature space. The second is information extraction. Combining many words into a single feature means that feature may have a stronger signal than the individual words would have had by themselves. 
-
-Before constructing the word frequency, we remove a list of stopwords that 
-
-We summarize each top using the 10 words with the greatest frequency within  ...
+Because the number of topics $t$ is not known \emph{a priori}, we tune this parameter by finding the $t$ with the best out-of-sample area under the operating-receiver characteristic curve (AUC) in a logistic regression that includes only the topic model features. We use only the training set for this tuning, and further subdivide it in half into topic training and topic validation sets. The tuning achieves AUCs on the topic validation set of 0.660 for 10 topics, 0.674 for 20 topics, 0.703 for 50 topics, 0.714 for 100 topics, 0.716 for 200 topics, and 0.696 for 500 topics. Therefore, we select the model with 200 topics as the final features.
 
 \subsection{Tensor Features}
 
@@ -103,7 +93,7 @@ The DLT tensor includes 31 features for indicators for sector of work derived fr
 
 The DOC tensor includes 16 features for demographics (age and indicators for sex, race, Spanish as a primary language), and indicators for charges, seven categories of sentencing, and commitments and releases from prison.
 
-The Medicaid tensor includes 683 features for demographics (age and indicators for sex, race, and Spanish or Portuguese as a primary language); indicators for eligibility categories, plan type, and payer codes at each month of enrollment; number of claims and total bill and payment amounts for all claims and for Emergency Department claims; the number of prescriptions in each of the 141 second-level categories from the AHFS Pharmacologic/Therapeutic Classification;\endnote{\refashp} and indicators for ICD-9 diagnosis codes and HCPCS procedure codes for all codes that are correlated >0.02 with any adverse outcome in the training population.
+The Medicaid tensor includes 683 features for demographics (age and indicators for sex, race, and Spanish or Portuguese as a primary language); indicators for eligibility categories, plan type, and payer codes at each month of enrollment; number of claims and total bill and payment amounts for all claims and for Emergency Department claims; the number of prescriptions in each of the 141 second-level categories from the AHFS Pharmacologic/Therapeutic Classification;\footnotemark[\ref{ashp}] and indicators for ICD-9 diagnosis codes and HCPCS procedure codes for all codes that are correlated >0.02 with any adverse outcome in the training population.
 
 The police tensor includes 42 features for demographics (age and indicators for sex and officer-observed race); indicators for all arrests, DUI arrests, and domestic-offense arrests; the number of car crashes involved and injured in; the number of and total fines for citations; and the spatio-temporal intensity of calls for service in the individual's home Census block group for 29 categories of calls.
 
@@ -113,13 +103,17 @@ Finally, we construct an integrated tensor including all of the 785 features fro
 
 \subsection{Linear}
 
-Exhibit A6 lists the summary features selected by the BOLASSO. Exhibit A7 provides the full regression output of the BOLASSO Logit model.
+As described in the main text, we perform a bootstrapped LASSO, or BOLASSO,\endnote{\refbach} on the summary features to consistently identify a model in the presence of correlated features. Exhibit A6 lists the summary features selected by the BOLASSO as occuring with a non-zero coefficient in more than 90 of the 100 LASSO bootstrap replicates.
+
+We fit each LASSO bootstrap replicate on the training set using a regularized logistic regression implementation called the gamma LASSO, which was developed specifically to address the challenges of modeling sparse, high-dimensional data.\endnote{\reftaddy} Since a predictive model fits idiosyncratic noise through increased complexity in the model's structure, machine learning techniques commonly penalize complexity in the models they produce through a process called regularization. We tune the regularization parameters for the gamma LASSO model through a parameter search over gamma values in [0, 1, 10] and a path of 100 lambda values, and we select the model with the best area under the receiver-operating characteristic curve (AUC) on the validation set. Regularization helps prevent overfitting to the training data and thus improves out-of-sample fit. We are primarily interested in out-of-sample performance since our goal is to use the model to inform successful policy interventions, which require making predictions on new observations.\endnote{\refkleinberg}
+
+We define two linear models based on the BOLASSO. The first model, called BOLASSO Logit, includes a second-stage ordinary logistic regression fit to only the features selected by the first-stage BOLASSO. Exhibit A7 provides the full regression output of the second stage of the BOLASSO Logit model. The coefficients in this second stage are not biased by regularization, as the LASSO coefficients in the first stage are. The second model, called BOLASSO Ensemble, is simply the averaged predicted probability across all 100 of the LASSO bootstrap replicates.
 
 \subsection{Neural Networks}
 
-To obtain predictions of adverse outcomes after the initial prescription, we train a neural network model for each tensor using the Python package Keras (https://keras.io), which provides an interface to the TensorFlow\endnote{\refabadi} library. We specifically choose to train a recurrent neural network (RNN), since RNNs have the ability to model temporal patterns in the input data. We input our training data into a two-layer network of 10x10 Long Short-Term Memory (LSTM)\endnote{\refhochreiter} units and use the tanh activation function. We input the last LSTM layer into a dense layer that applies a sigmoid activation function to the weighted sum of the 16 inputs in order to produce a single predicted probability of adverse outcome. We employ regularization prior to each layer in the form of a dropout factor of 0.25, which causes a random deactivation of units within the layer during training with a fixed probability of 0.25.\endnote{\refsrivastava}
+We train a neural network model for each tensor using the Python package Keras,\endnote{\refchollet} which provides an interface to the TensorFlow library.\endnote{\refabadi} Specifically, we train a recurrent neural network (RNN), since RNNs have the ability to model temporal patterns in the input data. We input our training data into a two-layer network of 10x10 Long Short-Term Memory (LSTM)\endnote{\refhochreiter} units with the tanh activation function. We input the last LSTM layer into a dense layer that applies a sigmoid activation function to the weighted sum of the 10 inputs in order to produce a single predicted probability of adverse outcome. We employ regularization prior to each layer in the form of a dropout factor of 0.25, which causes a random deactivation of units within the layer during training with a fixed probability of 0.25.\endnote{\refsrivastava}
 
-The neural networks are optimized to minimize the binary cross-entropy, also known as log-loss, on the training data. We use the Adam\endnote{\refkingma} optimization algorithm, training with a batch size of 16. We tune the model on a hold-out validation set by allowing the neural network to train for as many epochs as needed until the area under the receiver-operator curve (AUC) from predictions on the validation set does not improve by 0.001. In Exhibit A8, we report the AUC from predictions on the testing set for each data source and each individual outcome.
+The neural networks are optimized to minimize the binary cross-entropy, also known as log-loss, on the training data. We use the Adam\endnote{\refkingma} optimization algorithm, training with a batch size of 16. We tune the model on the validation set by allowing the neural network to train for as many epochs as needed until the area under the receiver-operating curve (AUC) from predictions on the validation set does not improve by 0.001. Exhibit A8 shows the AUC from predictions on the testing set for each data source and each individual outcome.
 
 \theendnotes
 
@@ -229,7 +223,7 @@ Naltrexone & 0.0 \\[1em]
 
 \newpage
 
-\textbf{Exhibit A6.} Features selected by BOLASSO as occurring in more than 90\% of LASSO replicates.
+\textbf{Exhibit A6.} Features selected by BOLASSO as occurring with a non-zero coefficient in more than 90\% of LASSO bootstrap replicates.
 
 \tiny
 \input{output/tables/TableA6}
@@ -237,7 +231,7 @@ Naltrexone & 0.0 \\[1em]
 
 \newpage
 
-\textbf{Exhibit A7.} Regression output for the BOLASSO Logit model.
+\textbf{Exhibit A7.} Regression output for the second stage of the BOLASSO Logit model.
 
 \tiny
 \input{output/tables/TableA7}
@@ -245,7 +239,7 @@ Naltrexone & 0.0 \\[1em]
 
 \newpage
 
-\textbf{Exhibit A8.} Area Under the Receiver-Operating Characteristic Curve (AUC) of neural network models using different subsets of administrative data and outcome definitions. Confidence intervals are calculated from 100 bootstrap replicates.
+\textbf{Exhibit A8.} Area under the receiver-operating characteristic curve (AUC) of neural network models using different subsets of administrative data and outcome definitions. Confidence intervals are calculated from 100 bootstrap replicates.
 
 \scriptsize
 \input{output/tables/TableA8}
