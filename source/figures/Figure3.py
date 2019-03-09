@@ -20,7 +20,7 @@ decile = len(y) // 10
 with open(out_file, "w") as f:
     print("Decile,CostRatio,CostRatioLower,CostRatioUpper", file=f)
     for i in range(1, 11):
-        data = y.iloc[(i-1)*decile:i*decile]
+        data = y.iloc[:i*decile]
         estimates = map("{:.3f}".format, bootstrap(data, n_bootstrap, cost_ratio, seed))
         print(i, *estimates, sep=",", file=f)
 
