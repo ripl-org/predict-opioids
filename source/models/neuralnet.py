@@ -1,3 +1,4 @@
+import numpy as np
 import pandas as pd
 import tensorflow as tf
 import time
@@ -8,7 +9,7 @@ from keras.callbacks import Callback, EarlyStopping
 from scipy.io import mmread
 from sklearn.metrics import roc_auc_score, average_precision_score
 
-seed, populationfile, outcomefile, outcomename, trainfile, validatefile, modelfile, plotfile = sys.argv[1:]
+seed, populationfile, outcomefile, outcomename, trainfile, validatefile, modelfile = sys.argv[1:]
 
 index = ["RIIPL_ID"]
 seed = int(seed)
@@ -41,7 +42,7 @@ class auroc(Callback):
 # Define model
 batch_size = 16
 model = models.Sequential()
-model.add(layers.Dense(10, input_shape=(batch_size, X_train.shape[1])))
+model.add(layers.Dense(10, input_shape=(X_train.shape[1],)))
 model.add(layers.Dropout(0.25))
 model.add(layers.Dense(10))
 model.add(layers.Dropout(0.25))
@@ -58,7 +59,6 @@ model.fit(x=X_train,
           y=y_train,
           batch_size=batch_size,
           epochs=1000,
-          steps_per_epoch=X_train.shape[0]//batch_size,
           callbacks=[auroc(X_validate, y_validate), early_stopping],
           verbose=2)
 model.save(modelfile)
