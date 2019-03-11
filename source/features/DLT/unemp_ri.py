@@ -30,7 +30,7 @@ def main():
     features = features.merge(unemp, how="left", on="YRMO")[["RIIPL_ID", "UNEMP_RATE"]]  
     features = features.set_index("RIIPL_ID").rename(columns={"UNEMP_RATE": "UNEMP_RI"})
 
-    labels = {"UNEMP_RI" : "Unemployment rate in state of Rhode Island at index date"}
+    labels = {"UNEMP_RI" : "Rhode Island monthly unemployment rate"}
 
     SaveFeatures(features, out, manifest, population, labels)
 

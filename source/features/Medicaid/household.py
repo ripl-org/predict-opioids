@@ -41,9 +41,9 @@ def main():
     features = features.fillna(0)
 
     labels = {
-        "DHS_HH_OPIOID_RX"   : "count of opioid prescriptions among DHS household during lookback period",
-        "DHS_HH_RECOVERY_RX" : "count of recovery prescriptions among DHS household during lookback period",
-        "DHS_HH_OUTCOMES"    : "count of adverse outcomes among DHS household during lookback period"
+        "DHS_HH_OPIOID_RX"   : "Number of opioid prescriptions in household",
+        "DHS_HH_RECOVERY_RX" : "Number of recovery prescriptions in household",
+        "DHS_HH_OUTCOMES"    : "Number of adverse outcomes in household"
     }
 
     SaveFeatures(features, out, manifest, population, labels)

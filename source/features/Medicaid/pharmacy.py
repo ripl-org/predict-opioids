@@ -19,7 +19,8 @@ def main():
 
     # Load pharmacy claims
     sql = """ 
-          SELECT pop.riipl_id,
+          SELECT DISTINCT
+                 pop.riipl_id,
                  mp.ndc9_code
             FROM {population} pop
        LEFT JOIN {lookback} lb
@@ -46,12 +47,12 @@ def main():
     grouped = values[columns].groupby(columns).size().reset_index()
     grouped["VALUE"] = 1
 
-    labels = {"ASHP_MISSING": "No mapping from NDC code to ASHP classification"}
+    labels = {"ASHP_MISSING": "Prior prescription for unknown drug category"}
     for _, f, desc in ashp_desc.itertuples():
         if f.startswith("ASHP_99"):
-            labels[f] = "Unknown"
+            labels[f] = "Prior prescription for unknown drug category"
         else:
-            labels[f] = desc
+            labels[f] = "Prior prescription for " + desc
 
     for label in labels:
         feature = grouped.loc[grouped.FEATURE == label, ["RIIPL_ID", "VALUE"]].set_index(index)
@@ -78,7 +79,7 @@ def main():
         features[merged] = features[group[0]]
         for var in group:
             del features[var]
-        labels[merged] = " and ".join(map(labels.get, group))
+        labels[merged] = " or ".join(map(labels.get, group))
 
     SaveFeatures(features, out, manifest, population, labels, bool_features=list(labels))
 

@@ -55,26 +55,26 @@ def main():
     features = features.fillna(0)
 
     labels = {
-        "MEDICAID_N_IDS"        : "count of unique Medicaid IDs during lookback period",
+        "MEDICAID_N_IDS"        : "Number of unique Medicaid IDs",
         "MEDICAID_PREGNANT"     : "Medicaid eligibility category contains the word 'pregnant'",
         "MEDICAID_POSTPARTUM"   : "Medicaid eligibility category contains the word 'postpartum'",
         "MEDICAID_BLIND"        : "Medicaid eligibility category contains the word 'blind'",
         "MEDICAID_DISABLED"     : "Medicaid eligibility category contains the word 'disabled'",
         "MEDICAID_ALIEN"        : "Medicaid eligibility category contains the word 'alien'",
         "MEDICAID_CHILD"        : "Medicaid eligibility category contains the word 'child'",
-        "MEDICAID_CTG_NEEDY"    : "Medicaid eligibility - categorically needy",
-        "MEDICAID_MED_NEEDY"    : "Medicaid eligibility - medically needy",
-        "MEDICAID_MANAGED_CARE" : "enrolled in Medicaid managed care during lookback period", 
-        "MEDICAID_PREM_PAYMENT" : "enrolled in Medicaid premium payment plan during lookback period",
-        "MEDICAID_LANG_SPANISH" : "primary language in Medicaid demographics is Spanish",
-        "MEDICAID_LANG_PORTU"   : "primary language in Medicaid demographics is Portuguese",
-        "MEDICAID_LANG_OTHER"   : "primary language in Medicaid demographics is not English, Spanish, or Portuguese",
+        "MEDICAID_CTG_NEEDY"    : "Eligible for Medicaid as categorically needy",
+        "MEDICAID_MED_NEEDY"    : "Eligible for Medicaid as medically needy",
+        "MEDICAID_MANAGED_CARE" : "Enrolled in Medicaid managed care",
+        "MEDICAID_PREM_PAYMENT" : "Enrolled in Medicaid premium payment plan",
+        "MEDICAID_LANG_SPANISH" : "Primary language is Spanish",
+        "MEDICAID_LANG_PORTU"   : "Primary language is Portuguese",
+        "MEDICAID_LANG_OTHER"   : "Primary language is not English, Spanish, or Portuguese",
         "MEDICAID_PAYER_BHDDH"  : "Medicaid payer code is BHDDH",
-        "MEDICAID_PAYER_CMAP"   : "Medicaid payer code is RI Community Medication Assistance Program",
+        "MEDICAID_PAYER_CMAP"   : "Enrolled in RI Community Medication Assistance Program",
         "MEDICAID_PAYER_DOC"    : "Medicaid payer code is Department of Corrections",
         "MEDICAID_PAYER_AIDS"   : "Medicaid payer code is Ryan White AIDS Drug Assistance Program",
         "MEDICAID_PAYER_ORS"    : "Medicaid payer code is ORS",
-        "MEDICAID_PAYER_RIPAE"  : "Medicaid payer code is RI Pharmaceutical Assistance to the Elderly"
+        "MEDICAID_PAYER_RIPAE"  : "Enrolled in RI Pharmaceutical Assistance to the Elderly"
     }
 
     SaveFeatures(features, out, manifest, population, labels,

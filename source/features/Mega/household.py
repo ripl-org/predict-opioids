@@ -36,8 +36,8 @@ def main():
     features = features.fillna(0)
 
     labels = {
-        "DHS_HH_SIZE"  : "count of distinct individuals in the DHS household during lookback period",
-        "DHS_HH_BIRTH" : "a birth occurred in the DHS household during lookback period"
+        "DHS_HH_SIZE"  : "Size of household",
+        "DHS_HH_BIRTH" : "New birth in household"
     }
 
     SaveFeatures(features, out, manifest, population, labels, bool_features=["DHS_HH_BIRTH"])

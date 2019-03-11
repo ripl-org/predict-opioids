@@ -47,10 +47,10 @@ def main():
     features = features.fillna(0)
 
     labels = {
-        "WAGES_AVG": "average quarterly wage across jobs worked in 4 quarters before index date",
-        "WAGES_AVG_EMPLOYERS": "average quarterly number of employers in the 4 quarters before index date",
-        "WAGES_AVG_HOURS": "average quarterly hours worked (for hourly wages) in the 4 quarters before index date",
-        "WAGES_VAR": "standard deviation of quarterly wage from each job worked in 4 quarters before index date"
+        "WAGES_AVG": "Average quarterly wages",
+        "WAGES_AVG_EMPLOYERS": "Average quarterly number of employers",
+        "WAGES_AVG_HOURS": "Average quarterly hours worked",
+        "WAGES_VAR": "Standard deviation of quarterly wages"
     }
 
     SaveFeatures(features, out, manifest, population, labels)

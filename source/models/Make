@@ -3,7 +3,9 @@ Import("*")
 # model matrix and correlations
 for feature in features:
     env.R(["#scratch/models/matrix.{}.RData".format(feature),
-           "#scratch/models/matrix.{}.train.txt".format(feature)],
+           "#scratch/models/matrix.{}.train.txt".format(feature),
+           "#scratch/models/matrix.{}.validate.txt".format(feature),
+           "#scratch/models/matrix.{}.test.txt".format(feature)],
           ["matrix.R", "#scratch/populations/InitialRX.csv", "#scratch/outcomes/all.csv"] + features[feature],
           log_path="#output/models/matrix.{}.R.log".format(feature))
     env.R("#output/models/corr.pairwise.{}.csv".format(feature),
@@ -70,6 +72,20 @@ for feature in features:
                    ["accuracy.py",
                     "#output/models/bagged-lasso.{}.{}.y_pred.csv".format(feature, outcome)],
                    log_path="#output/models/bagged-lasso.{}.{}.accuracy.log".format(feature, outcome))
+
+# neural net
+for feature in features:
+    for outcome in ["OUTCOME_ANY"]:
+        env.Python("#scratch/models/neuralnet.{}.{}.h5".format(feature, outcome),
+                   ["neuralnet.py",
+                    constants["RANDOM_SEED"],
+                    "#scratch/populations/InitialRX.csv",
+                    "#scratch/outcomes/{}.csv".format(outcome),
+                    Value(outcome),
+                    "#scratch/models/matrix.{}.train.txt".format(feature),
+                    "#scratch/models/matrix.{}.validate.txt".format(feature)],
+                   log_path="#output/models/neuralnet.{}.{}.log".format(feature, outcome))
+ 
 
 tensors = {
     "DHS":      ["#scratch/tensors/DHS/demographics.p",

@@ -38,13 +38,13 @@ def main():
     features = features.fillna(0)
 
     labels = {
-        "SNAP_PAYMENTS"  : "total SNAP payments during lookback period",
-        "TANF_PAYMENTS"  : "total TANF payments during lookback period",
-        "TDI_PAYMENTS"   : "total TDI payments during lookback period",
-        "UI_PAYMENTS"    : "total UI payments during lookback period",
-        "SSI_SUPPLEMENT" : "total SSI supplement during lookback period",
-        "GPA_PAYMENTS"   : "total GPA payments during lookback period",
-        "CCAP_PAYMENTS"  : "total CCAP payments during lookback period"
+        "SNAP_PAYMENTS"  : "Total Food Stamps payments",
+        "TANF_PAYMENTS"  : "Total TANF payments",
+        "TDI_PAYMENTS"   : "Total TDI payments",
+        "UI_PAYMENTS"    : "Total Unemployment Insurance payments",
+        "SSI_SUPPLEMENT" : "Total SSI supplement",
+        "GPA_PAYMENTS"   : "Total GPA payments",
+        "CCAP_PAYMENTS"  : "Total CCAP payments"
     }
 
     SaveFeatures(features, out, manifest, population, labels)

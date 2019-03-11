@@ -30,8 +30,8 @@ def main():
     features = features.fillna(0)
 
     labels = {
-        "CITATIONS"      : "count of citations during lookback period",
-        "CITATION_FINES" : "sum of citation fines during lookback period"
+        "CITATIONS"      : "Number of police citations",
+        "CITATION_FINES" : "Total fines from police citations"
     }
 
     SaveFeatures(features, out, manifest, population, labels)

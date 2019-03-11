@@ -36,15 +36,15 @@ def main():
         features = pd.read_sql(sql, cxn._connection, index_col="RIIPL_ID")
 
     labels = {
-        "AGE"           : "age",
-        "BMI"           : "body mass index",
-        "MARRIED"       : "married at some point during lookback period",
-        "RACE_BLACK"    : "race is black",
-        "RACE_HISPANIC" : "race is hispanic",
-        "RACE_OTHER"    : "race is asian, native american, or other",
-        "RACE_MISSING"  : "race is missing",
-        "SEX_M"         : "sex is male",
-        "SEX_MISSING"   : "sex is missing"
+        "AGE"           : "Age",
+        "BMI"           : "Body mass index",
+        "MARRIED"       : "Married",
+        "RACE_BLACK"    : "Race is African American",
+        "RACE_HISPANIC" : "Ethnicity is Hispanic",
+        "RACE_OTHER"    : "Race is Asian, Native American, or other",
+        "RACE_MISSING"  : "Race is missing",
+        "SEX_M"         : "Sex is male",
+        "SEX_MISSING"   : "Sex is missing"
     }
 
     SaveFeatures(features, out, manifest, population, labels)

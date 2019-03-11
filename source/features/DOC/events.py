@@ -33,9 +33,9 @@ def main():
         features = features.join(pd.read_sql(sql, cxn).set_index(index))
 
     labels = {
-        "DOC_COMMITED" : "committed to a correctional facility during the lookback period",
-        "DOC_RELEASED" : "released from a correctional facility during the lookback period",
-        "DOC_CHARGED"  : "charged with a crime during the lookback period"
+        "DOC_COMMITED" : "Committed to a corrections facility",
+        "DOC_RELEASED" : "Released from a corrections facility",
+        "DOC_CHARGED"  : "Charged with a crime"
     }
 
     SaveFeatures(features, out, manifest, population, labels)

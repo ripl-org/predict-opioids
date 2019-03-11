@@ -86,7 +86,8 @@ def main():
     # Use the top 10 words in a topic as its description
     top10words = [" ".join(words.loc[i, "WORD"] for i in topic.argsort()[-11:-1])
                   for topic in nmfs[best].components_]
-    labels = dict(zip(features.columns, top10words))
+    descs = ["Topic {} ({})".format(i, words) for i, words in enumerate(top10words)]
+    labels = dict(zip(features.columns, descs))
 
     SaveFeatures(features, out, manifest, population, labels)
 

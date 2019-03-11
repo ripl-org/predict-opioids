@@ -54,10 +54,10 @@ def main():
     features = features.fillna(0)
 
     labels = {
-        "MEDICAID_PAYMENTS"      : "total Medicaid payments during lookback period",
-        "MEDICAID_PROF_PAYMENTS" : "total Medicaid payments to professionals during lookback period",
-        "MEDICAID_ED_PAYMENTS"   : "total Emergency Department (ED) Medicaid payments during lookback period",
-        "MEDICAID_RX_PAYMENTS"   : "total Medicaid pharmacy payments during lookback period"
+        "MEDICAID_PAYMENTS"      : "Total Medicaid payments",
+        "MEDICAID_PROF_PAYMENTS" : "Total Medicaid payments to professionals",
+        "MEDICAID_ED_PAYMENTS"   : "Total Medicaid payments to Emergency Departments",
+        "MEDICAID_RX_PAYMENTS"   : "Total Medicaid pharmacy payments"
     }
 
     SaveFeatures(features, out, manifest, population, labels)
