@@ -7,7 +7,6 @@ env.Latex("#output/appendix.pdf",
            "#output/tables/TableA4.tex",
            "#output/tables/TableA5.tex",
            "#output/tables/TableA6.tex",
-           "#output/tables/TableA7.tex",
-           "#output/tables/TableA8.tex"])
+           "#output/tables/TableA7.tex"])
 
 # vim: syntax=python expandtab sw=4 ts=4

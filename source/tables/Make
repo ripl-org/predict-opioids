@@ -31,20 +31,16 @@ env.Python("#output/tables/TableA5.tex",
            ["TableA5.py",
             "#output/populations/CompareOpioids.csv"])
 
-# Table A6 - BOLASSO selected varibales
+# Table A6 - BOLASSO Logit
 env.Python("#output/tables/TableA6.tex",
            ["TableA6.py",
-            "#output/models/bolasso.freq.all.OUTCOME_ANY.csv"])
-
-# Table A7 - logit summary
-env.Python("#output/tables/TableA7.tex",
-           ["TableA7.py",
+            "#output/models/bolasso.freq.all.OUTCOME_ANY.csv",
             "#output/models/postlasso.all.OUTCOME_ANY.csv"])
 
-# Table A8 - neural net AUCs
+# Table A7 - neural net AUCs
 tensors = ["DHS", "DLT", "DOC", "Medicaid", "Police", "all"]
-env.Python("#output/tables/TableA8.tex",
-           ["TableA8.py",
+env.Python("#output/tables/TableA7.tex",
+           ["TableA7.py",
             constants["RANDOM_SEED"],
             constants["PLOT_BOOTSTRAPS"],
             Value(",".join(outcomes)),
