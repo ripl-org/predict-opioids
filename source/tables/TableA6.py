@@ -15,8 +15,12 @@ with open(out_file, "w") as f:
     print(r"\begin{tabular}{lcccc}", file=f)
     print(r"\em Variable & \em Odds Ratio & \em 95\% C.I. & \em p-value & \em Bootstrap Frequency\\[0.5em]", file=f)
     for row in table.itertuples():
+        if row.var.endswith("MISSING"):
+            desc = "{} is missing".format(row.var.partition("_")[0])
+        else:
+            desc = row.desc
         print(r"{} & {:.3f} & ({:.3f} - {:.3f}) & {:.3f} & {}\% \\".format(
-                  row.var.replace("_", r"\_"), row.odds, row.ci_lower, row.ci_upper, row.p, row.freq),
+                  desc, row.odds, row.ci_lower, row.ci_upper, row.p, row.freq),
               file=f)
     print(r"\end{tabular}", file=f)
 
