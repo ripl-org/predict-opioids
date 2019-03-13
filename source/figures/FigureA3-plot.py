@@ -1,19 +1,16 @@
 import matplotlib.pyplot as plt
 import pandas as pd
-import seaborn as sns
 import sys
+from matplotlib.ticker import StrMethodFormatter
 
 csv_file, out_file = sys.argv[1:]
 
-data = pd.read_csv(csv_file)
+data = pd.read_csv(csv_file, index_col="Years")
 
-data = pd.melt(data, id_vars=["Years"], value_name="Percent of adverse outcomes", var_name="Outcome type")\
-         .rename(columns={"Years": "Years from initial opioid prescription"})
-print(data.head())
-
-sns.lineplot(x="Years from initial opioid prescription",
-             y="Percent of adverse outcomes",
-             hue="Outcome type",
-             data=data, markers=True, estimator=None)
+data.plot(style=".-")
+plt.xlabel("Years from initial opioid prescription")
+plt.ylabel("Percent of adverse outcomes")
+plt.xticks(data.index)
+plt.gca().yaxis.set_major_formatter(StrMethodFormatter("{x:.0f}%"))
 plt.tight_layout()
 plt.savefig(out_file)

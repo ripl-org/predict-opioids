@@ -4,10 +4,7 @@ import sys
 
 outcomes_file, out_file = sys.argv[1:]
 
-years = 5
-
-# Measure by quarters
-years = np.arange(0, years+0.25, 0.25)
+years = np.arange(0, 6)
 
 labels = {
     "OUTCOME_PROCEDURE": "Treatment",
@@ -24,7 +21,7 @@ n = len(outcomes)
 data = {"Years": years}
 for var, label in labels.items():
     data[label] = []
-    for x in years:
-        data[label].append(100 * (outcomes["{}_DAYS".format(var)] <= (x*365)).sum() / n)
+    for yr in years:
+        data[label].append(100 * (outcomes["{}_DAYS".format(var)] <= (yr*365)).sum() / n)
 
 pd.DataFrame(data).to_csv(out_file, index=False, float_format="%.2f")
