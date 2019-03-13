@@ -29,9 +29,12 @@ env.Python("#output/figures/Figure4.csv",
             "#scratch/features/DOC/events.csv",
             "#scratch/features/Medicaid/enrollment.csv"])
 
-# Figure A3 - outcomes by baseline characteristics
-env.R("#output/figures/FigureA3.csv",
-      ["FigureA3.py",
-       "#scratch/outcomes/all.csv"])
+# Figure A3 - cumulative fraction of outcomes
+env.Python("#output/figures/FigureA3.csv",
+           ["FigureA3.py",
+            "#scratch/outcomes/all.csv"])
+env.Python("#output/figures/FigureA3.pdf",
+           ["FigureA3-plot.py",
+            "#output/figures/FigureA3.csv"])
 
 # vim: syntax=python expandtab sw=4 ts=4
