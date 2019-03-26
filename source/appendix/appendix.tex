@@ -26,14 +26,16 @@
 % Paragraphs
 \usepackage[parfill]{parskip}
 
+% Line numbering
+\usepackage[lineno]
+\linenumbers
+
 % Import references
 \input{source/appendix/references}
 
 \begin{document}
 
-\begin{center}
-\huge Appendix
-\end{center}
+{\Large \bf Supplementary Information}
 
 \section{Experimental Design}
 
@@ -49,7 +51,7 @@ Although our data span the years 2005 to 2017, we construct a panel of individua
 
 To define our panel, we first establish which pharmacy claims correspond to opioid prescriptions. The primary identifier for the dispensed drug is a standardized 11-digit National Drug Code (NDC) from the U.S. Food and Drug Administration's NDC Directory.\endnote{\refndc} This directory is only available as a current snapshot, and because our claims data start in 2005, there are many unmapped NDCs to the current directory. Out of approximately 14.8 million pharmacy claims between 2006 and 2012, only 66.8 percent join to the current directory. Therefore, we construct a historical NDC directory using a data mining framework that downloads and collates all available Internet Archive snapshots of the FDA's NDC website since 2000.\endnote{\refhistoricalndc} This historical directory also includes full ingredient lists for each NDC, standardized to milligrams. Using this improved directory, 88.1 percent of pharmacy claims between 2006 and 2012 map to an NDC entry. 
 
-We define an opioid prescription as any claim for a drug containing an opioid ingredient at or above the recommended starting dose when initiating opioid therapy for chronic pain management, as established in Washington State's 2015 prescribing guideline and further cited in the Centers for Disease Control's 2016 prescribing guideline.\endnote{\refamdg}\textsuperscript{,}\endnote{\refdowell} Exhibit A1 lists these ingredients and the minimum amounts we use to define an opioid drug. Of the 4,359 drugs containing one of these ingredients, 4,175 meet the minimum threshold amount and appear in 3.9 percent of claims.
+We define an opioid prescription as any claim for a drug containing an opioid ingredient at or above the recommended starting dose when initiating opioid therapy for chronic pain management, as established in Washington State's 2015 prescribing guideline and further cited in the Centers for Disease Control's 2016 prescribing guideline.\endnote{\refamdg}\textsuperscript{,}\endnote{\refdowell} Table S1 lists these ingredients and the minimum amounts we use to define an opioid drug. Of the 4,359 drugs containing one of these ingredients, 4,175 meet the minimum threshold amount and appear in 3.9 percent of claims.
 
 Additionally, we define a recovery prescription as any NDC containing one of four ingredients commonly used in medication-assisted treatment of an opioid use disorder, which identifies 412 such drugs that appear in 0.5 percent of claims. These prescriptions may indicate that an individual has a preexisting opioid use disorder.
 
@@ -57,13 +59,13 @@ Additionally, we define a recovery prescription as any NDC containing one of fou
 
 For each individual in our panel, we examine all of the Medicaid claims following their initial opioid prescription to construct indicator variables for four types of adverse outcomes: opioid dependence, opioid abuse, prescription-opioid poisoning and heroin poisoning. We include heroin poisoning as an outcome given the increasing use of heroin among those who abuse opioids, and the high proportion (greater than 80 percent) of joint heroin-prescription-opioid users who abused opioids prior to using heroin.\endnote{\refjones}
 
-We determine these outcomes from the claim's International Classification of Diseases (ICD) diagnosis codes, which are used by medical professionals to classify a patient's health conditions following an encounter. Because our data span the transition from the ICD-9 to ICD-10 classification, we include diagnosis codes from both. Exhibit A2 lists the exact codes used to indicate each of these four diagnosis-related outcomes. 
+We determine these outcomes from the claim's International Classification of Diseases (ICD) diagnosis codes, which are used by medical professionals to classify a patient's health conditions following an encounter. Because our data span the transition from the ICD-9 to ICD-10 classification, we include diagnosis codes from both. Table S2 lists the exact codes used to indicate each of these four diagnosis-related outcomes. 
 
-Not everyone with an opioid use disorder receives a diagnosis code. Though it is unknown precisely what fraction of opioid use disorders go undiagnosed, Carrell {\em et al}. found that diagnosis codes were missing for as many as a quarter of patients for whom their providers were aware of opioid abuse.\endnote{\refcarrell} Similarly, a study by Barocas {\em et al}. estimated that only 44\% of individuals with opioid use disorder were identified as such in claims and administrative records.\endnote{\refbarocas} To address the challenges with diagnoses codes, we define a fifth treatment outcome using procedure codes related to the treatment of opioid use disorder, and more generally for drug rehabilitation and detoxification (Exhibit A2). Finally, we define a sixth ``any" outcome as the union of any of the diagnoses or treatment outcomes, to capture as broad a population of individual with opioid use disorder as possible. Data and measurement limitations notwithstanding, our model demonstrates that administrative data can be combined to form an accurate prediction of these outcomes, suggesting a feasible path forward for utilizing data to inform prescription risk. Exhibit A3 shows the accumulating fraction of adverse outcomes over the five year period following initial prescription.
+Not everyone with an opioid use disorder receives a diagnosis code. Though it is unknown precisely what fraction of opioid use disorders go undiagnosed, Carrell {\em et al}. found that diagnosis codes were missing for as many as a quarter of patients for whom their providers were aware of opioid abuse.\endnote{\refcarrell} Similarly, a study by Barocas {\em et al}. estimated that only 44\% of individuals with opioid use disorder were identified as such in claims and administrative records.\endnote{\refbarocas} To address the challenges with diagnoses codes, we define a fifth treatment outcome using procedure codes related to the treatment of opioid use disorder, and more generally for drug rehabilitation and detoxification (Table S2). Finally, we define a sixth ``any" outcome as the union of any of the diagnoses or treatment outcomes, to capture as broad a population of individual with opioid use disorder as possible. Data and measurement limitations notwithstanding, our model demonstrates that administrative data can be combined to form an accurate prediction of these outcomes, suggesting a feasible path forward for utilizing data to inform prescription risk. Figure S3 shows the accumulating fraction of adverse outcomes over the five year period following initial prescription.
 
 \subsection{Final Panel}
 
-Out of 400,024 distinct Medicaid enrollees between 2006 and 2012, our panel initially contains 74,213 individuals who received at least one opioid prescription in that period. We exclude 511 individuals who received a recovery prescription before their initial opioid prescription, since this indicates they may have been seeking treatment for an opioid use disorder. We exclude 3,549 individuals with an adverse outcome prior to their initial opioid prescription, since we assume they were already receiving opioids from another source, such as through private insurance before enrolling in Medicaid. Our final panel includes 70,153 individuals. Exhibit A4 shows the incidence of adverse outcomes among these individuals by baseline characteristics.
+Out of 400,024 distinct Medicaid enrollees between 2006 and 2012, our panel initially contains 74,213 individuals who received at least one opioid prescription in that period. We exclude 511 individuals who received a recovery prescription before their initial opioid prescription, since this indicates they may have been seeking treatment for an opioid use disorder. We exclude 3,549 individuals with an adverse outcome prior to their initial opioid prescription, since we assume they were already receiving opioids from another source, such as through private insurance before enrolling in Medicaid. Our final panel includes 70,153 individuals. Table S4 shows the incidence of adverse outcomes among these individuals by baseline characteristics.
 
 \section{Variable Construction}
 
@@ -83,7 +85,7 @@ Because the number of topics $t$ is not known \emph{a priori}, we tune this para
 
 \subsection{Low-Dosage Opioids}
 
-Within the prescription drug categories, there is a category for opiate agonists. By construction of our panel, no individuals should have previously received an opioid prescription. However, the opiate agonist category includes 152 drugs that were not identified in the 4,175 opioid drugs from our historical NDC directory, and which are listed in Exhibit A5. These drugs either contain an opioid ingredient at a lower amount than the minimum thresholds defined by the Washington State prescribing guidelines, or contain an ingredient not identified in those guidelines (e.g., ``opium''). Therefore, the opiate agonist variable indicates that the individual received a drug that was not likely for initiating opioid therapy, but nonetheless contains a small amount of an opioid ingredient. Most of these drugs are over-the-counter cough syrups or painkillers combined with small amounts of an opioid ingredient. Of the 152, there are eight that are not present in the historical NDC directory, possibly because they were on the market for a short enough time that they do not occur in any of the available historical snapshots of the NDC directory.
+Within the prescription drug categories, there is a category for opiate agonists. By construction of our panel, no individuals should have previously received an opioid prescription. However, the opiate agonist category includes 152 drugs that were not identified in the 4,175 opioid drugs from our historical NDC directory, and which are listed in Table S5. These drugs either contain an opioid ingredient at a lower amount than the minimum thresholds defined by the Washington State prescribing guidelines, or contain an ingredient not identified in those guidelines (e.g., ``opium''). Therefore, the opiate agonist variable indicates that the individual received a drug that was not likely for initiating opioid therapy, but nonetheless contains a small amount of an opioid ingredient. Most of these drugs are over-the-counter cough syrups or painkillers combined with small amounts of an opioid ingredient. Of the 152, there are eight that are not present in the historical NDC directory, possibly because they were on the market for a short enough time that they do not occur in any of the available historical snapshots of the NDC directory.
 
 \subsection{Tensors}
 
@@ -105,17 +107,17 @@ Finally, we construct an integrated tensor including all of the 785 variables fr
 
 \subsection{Linear}
 
-As described in the main text, we perform a bootstrapped LASSO, or BOLASSO,\endnote{\refbach} to consistently identify a model in the presence of correlated variables. Exhibit A6 lists the variables selected by the BOLASSO as occuring with a non-zero coefficient in more than 90 of the 100 LASSO bootstrap replicates.
+As described in the main text, we perform a bootstrapped LASSO, or BOLASSO,\endnote{\refbach} to consistently identify a model in the presence of correlated variables. Table S6 lists the variables selected by the BOLASSO as occuring with a non-zero coefficient in more than 90 of the 100 LASSO bootstrap replicates.
 
 We fit each LASSO bootstrap replicate on the training set using a regularized logistic regression implementation called the gamma LASSO, which was developed specifically to address the challenges of modeling sparse, high-dimensional data.\endnote{\reftaddy} Since a predictive model fits idiosyncratic noise through increased complexity in the model's structure, machine learning techniques commonly penalize complexity in the models they produce through a process called regularization. We tune the regularization parameters for the gamma LASSO model through a parameter search over gamma values in [0, 1, 10] and a path of 100 lambda values, and we select the model with the best area under the receiver-operating characteristic curve (AUC) on the validation set. Regularization helps prevent overfitting to the training data and thus improves out-of-sample fit. We are primarily interested in out-of-sample performance since our goal is to use the model to inform successful policy interventions, which require making predictions on new observations.\endnote{\refkleinberg}
 
-We define two linear models based on the BOLASSO. The first model, called BOLASSO Logit, includes a second-stage ordinary logistic regression fit to only the variables selected by the first-stage BOLASSO. Exhibit A6 provides the full regression output of the second stage of the BOLASSO Logit model. The coefficients in this second stage are not biased by regularization, as the LASSO coefficients in the first stage are. The second model, called BOLASSO Ensemble, is simply the averaged predicted probability across all 100 of the LASSO bootstrap replicates.
+We define two linear models based on the BOLASSO. The first model, called BOLASSO Logit, includes a second-stage ordinary logistic regression fit to only the variables selected by the first-stage BOLASSO. Table S6 provides the full regression output of the second stage of the BOLASSO Logit model. The coefficients in this second stage are not biased by regularization, as the LASSO coefficients in the first stage are. The second model, called BOLASSO Ensemble, is simply the averaged predicted probability across all 100 of the LASSO bootstrap replicates.
 
 \subsection{Neural Networks}
 
 We train a neural network model for each tensor using the Python package Keras,\endnote{\refchollet} which provides an interface to the TensorFlow library.\endnote{\refabadi} Specifically, we train a recurrent neural network (RNN), since RNNs have the ability to model temporal patterns in the input data. We input our training data into a two-layer network of 10x10 Long Short-Term Memory (LSTM)\endnote{\refhochreiter} units with the tanh activation function. We input the last LSTM layer into a dense layer that applies a sigmoid activation function to the weighted sum of the 10 inputs in order to produce a single predicted probability of adverse outcome. We employ regularization prior to each layer in the form of a dropout factor of 0.25, which causes a random deactivation of units within the layer during training with a fixed probability of 0.25.\endnote{\refsrivastava}
 
-The neural networks are optimized to minimize the binary cross-entropy, also known as log-loss, on the training data. We use the Adam\endnote{\refkingma} optimization algorithm, training with a batch size of 16. We tune the model on the validation set by allowing the neural network to train for as many epochs as needed until the area under the receiver-operating curve (AUC) from predictions on the validation set does not improve by 0.001. Exhibit A7 shows the AUC from predictions on the testing set for each data source and each individual outcome.
+The neural networks are optimized to minimize the binary cross-entropy, also known as log-loss, on the training data. We use the Adam\endnote{\refkingma} optimization algorithm, training with a batch size of 16. We tune the model on the validation set by allowing the neural network to train for as many epochs as needed until the area under the receiver-operating curve (AUC) from predictions on the validation set does not improve by 0.001. Table S7 shows the AUC from predictions on the testing set for each data source and each individual outcome.
 
 \newpage
 
@@ -123,7 +125,7 @@ The neural networks are optimized to minimize the binary cross-entropy, also kno
 
 \newpage
 
-\textbf{Exhibit A1.} Minimum amounts of ingredients in a drug to classify it as an opioid prescription or a recovery prescription.
+\textbf{Table S1.} Minimum amounts of ingredients in a drug to classify it as an opioid prescription or a recovery prescription.
 
 \begin{tabular}{lc}
 \em Opioid Ingredient & \em Minimum Amount (mg) \\[0.5em]
@@ -153,7 +155,7 @@ Naltrexone & 0.0 \\[1em]
 
 \newpage
 
-\textbf{Exhibit A2.} Diagnosis and procedure codes used to indicate adverse outcomes when occurring in any claim after the initial opioid prescription.
+\textbf{Table S2.} Diagnosis and procedure codes used to indicate adverse outcomes when occurring in any claim after the initial opioid prescription.
 
 \begin{tabular}{lll}
 \em Outcome & \em Code & \em Description \\[1em]
@@ -205,19 +207,19 @@ Naltrexone & 0.0 \\[1em]
 
 \newpage
 
-\textbf{Exhibit A3.} Cumulative frequency of adverse outcomes over time since initial opioid prescription. Adverse outcomes are indicated by the diagnosis and procedure codes in Medicaid claims following the initial prescription. An individual may experience multiple types of adverse outcomes, and ``any" is the union of the five specific outcome types. Opioid dependence is the most prevalent of the types.
+\textbf{Figure S3.} Cumulative frequency of adverse outcomes over time since initial opioid prescription. Adverse outcomes are indicated by the diagnosis and procedure codes in Medicaid claims following the initial prescription. An individual may experience multiple types of adverse outcomes, and ``any" is the union of the five specific outcome types. Opioid dependence is the most prevalent of the types.
 
 \includegraphics[width=6in]{output/figures/FigureA3}
 
 \newpage
 
-\textbf{Exhibit A4.} Descriptive statistics for the final panel.
+\textbf{Table S4.} Descriptive statistics for the final panel.
 
 \input{output/tables/TableA4}
 
 \newpage
 
-\textbf{Exhibit A5.} Low-dosage prescription opioids identified by the AHFS Pharmacologic/Therapeutic Classification category for opiate agonists.
+\textbf{Table S5.} Low-dosage prescription opioids identified by the AHFS Pharmacologic/Therapeutic Classification category for opiate agonists.
 
 \tiny
 \input{output/tables/TableA5}
@@ -227,7 +229,7 @@ Naltrexone & 0.0 \\[1em]
 
 \newpage
 
-\textbf{Exhibit A6.} Regression output for the BOLASSO Logit (a logistic regression of variables selected by BOLASSO as occurring with a non-zero coefficient in more than 90\% of LASSO bootstrap replicates).
+\textbf{Table S6.} Regression output for the BOLASSO Logit (a logistic regression of variables selected by BOLASSO as occurring with a non-zero coefficient in more than 90\% of LASSO bootstrap replicates).
 
 \tiny
 \input{output/tables/TableA6}
@@ -235,7 +237,7 @@ Naltrexone & 0.0 \\[1em]
 
 \newpage
 
-\textbf{Exhibit A7.} Area under the receiver-operating characteristic curve (AUC) of neural network models using different subsets of administrative data and outcome definitions. Confidence intervals are calculated from 100 bootstrap replicates.
+\textbf{Table S7.} Area under the receiver-operating characteristic curve (AUC) of neural network models using different subsets of administrative data and outcome definitions. Confidence intervals are calculated from 100 bootstrap replicates.
 
 \scriptsize
 \input{output/tables/TableA7}
