@@ -1,4 +1,4 @@
-\documentclass[11pt, letter]{article}
+\documentclass[10pt, letter]{article}
 \usepackage[left=0.5in, right=0.5in, top=0.5in, bottom=0.75in]{geometry}
 \usepackage{graphicx}
 
@@ -27,15 +27,16 @@
 \usepackage[parfill]{parskip}
 
 % Line numbering
-\usepackage[lineno]
-\linenumbers
+\usepackage{lineno}
 
 % Import references
 \input{source/appendix/references}
 
 \begin{document}
 
-{\Large \bf Supplementary Information}
+{\huge \bf Supplementary Information}
+
+\linenumbers
 
 \section{Experimental Design}
 
@@ -120,6 +121,8 @@ We fit each LASSO bootstrap replicate on the training set using a regularized lo
 We train a neural network model for each tensor using the Python package Keras,\endnote{\refchollet} which provides an interface to the TensorFlow library.\endnote{\refabadi} Specifically, we train a recurrent neural network (RNN), since RNNs have the ability to model temporal patterns in the input data. We input our training data into a two-layer network of 10x10 Long Short-Term Memory (LSTM)\endnote{\refhochreiter} units with the tanh activation function. We input the last LSTM layer into a dense layer that applies a sigmoid activation function to the weighted sum of the 10 inputs in order to produce a single predicted probability of adverse outcome. We employ regularization prior to each layer in the form of a dropout factor of 0.25, which causes a random deactivation of units within the layer during training with a fixed probability of 0.25.\endnote{\refsrivastava}
 
 The neural networks are optimized to minimize the binary cross-entropy, also known as log-loss, on the training data. We use the Adam\endnote{\refkingma} optimization algorithm, training with a batch size of 16. We tune the model on the validation set by allowing the neural network to train for as many epochs as needed until the area under the receiver-operating curve (AUC) from predictions on the validation set does not improve by 0.001. Table S7 shows the AUC from predictions on the testing set for each data source and each individual outcome.
+
+\nolinenumbers
 
 \newpage
 
