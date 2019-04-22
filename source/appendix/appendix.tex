@@ -110,7 +110,7 @@ We estimate a range of predictive models using modern machine learning algorithm
 
 \subsection{Regularized Regression}
 
-For our regularized regression, we use an algorithm called Bootstrap Least Absolute Shrinkage and Selection Operator (BOLASSO).\endnote{\refbach} This algorithm is a generalization of the popular LASSO algorithm which is able to consistently identify a model even when predictors are highly correlated. The BOLASSO selects the predictors with non-zero coefficients that appear in at least 90% of bootstrapped LASSO models. 
+For our regularized regression, we use an algorithm called Bootstrap Least Absolute Shrinkage and Selection Operator (BOLASSO).\endnote{\refbach} This algorithm is a generalization of the popular LASSO algorithm which is able to consistently identify a model even when predictors are highly correlated. The BOLASSO selects the predictors with non-zero coefficients that appear in at least 90\% of bootstrapped LASSO models. 
 
 Following convention, we use BOLASSO to select the variables from among 560 variables which are persistently the strongest predictors of future adverse opioid outcomes, and we present results from a second-stage logistic regression of an indicator for future adverse outcomes on these selected variables, to describe the predictive power of each variabe. Exhibit A6 lists the variables selected by the BOLASSO as occuring with a non-zero coefficient in more than 90 of the 100 LASSO bootstrap replicates, along with the regression results from the second-stage logistic regression. In addition to the second-stage logistic regression, we also construct a regression ensemble model that averages the predictions of all 100 bootstrap replicates in the BOLASSO.
 
