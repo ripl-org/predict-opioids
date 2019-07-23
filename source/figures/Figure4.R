@@ -29,13 +29,13 @@ incarc$INCARC <- incarc$DOC_COMMITED | incarc$DOC_RELEASED
 
 print(paste0("testing individuals: ", nrow(y_pred)))
 
-y_pred$RACE     <- y_pred %>% merge(demo,      by="RIIPL_ID") %>% mutate(RACE=case_when(
-                                                                         RACE_BLACK == 1 ~ "African-American",
-                                                                         RACE_HISPANIC == 1 ~ "Hispanic",
-                                                                         RACE_OTHER == 1 ~ "Other",
-                                                                         RACE_MISSING == 1 ~ "NA",
-                                                                         TRUE ~ "White"))
-		                                              %>% select(RACE)
+y_pred$RACE     <- y_pred %>% merge(demo,      by="RIIPL_ID") %>%
+	                      mutate(RACE=case_when(RACE_BLACK    == 1 ~ "Black",
+                                                    RACE_HISPANIC == 1 ~ "Hispanic",
+                                                    RACE_OTHER    == 1 ~ "Other",
+                                                    RACE_MISSING  == 1 ~ "NA",
+                                                    TRUE               ~ "White")) %>%
+                              select(RACE)
 y_pred$INCARC   <- y_pred %>% merge(incarc,    by="RIIPL_ID") %>% select(INCARC)
 y_pred$DISABLED <- y_pred %>% merge(ma_enroll, by="RIIPL_ID") %>% select(MEDICAID_DISABLED)
 
@@ -82,11 +82,11 @@ plot <- function(df, grp_var_label, x_label, y_label, grp_labels, title) {
 }
 
 pdf(out_path, width=6, height=8)
-grid.arrange(plot(group_bootstraps("RACE", c("African-American", "Hispanic", "White")),
+grid.arrange(plot(group_bootstraps("RACE", c("Black", "Hispanic", "White")),
                   "Race/ethnicity",
                   "",
                   "False discovery rate",
-                  c(),
+                  c("Black"="African-American"),
                   "a"),
              plot(group_bootstraps("INCARC", c(0, 1)),
                   "Incarcerated during\nprevious year",
