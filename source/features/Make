@@ -64,6 +64,8 @@ def InteractAll(name, dep1, deps2):
 
 Feature("DLT/naics",
         ["population", "lookback", "dlt_wage"])
+Feature("DLT/ui",
+        ["population", "lookback", "dim_date", "dlt_ui_payments"])
 Feature("DLT/unemp_ri",
         ["population", "lookback"],
         constants["NSTEPS"],
@@ -95,11 +97,11 @@ Feature("Medicaid/nmf_topics",
         "#scratch/inputs/cde_word_counts.mm",
         constants["RANDOM_SEED"])
 Feature("Medicaid/risk_scores",
-        ["population", "lookback", "dim_date", "diag_cde", "proc_cde"],
+        ["population", "lookback", "dim_date", "medicaid_diag_cde", "medicaid_proc_cde"],
         "#public-data/CCS/single_level_dxref_2015.csv",
         "#public-data/CCI/cci2015.csv")
 Feature("Mega/census",
-        ["population", "lookback", "dim_date", "address"],
+        ["population", "lookback", "address"],
         "#input/public/ACS_15_5YR_B19013_with_ann.csv",
         "#input/public/ACS_15_5YR_B17010_with_ann.csv")
 Feature("Mega/demographics",
@@ -142,15 +144,15 @@ InteractAll("census_x_demo",
 InteractAll("payments_x_all",
             "Mega/payments",
             ["DLT/unemp_ri", "DLT/unemp_naics", "DLT/ui", "DLT/wages", "DOC/events",
-             "Medicaid/costs", "Medicaid/costs_ed", "Medicaid/costs_pharmacy",
-             "Medicaid/demographics", "Medicaid/enrollment",
-             "Mega/births", "Mega/census", "Mega/demographics"])
+             "Medicaid/demographics", "Medicaid/enrollment", "Medicaid/household",
+             "Mega/census", "Mega/demographics", "Mega/household",
+             "Police/arrests", "Police/car_crashes", "Police/citations"])
 InteractAll("risk_scores_x_all",
             "Medicaid/risk_scores",
             ["DLT/unemp_ri", "DLT/unemp_naics", "DLT/ui", "DLT/wages", "DOC/events",
-             "Medicaid/costs", "Medicaid/costs_ed", "Medicaid/costs_pharmacy",
-             "Medicaid/demographics", "Medicaid/enrollment",
-             "Mega/births", "Mega/census", "Mega/demographics", "Mega/payments"])
+             "Medicaid/demographics", "Medicaid/enrollment", "Medicaid/household",
+             "Mega/census", "Mega/demographics", "Mega/household", "Mega/payments",
+             "Police/arrests", "Police/car_crashes", "Police/citations"])
 
 # Final Manifest
 

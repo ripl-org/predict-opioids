@@ -4,6 +4,7 @@ Import("*")
 schema = [
     ["other/ndc-opioids", "ndc", ","],
     ["ri360/MEDICAID-DIM_AID_CTG_CDE", "AID_CTG_CDE", "|"],
+    ["ri360/RESEARCH_V11-DLT_UI_PAYMENTS", "RECORD_ID", "|"],
     ["ri360/RESEARCH_V11-DLT_WAGE", "RECORD_ID", "|"],
     ["ri360/RESEARCH_V11-EOHHS_RECIP_DEMO", "RECORD_ID", "|"],
     ["ri360/RESEARCH_V11-EOHHS_RECIP_X_SSN", "RECORD_ID", "|"],

@@ -26,7 +26,7 @@ def main():
 
     sql = """
           SELECT DISTINCT
-                 pop.sample_id,
+                 pop.riipl_id,
                  d.diag_cde
             FROM {population} pop
        LEFT JOIN {lookback} lb
@@ -41,20 +41,20 @@ def main():
     with Connection() as cxn:
         diags = pd.read_sql(sql, cxn._connection)
     
-    ndisease = diags.merge(ccs, how="inner", on="DIAG_CDE")[["RIIPL_ID", "DISEASE"]]\
-                    .groupby("RIIPL_ID")\
+    ndisease = diags.merge(ccs, how="inner", on="DIAG_CDE")[index+["DISEASE"]]\
+                    .groupby(index)\
                     .agg({"DISEASE": pd.Series.nunique})\
                     .rename(columns={"DISEASE": "MEDICAID_DISEASE_SCORE"})
     features = features.join(ndisease)
 
-    nchronic = diags.merge(cci, how="inner", on="DIAG_CDE")[["RIIPL_ID", "CHRONIC"]]\
-                    .groupby("RIIPL_ID")\
+    nchronic = diags.merge(cci, how="inner", on="DIAG_CDE")[index+["CHRONIC"]]\
+                    .groupby(index)\
                     .sum()\
                     .rename(columns={"CHRONIC": "MEDICAID_CHRONIC_SCORE"})
     features = features.join(nchronic)
 
     sql = """
-          SELECT pop.sample_id,
+          SELECT pop.riipl_id,
                  COUNT(DISTINCT p.proc_cde) AS medicaid_procedures
             FROM {population} pop
        LEFT JOIN {lookback} lb
@@ -68,7 +68,7 @@ def main():
           """.format(**globals())
 
     with Connection() as cxn:
-        nproc = pd.read_sql(sql, cxn._connection, index_col="SAMPLE_ID")
+        nproc = pd.read_sql(sql, cxn._connection, index_col=index)
 
     features = features.join(nproc).fillna(0)
 

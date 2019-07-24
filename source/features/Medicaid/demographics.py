@@ -11,7 +11,7 @@ def main():
     features = CachePopulation(population, index).set_index(index)
 
     sql = """
-          SELECT pop.sample_id,
+          SELECT pop.riipl_id,
                  MAX(CASE WHEN rd.gender = 'M'                THEN 1 ELSE 0 END) AS sex_m,
                  MAX(CASE WHEN rd.primary_lang_cd = '01'      THEN 1 ELSE 0 END) AS lang_spanish,
                  MAX(CASE WHEN rd.primary_lang_cd = '31'      THEN 1 ELSE 0 END) AS lang_portu,
@@ -26,7 +26,7 @@ def main():
                  lb.yrmo = me.yrmo
        LEFT JOIN {recip_demo} rd
               ON me.re_unique_id = rd.recipient_id
-        GROUP BY pop.sample_id
+        GROUP BY pop.riipl_id
           """.format(**globals())
 
     with cx_Oracle.connect("/") as cxn:
