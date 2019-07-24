@@ -17,7 +17,8 @@ env.Python("#output/figures/Figure3.csv",
            ["Figure3.py",
             constants["RANDOM_SEED"],
             constants["PLOT_BOOTSTRAPS"],
-            "#output/models/lstm.all.OUTCOME_ANY.y_pred.csv"])
+            "#output/models/lstm.all.OUTCOME_ANY.y_pred.csv",
+            "#scratch/features/Mega/demographics.csv"])
 
 # Figure 4 - FDR
 env.R("#output/figures/Figure4.pdf",
