@@ -26,8 +26,7 @@ replicates = [y.sample(n=len(y),
 
 with open(out_file, "w") as f:
 
-    print(["Decile", "Race", "N", "CostRatio", "CostRatioLower", "CostRatioUpper"],
-          sep=",", file=f)
+    print("Decile", "Race", "N", "CostRatio", "CostRatioLower", "CostRatioUpper", sep=",", file=f)
 
     for i in range(1, 11):
 
@@ -36,7 +35,7 @@ with open(out_file, "w") as f:
 
         # Recompute for each demographic
         for race, var in zip(["All", "Black", "Hispanic", "White"],
-                ["RIIPL_ID", "RACE_BLACK", "RACE_HISPANIC", "RACE_WHITE"]):
+                             ["RIIPL_ID", "RACE_BLACK", "RACE_HISPANIC", "RACE_WHITE"]):
 
             yd = yi[yi[var] != 0]
             if len(yd) < 11:
