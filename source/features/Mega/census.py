@@ -2,7 +2,7 @@ import pandas as pd
 import os, sys, time
 from riipl import CachePopulation, Connection, SaveFeatures
 
-population, lookback, dim_date, address, incomepath, povertypath, outfile, manifest = sys.argv[1:]
+population, lookback, address, income_file, fpl_file, out, manifest = sys.argv[1:]
 
 def main():
     """
@@ -14,11 +14,11 @@ def main():
     index = ["RIIPL_ID"]
     features = CachePopulation(population, index).set_index(index)
 
-    income = pd.read_csv(incomepath, skiprows=1, na_values=["-", "**"],
+    income = pd.read_csv(income_file, skiprows=1, na_values=["-", "**"],
                          usecols=["Id2", "Estimate; Median household income in the past 12 months (in 2015 Inflation-adjusted dollars)"])
     income.columns = ["GEO_ID", "BLKGRP_MEDIANINCOME"]
 
-    fpl = pd.read_csv(povertypath, skiprows=1, na_values=["-", "**"],
+    fpl = pd.read_csv(fpl_file, skiprows=1, na_values=["-", "**"],
                       usecols=["Id2", "Estimate; Total:", "Estimate; Income in the past 12 months below poverty level:"])
     fpl.columns = ["GEO_ID", "TOTAL", "FPL"]
     fpl["BLKGRP_BELOWFPL"] = fpl.FPL / fpl.TOTAL
@@ -26,34 +26,44 @@ def main():
 
     sql = """
           SELECT pop.riipl_id,
-                 TO_NUMBER(STATS_MODE(a.state || a.county || a.trct || a.blkgrp)) AS geo_id
-            FROM {population} pop
-       LEFT JOIN {lookback} lb
-              ON pop.riipl_id = lb.riipl_id
-       LEFT JOIN {dim_date} dd
-              ON lb.yrmo = dd.yrmo
+                 STATS_MODE(TO_NUMBER(a.state || a.county || a.trct || a.blkgrp)) AS geo_id,
+                 1 AS geocoded
+            FROM (
+                  SELECT pop.riipl_id,
+                         MAX(a.obs_date) AS max_dt
+                    FROM {population} pop
+              INNER JOIN {address} a
+                      ON pop.riipl_id = a.riipl_id AND
+                         a.obs_date <= pop.initial_rx_dt
+                GROUP BY pop.riipl_id
+                 ) pop
       INNER JOIN {address} a
               ON pop.riipl_id = a.riipl_id AND
-                 dd.date_dt = a.obs_date
-        GROUP BY pop.riipl_id, lb.yrmo
+                 pop.max_dt = a.obs_date
+        GROUP BY pop.riipl_id
           """.format(**globals())
 
     with Connection() as cxn:
         values = pd.read_sql(sql, cxn._connection)
 
     values = values.merge(income, how="left", on="GEO_ID")\
-                   .merge(fpl, how="left", on="GEO_ID")\
-                   .set_index(index)
+                   .merge(fpl,    how="left", on="GEO_ID")
+
+    features = features.join(values.set_index(index))
+    del features["GEO_ID"]
+
+    # Mean imputation
+    features["GEOCODED"] = features.GEOCODED.fillna(0)
+    features["BLKGRP_MEDIANINCOME"] = features.BLKGRP_MEDIANINCOME.fillna(features.BLKGRP_MEDIANINCOME.mean())
+    features["BLKGRP_BELOWFPL"] = features.BLKGRP_BELOWFPL.fillna(features.BLKGRP_BELOWFPL.mean())
 
     labels = {
-        "BLKGRP_MEDIANINCOME" : "block group's median annual household income (2015 dollars)",
-        "BLKGRP_BELOWFPL"     : "share of block group's residents with annual income below poverty level"
+        "GEOCODED"            : "Has a geocoded home address",
+        "BLKGRP_MEDIANINCOME" : "Block group's median annual household income (2015 dollars)",
+        "BLKGRP_BELOWFPL"     : "Share of block group below poverty line"
     }
 
-    # Take the mean values over the lookback period.
-    features = features.join(values.groupby(index)[list(labels)].mean())
-
-    SaveFeatures(features, outfile, manifest, population, labels)
+    SaveFeatures(features, out, manifest, population, labels)
 
 
 # EXECUTE

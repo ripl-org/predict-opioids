@@ -25,6 +25,9 @@ k <- kappa(X_train, exact=TRUE)
 print(paste0("condition number (kappa): ", k))
 assert_that(k < 100)
 
+# add intercept
+X_train <- cbind(X_train, 1)
+
 model <- glm.fit(x=X_train, y=y_train, family=binomial())
 params <- summary.glm(model)$coefficients
 
@@ -32,12 +35,12 @@ params <- summary.glm(model)$coefficients
 odds <- exp(params[,1])
 ci_lower <- exp(params[,1] - 1.96*params[,2])
 ci_upper <- exp(params[,1] + 1.96*params[,2])
-write.csv(data.frame(var=selected, odds=odds, ci_lower=ci_lower, ci_upper=ci_upper, p=params[,4]),
+write.csv(data.frame(var=c(selected, "intercept"), odds=odds, ci_lower=ci_lower, ci_upper=ci_upper, p=params[,4]),
           file=out_file, row.names=FALSE)
 
 # Predict on test data with OLS
-X_test <- cbind(1, X_test[,selected])
-coef <- rbind(1, as.matrix(model$coef))
+X_test <- cbind(X_test[,selected], 1)
+coef <- as.matrix(model$coef)
 eta <- as.matrix(X_test) %*% as.matrix(coef)
 riipl_id <- y_test[,c("RIIPL_ID")]
 y_pred <- exp(eta)/(1 + exp(eta))

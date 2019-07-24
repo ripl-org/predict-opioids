@@ -15,9 +15,9 @@ test_file       <- args[n]
  
 pop <- fread(population_file)
 
-train    <- which(pop$SUBSET == "TRAINING")
-validate <- which(pop$SUBSET == "VALIDATION")
-test     <- which(pop$SUBSET == "TESTING")
+train    <- pop$SUBSET == "TRAINING"
+validate <- pop$SUBSET == "VALIDATION"
+test     <- pop$SUBSET == "TESTING"
 
 y <- fread(outcomes_file)
 

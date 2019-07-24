@@ -1,7 +1,8 @@
 Import("*")
 
 features = []
-manifests = []
+feature_manifests = []
+interact_manifests = []
 
 no_norm = frozenset(("Medicaid/enrollment",
                      "Medicaid/household",
@@ -23,7 +24,42 @@ def Feature(name, deps, *args):
                    ["normalize.py", "#scratch/populations/InitialRX.csv", "#scratch/features/{}.csv".format(name)],
                    log_path="#output/features/{}.normalize.log".format(name))
         features.append("#scratch/features/{}.normalized.csv".format(name))
-    manifests.append("#output/features/{}.manifest".format(name))
+    feature_manifests.append("#output/features/{}.manifest".format(name))
+
+def Interact(name, deps, set1, set2):
+    """
+    Helper function for specifying pairwise interactions between two
+    sets of features.
+    """
+    name = "interactions/{}".format(name)
+    env.Python(["#scratch/features/{}.csv".format(name),
+                "#output/features/{}.manifest".format(name)],
+               ["interact.py",
+                tables["population"],
+                Value(",".join(set1)),
+                Value(",".join(set2)),
+                "#output/features/feature_manifest.tsv"] + \
+               ["#scratch/features/{}.normalized.csv".format(name) for name in deps],
+               log_path="#output/features/{}.log".format(name))
+    features.append("#scratch/features/{}.csv".format(name))
+    interact_manifests.append("#output/features/{}.manifest".format(name))
+
+def InteractAll(name, dep1, deps2):
+    """
+    Helper function for specifying pairwise interactions between all
+    features in one file and all features in a set of other files.
+    """
+    name = "interactions/{}".format(name)
+    env.Python(["#scratch/features/{}.csv".format(name),
+                "#output/features/{}.manifest".format(name)],
+               ["interact-all.py",
+                tables["population"],
+                "#output/features/feature_manifest.tsv",
+                "#scratch/features/{}.normalized.csv".format(dep1)] + \
+               ["#scratch/features/{}.normalized.csv".format(name) for name in deps2],
+               log_path="#output/features/{}.log".format(name))
+    features.append("#scratch/features/{}.csv".format(name))
+    interact_manifests.append("#output/features/{}.manifest".format(name))
 
 
 Feature("DLT/naics",
@@ -41,8 +77,10 @@ Feature("DOC/events",
         ["population", "lookback", "dim_date", "doc_events"])
 Feature("DOC/sentences",
         ["population", "lookback", "dim_date", "doc_sentences"])
+Feature("Medicaid/demographics",
+        ["population", "lookback", "medicaid_enrollment_2", "eohhs_recip_demo"])
 Feature("Medicaid/enrollment",
-        ["population", "lookback", "medicaid_enrollment_2", "dim_aid_ctg_cde", "eohhs_recip_demo", "eohhs_recip_x_ssn"])
+        ["population", "lookback", "medicaid_enrollment_2", "dim_aid_ctg_cde", "eohhs_recip_x_ssn"])
 Feature("Medicaid/household",
         ["population", "lookback", "dim_date", "household", "medicaid_pharmacy", "ndc_opioids", "outcomes_all"])
 Feature("Medicaid/payments",
@@ -56,6 +94,10 @@ Feature("Medicaid/nmf_topics",
         "#scratch/inputs/cde_words.csv",
         "#scratch/inputs/cde_word_counts.mm",
         constants["RANDOM_SEED"])
+Feature("Medicaid/risk_scores",
+        ["population", "lookback", "dim_date", "diag_cde", "proc_cde"],
+        "#public-data/CCS/single_level_dxref_2015.csv",
+        "#public-data/CCI/cci2015.csv")
 Feature("Mega/census",
         ["population", "lookback", "dim_date", "address"],
         "#input/public/ACS_15_5YR_B19013_with_ann.csv",
@@ -73,10 +115,47 @@ Feature("Police/car_crashes",
 Feature("Police/citations",
         ["population", "lookback", "citations"])
 
-# Manifest
+# Feature Manifest
 
-env.Command("#output/features/manifest.tsv",
-            manifests,
+env.Command("#output/features/feature_manifest.tsv",
+            feature_manifests,
+            "cat $SOURCES > $TARGET")
+
+# Interactions
+
+Interact("age_x_race",
+         ["Mega/demographics"],
+         ["AGE_{}".format(i) for i in range(1, 7)],
+         ["RACE_BLACK", "RACE_HISPANIC", "RACE_OTHER", "RACE_MISSING"])
+Interact("age_x_sex",
+         ["Medicaid/demographics", "Mega/demographics"],
+         ["AGE_{}".format(i) for i in range(1, 7)],
+         ["SEX_M"])
+Interact("race_x_sex",
+         ["Medicaid/demographics", "Mega/demographics"],
+         ["RACE_BLACK", "RACE_HISPANIC", "RACE_OTHER", "RACE_MISSING"],
+         ["SEX_M"])
+
+InteractAll("census_x_demo",
+            "Mega/census",
+            ["Medicaid/demographics", "Mega/demographics"])
+InteractAll("payments_x_all",
+            "Mega/payments",
+            ["DLT/unemp_ri", "DLT/unemp_naics", "DLT/ui", "DLT/wages", "DOC/events",
+             "Medicaid/costs", "Medicaid/costs_ed", "Medicaid/costs_pharmacy",
+             "Medicaid/demographics", "Medicaid/enrollment",
+             "Mega/births", "Mega/census", "Mega/demographics"])
+InteractAll("risk_scores_x_all",
+            "Medicaid/risk_scores",
+            ["DLT/unemp_ri", "DLT/unemp_naics", "DLT/ui", "DLT/wages", "DOC/events",
+             "Medicaid/costs", "Medicaid/costs_ed", "Medicaid/costs_pharmacy",
+             "Medicaid/demographics", "Medicaid/enrollment",
+             "Mega/births", "Mega/census", "Mega/demographics", "Mega/payments"])
+
+# Final Manifest
+
+env.Command(["#output/features/manifest.tsv"],
+            ["#output/features/feature_manifest.tsv"] + interact_manifests,
             "cat $SOURCES > $TARGET")
 
 features = {"all": features}
