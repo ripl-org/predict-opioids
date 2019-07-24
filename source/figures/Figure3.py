@@ -26,21 +26,26 @@ replicates = [y.sample(n=len(y),
 
 with open(out_file, "w") as f:
 
-    print("Decile", *["{}{}".format(demo, field)
-                      for demo in ["", "Black", "Hispanic", "White"]
-                      for field in ["CostRatio", "CostRatioLower", "CostRatioUpper"]],
+    print(["Decile", "Race", "N", "CostRatio", "CostRatioLower", "CostRatioUpper"],
           sep=",", file=f)
 
     for i in range(1, 11):
+
         yi = y.iloc[:i*decile]
         ris = [r.iloc[:i*decile] for r in replicates]
-        estimates = []
+
         # Recompute for each demographic
-        for demo in ["RIIPL_ID", "RACE_BLACK", "RACE_HISPANIC", "RACE_WHITE"]:
-            bootstraps = sorted(map(cost_ratio, [ri[ri[demo] != 0] for ri in ris]))
-            estimates += [cost_ratio(yi[yi[demo] != 0]),
-                          bootstraps[int(0.025 * len(bootstraps))],
-                          bootstraps[int(0.975 * len(bootstraps))]]
-        print(i, *map("{:.3f}".format, estimates), sep=",", file=f)
+        for race, var in zip(["All", "Black", "Hispanic", "White"],
+                ["RIIPL_ID", "RACE_BLACK", "RACE_HISPANIC", "RACE_WHITE"]):
+
+            yd = yi[yi[var] != 0]
+            if len(yd) < 11:
+                estimates = ["NA", "NA", "NA"]
+            else:
+                bootstraps = sorted(map(cost_ratio, [ri[ri[var] != 0] for ri in ris]))
+                estimates = map("{:.3f}".format, [cost_ratio(yd),
+                                                  bootstraps[int(0.025 * len(bootstraps))],
+                                                  bootstraps[int(0.975 * len(bootstraps))]])
+            print(i, race, len(yd), *estimates, sep=",", file=f)
 
 # vim: syntax=python expandtab sw=4 ts=4

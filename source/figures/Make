@@ -13,12 +13,15 @@ env.Python("#output/figures/Figures2.csv",
             "#output/models/lstm.all.OUTCOME_ANY.accuracy.csv"])
 
 # Figure 3 - cost ratio
-env.Python("#output/figures/Figure3.csv",
+env.Python(["#output/figures/Figure3.csv"],
            ["Figure3.py",
             constants["RANDOM_SEED"],
             constants["PLOT_BOOTSTRAPS"],
             "#output/models/lstm.all.OUTCOME_ANY.y_pred.csv",
             "#scratch/features/Mega/demographics.csv"])
+env.R(["#output/figures/Figure3.pdf"],
+      ["Figure3.R",
+       "#output/figures/Figure3.csv"])
 
 # Figure 4 - FDR
 env.R("#output/figures/Figure4.pdf",
