@@ -4,11 +4,6 @@ features = []
 feature_manifests = []
 interact_manifests = []
 
-no_norm = frozenset(("Medicaid/enrollment",
-                     "Medicaid/household",
-                     "Medicaid/pharmacy",
-                     "Police/car_crashes"))
-
 def Feature(name, deps, *args):
     """
     Helper function for succinctly specifying a feature file and
@@ -17,13 +12,10 @@ def Feature(name, deps, *args):
     env.Python(["#scratch/features/{}.csv".format(name),
                 "#output/features/{}.manifest".format(name)], 
                ["{}.py".format(name)] + [tables[name] for name in deps] + list(args))
-    if name in no_norm:
-        features.append("#scratch/features/{}.csv".format(name))
-    else:
-        env.Python("#scratch/features/{}.normalized.csv".format(name),
-                   ["normalize.py", "#scratch/populations/InitialRX.csv", "#scratch/features/{}.csv".format(name)],
-                   log_path="#output/features/{}.normalize.log".format(name))
-        features.append("#scratch/features/{}.normalized.csv".format(name))
+    env.Python("#scratch/features/{}.normalized.csv".format(name),
+               ["normalize.py", "#scratch/populations/InitialRX.csv", "#scratch/features/{}.csv".format(name)],
+               log_path="#output/features/{}.normalize.log".format(name))
+    features.append("#scratch/features/{}.normalized.csv".format(name))
     feature_manifests.append("#output/features/{}.manifest".format(name))
 
 def Interact(name, deps, set1, set2):
