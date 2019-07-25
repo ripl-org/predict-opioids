@@ -109,4 +109,11 @@ env.Python(["#scratch/inputs/cde_words.csv",
             "#input/public/icd9-sections.csv",
             "#input/ri360/MEDICAID-DIM_PROC_CDE.csv"])
 
+# CCS and CCI classifications
+env.Python([tables["ccs"],
+            tables["cci"]],
+           ["ccs_cci.py",
+            "#public-data/CCS/single_level_dxref_2015.csv",
+            "#public-data/CCI/cci2015.csv"])
+
 # vim: syntax=python expandtab sw=4 ts=4

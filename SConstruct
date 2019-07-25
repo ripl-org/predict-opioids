@@ -22,6 +22,8 @@ Export("constants")
 tables = ["address",
           "arrests",
           "car_crashes",
+          "cci",
+          "ccs",
           "citations",
           "dhs_per",
           "dhs_relations",

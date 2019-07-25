@@ -29,6 +29,7 @@ Tensor("Medicaid/pharmacy", ["population", "lookback", "dim_date", "medicaid_pha
        "#input/other/ashp.csv")
 Tensor("Medicaid/proc_cde", ["population", "lookback", "dim_date", "medicaid_proc_cde", "proc_corr"],
        "#input/ri360/MEDICAID-DIM_PROC_CDE.csv")
+Tensor("Medicaid/risk_scores", ["population", "lookback", "medicaid_enrollment_2", "dim_date", "medicaid_diag_cde", "medicaid_proc_cde", "ccs", "cci"])
 
 Tensor("Police/arrests", ["population", "lookback", "arrests"])
 Tensor("Police/calls", ["population", "lookback", "mega_addr"],
