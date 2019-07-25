@@ -112,7 +112,8 @@ tensors = {
                  "#scratch/tensors/Medicaid/enrollment.p",
                  "#scratch/tensors/Medicaid/pharmacy.p",
                  "#scratch/tensors/Medicaid/payments.p",
-                 "#scratch/tensors/Medicaid/proc_cde.p"],
+                 "#scratch/tensors/Medicaid/proc_cde.p",
+                 "#scratch/tensors/Medicaid/risk_scores.p"],
     "Police":   ["#scratch/tensors/Police/arrests.p",
                  "#scratch/tensors/Police/calls.p",
                  "#scratch/tensors/Police/car_crashes.p",
@@ -120,6 +121,7 @@ tensors = {
                  "#scratch/tensors/Police/demographics.p"]
 }
 tensors["all"] = sum(tensors.values(), [])
+tensors["all"].append("#scratch/tensors/interactions.p")
 
 # tensors
 for tensor in tensors:

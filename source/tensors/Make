@@ -38,4 +38,12 @@ Tensor("Police/car_crashes", ["population", "lookback", "car_crashes"])
 Tensor("Police/citations", ["population", "lookback", "citations"])
 Tensor("Police/demographics", ["population", "police_demo"], constants["NSTEPS"])
 
+env.Python(["#scratch/tensors/interactions.p"],
+           ["interact.py",
+            "#scratch/tensors/Medicaid/risk_scores.p",
+            "#scratch/tensors/DHS/demographics.p",
+            "#scratch/tensors/DOC/demographics.p",
+            "#scratch/tensors/Medicaid/demographics.p",
+            "#scratch/tensors/Police/demographics.p"])
+
 # vim: syntax=python expandtab sw=4 ts=4
