@@ -108,7 +108,7 @@ def SaveFeatures(df, out, manifest_file, population, labels, bool_features=[]):
     df.to_csv(out, float_format="%g")
 
 
-def SaveTensor(tensor, labels, fill_values, population_def, out, nsteps=None):
+def SaveTensor(tensor, labels, fill_values, population_def, out, nsteps=None, interactions=[]):
     """
     Save a 3D tensor as (sample, timestep, feature, value) tuples.
     """
@@ -157,6 +157,31 @@ def SaveTensor(tensor, labels, fill_values, population_def, out, nsteps=None):
             print(feature, keep[feature].describe(), sep="\n")
         else:
             print("dropping feature missing from training data:", feature)
+
+    # Interactions
+    for i, list1 in enumerate(interactions[:-1]):
+        for j, list2 in enumerate(interactions[i+1:]):
+            for var1 in list1:
+                for var2 in list2:
+
+                    if var1 not in keep or var2 not in keep: continue
+
+                    feature = "{}_X_{}".format(var1, var2)
+                    values = keep[var1].merge(keep[var2], on=["SUBSET", "SAMPLE", "TIMESTEP"], how="inner")
+                    train = values.SUBSET == 0
+
+                    if (len(value) > 0) & train.any():
+                        values["VALUE"] = values.VALUE_x * values.VALUE_y
+                        if len(values.loc[train, "VALUE"].unique()) <= 1:
+                            print("dropping interaction with zero variance:", feature)
+                            continue
+                        labels[feature] = "'{}' X '{}'".format(labels[var1], labels[var2])
+                        keep[feature] = values[["SUBSET", "SAMPLE", "TIMESTEP", "VALUE"]]
+                        fill_values[feature] = fill_values[var1] * fill_values[var2]
+
+                    else:
+                        print("dropping interaction missing from training data:", feature)
+
 
     with open(out, "wb") as f:
         pickle.dump({"labels": labels, "values": keep, "fill_values": fill_values}, f)

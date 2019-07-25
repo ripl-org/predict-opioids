@@ -56,7 +56,10 @@ def main():
 
     fill_values = dict((feature, "mean") for feature in tensor)
 
-    SaveTensor(tensor, labels, fill_values, (population, "RIIPL_ID"), out, nsteps)
+    SaveTensor(tensor, labels, fill_values, (population, "RIIPL_ID"), out, nsteps,
+               interactions=[["MEDICAID_MALE"],
+                             ["MEDICAID_AGE"],
+                             list(map("MEDICAID_RACE_{}".format, ["WHITE", "BLACK", "ASIAN", "HISPANIC"]])))
 
 
 # EXECUTE
