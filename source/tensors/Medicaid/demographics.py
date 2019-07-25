@@ -59,7 +59,8 @@ def main():
     SaveTensor(tensor, labels, fill_values, (population, "RIIPL_ID"), out, nsteps,
                interactions=[["MEDICAID_MALE"],
                              ["MEDICAID_AGE"],
-                             list(map("MEDICAID_RACE_{}".format, ["WHITE", "BLACK", "ASIAN", "HISPANIC"]])))
+                             list(map("MEDICAID_RACE_{}".format, ["WHITE", "BLACK", "ASIAN", "HISPANIC"])),
+                             list(map("MEDICAID_LANG_{}".format, ["ENGLISH", "SPANISH", "PORTUGUESE"]))])
 
 
 # EXECUTE

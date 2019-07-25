@@ -170,7 +170,7 @@ def SaveTensor(tensor, labels, fill_values, population_def, out, nsteps=None, in
                     values = keep[var1].merge(keep[var2], on=["SUBSET", "SAMPLE", "TIMESTEP"], how="inner")
                     train = values.SUBSET == 0
 
-                    if (len(value) > 0) & train.any():
+                    if (len(values) > 0) & train.any():
                         values["VALUE"] = values.VALUE_x * values.VALUE_y
                         if len(values.loc[train, "VALUE"].unique()) <= 1:
                             print("dropping interaction with zero variance:", feature)
