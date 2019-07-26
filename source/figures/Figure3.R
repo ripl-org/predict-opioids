@@ -16,7 +16,7 @@ plot <- function(df, title, grp_title) {
     return(df %>%
            ggplot(aes(x=Decile, y=CostRatio, color=Demographic)) +
            ggtitle(title) +
-           geom_ribbon(aes(ymin=CostRatioLower, ymax=CostRatioUpper, fill=Race), alpha=0.25, color=NA) +
+           geom_ribbon(aes(ymin=CostRatioLower, ymax=CostRatioUpper, fill=Demographic), alpha=0.25, color=NA) +
            geom_point(shape=1) +
            labs(x="Cumulative Deciles by Decreasing Risk", y="Break-even Cost Ratio") +
            theme_classic() +
