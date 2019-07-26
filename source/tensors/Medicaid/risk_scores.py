@@ -30,7 +30,7 @@ def main():
           """.format(**globals())
 
     with cx_Oracle.connect("/") as cxn:
-        values = pd.read_sql(sql, cxn, index_col=["RIIPL_ID", "TIMESTEP"])
+        values = pd.read_sql(sql, cxn)
 
     tensor = {"MEDICAID_DISEASE_SCORE": values.fillna(0)}
 
@@ -55,7 +55,7 @@ def main():
           """.format(**globals())
 
     with cx_Oracle.connect("/") as cxn:
-        values = pd.read_sql(sql, cxn, index_col=["RIIPL_ID", "TIMESTEP"])
+        values = pd.read_sql(sql, cxn)
 
     tensor["MEDICAID_CHRONIC_SCORE"] = values.fillna(0)
 
@@ -78,7 +78,7 @@ def main():
           """.format(**globals())
 
     with cx_Oracle.connect("/") as cxn:
-        values = pd.read_sql(sql, cxn, index_col=["RIIPL_ID", "TIMESTEP"])
+        values = pd.read_sql(sql, cxn)
 
     tensor["MEDICAID_PROCEDURES"] = values.fillna(0)
 

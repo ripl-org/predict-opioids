@@ -19,11 +19,11 @@ for tensorfile in tensorfiles:
     with open(tensorfile, "rb") as f:
         tensor2 = pickle.load(f)
 
-    for var1 in tensor1.values:
-        for var2 in tensor2.values:
+    for var1 in tensor1["values"]:
+        for var2 in tensor2["values"]:
 
             feature = "{}_X_{}".format(var1, var2)
-            values = tensor1.values[var1].merge(tensor2.values[var2], on=["SUBSET", "SAMPLE", "TIMESTEP"], how="inner")
+            values = tensor1["values"][var1].merge(tensor2["values"][var2], on=["SUBSET", "SAMPLE", "TIMESTEP"], how="inner")
             train = values.SUBSET == 0
 
             if (len(values) > 0) & train.any():
@@ -31,9 +31,9 @@ for tensorfile in tensorfiles:
                 if len(values.loc[train, "VALUE"].unique()) <= 1:
                     print("dropping interaction with zero variance:", feature)
                     continue
-                labels[feature] = "'{}' X '{}'".format(tensor1.labels[var1], tensor2.labels[var2])
+                labels[feature] = "'{}' X '{}'".format(tensor1["labels"][var1], tensor2["labels"][var2])
                 keep[feature] = values[["SUBSET", "SAMPLE", "TIMESTEP", "VALUE"]]
-                fill_values[feature] = tensor1.fill_values[var1] * tensor2.fill_values[var2]
+                fill_values[feature] = tensor1["fill_values"][var1] * tensor2["fill_values"][var2]
 
             else:
                 print("dropping interaction missing from training data:", feature)
