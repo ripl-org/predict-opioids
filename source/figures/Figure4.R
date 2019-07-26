@@ -11,8 +11,9 @@ csv_path <- args[1]
 out_path <- args[2]
 
 csv <- read_csv(csv_path)
+csv$Decile <- csv$Decile * 0.1
 
-plot <- function(df, title, grp_title) {
+plot <- function(df, title, grp_title, grp_labels) {
     return(df %>%
            ggplot(aes(x=Decile, y=FDR, color=Demographic)) +
            ggtitle(title) +
@@ -21,13 +22,13 @@ plot <- function(df, title, grp_title) {
            labs(x="Cumulative Deciles by Decreasing Risk", y="False Discovery Rate") +
            theme_classic() +
            theme(legend.position=c(0.8, 0.8), plot.title=element_text(face="bold")) +
-           scale_x_continuous(~ . * 0.1, limits=c(1, 10), breaks=seq(1, 10), labels=percent) +
-           scale_y_continuous(limits=c(0, 1), breaks=seq(0, 1, 0.2)),
+           scale_x_continuous(limits=c(0.1, 1), breaks=seq(0.1, 1, 0.1), labels=percent) +
+           scale_y_continuous(limits=c(0, 1), breaks=seq(0, 1, 0.2)) +
            scale_color_brewer(grp_title, labels=grp_labels, palette="Set2") +
            scale_fill_brewer(grp_title, labels=grp_labels, palette="Set2"))
 }
 
-pdf(out_path, width=6, height=8)
+pdf(out_path, width=6, height=10)
 grid.arrange(plot(filter(csv, Demographic=="RACE_BLACK" | Demographic=="RACE_HISPANIC" | Demographic=="RACE_WHITE"),
 		  "a",
 		  "Race/ethnicity",
