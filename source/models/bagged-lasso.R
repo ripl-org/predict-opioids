@@ -4,9 +4,13 @@ library(Matrix)
 
 args <- commandArgs(trailingOnly=TRUE)
 
-model_file  <- args[1]
-model_files <- args[2:length(args)-1]
+matrix_file <- args[1]
+model_file  <- args[2]
+model_files <- args[3:length(args)-1]
 out_file    <- args[length(args)]
+
+load(matrix_file)
+RIIPL_ID <- y_test$RIIPL_ID
 
 load(model_file)
 y_pred_avg <- y_predicted
@@ -20,4 +24,4 @@ y_pred_avg <- y_pred_avg / (length(model_files) + 1)
 colnames(y_pred_avg) <- "y_pred"
 
 print(paste0("auc: ", auc(roc(y_pred_avg, as.factor(y_test)))))
-write.csv(data.frame(y_pred=y_pred_avg, y_test=y_test), file=out_file, row.names=FALSE)
+write.csv(data.frame(RIIPL_ID=RIIPL_ID, y_pred=y_pred_avg, y_test=y_test), file=out_file, row.names=FALSE)

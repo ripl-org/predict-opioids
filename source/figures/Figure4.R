@@ -21,7 +21,7 @@ plot <- function(df, title, grp_title, grp_labels) {
            geom_point(shape=1) +
            labs(x="Cumulative Deciles by Decreasing Risk", y="False Discovery Rate") +
            theme_classic() +
-           theme(legend.position=c(0.8, 0.8), plot.title=element_text(face="bold")) +
+           theme(legend.position=c(0.8, 0.3), plot.title=element_text(face="bold")) +
            scale_x_continuous(limits=c(0.1, 1), breaks=seq(0.1, 1, 0.1), labels=percent) +
            scale_y_continuous(limits=c(0, 1), breaks=seq(0, 1, 0.2)) +
            scale_color_brewer(grp_title, labels=grp_labels, palette="Set2") +

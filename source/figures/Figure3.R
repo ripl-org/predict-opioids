@@ -13,7 +13,7 @@ out_path <- args[2]
 csv <- read_csv(csv_path)
 csv$Decile <- csv$Decile * 0.1
 
-plot <- function(df, title, grp_title) {
+plot <- function(df, title, grp_title, grp_labels) {
     return(df %>%
            ggplot(aes(x=Decile, y=CostRatio, color=Demographic)) +
            ggtitle(title) +

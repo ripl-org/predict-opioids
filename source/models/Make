@@ -60,7 +60,8 @@ for feature in features:
                "#output/models/bolasso.freq.{}.{}.csv".format(feature, outcome)],
               log_path="#output/models/postlasso.{}.{}.log".format(feature, outcome))
         env.R("#output/models/bagged-lasso.{}.{}.y_pred.csv".format(feature, outcome),
-              ["bagged-lasso.R"] + \
+              ["bagged-lasso.R",
+               "#scratch/models/matrix.{}.RData".format(feature)] + \
               ["#scratch/models/bolasso/gamlr.{}.{}.{}.RData".format(feature, outcome, i) 
                 for i in range(env.BOLASSO_BOOTSTRAPS)],
               log_path="#output/models/bagged-lasso.{}.{}.log".format(feature, outcome))
