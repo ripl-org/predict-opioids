@@ -75,8 +75,8 @@ class auroc(Callback):
 # Define model
 batch_size = 16
 model = models.Sequential()
-model.add(layers.LSTM(10, return_sequences=True, input_shape=(X_train.nsteps, X_train.nfeatures), dropout=0.25))
-model.add(layers.LSTM(10, input_shape=(X_train.nsteps, X_train.nfeatures), dropout=0.25))
+model.add(layers.LSTM(12, return_sequences=True, input_shape=(X_train.nsteps, X_train.nfeatures), dropout=0.25))
+model.add(layers.LSTM(12, input_shape=(X_train.nsteps, X_train.nfeatures), dropout=0.25))
 model.add(layers.Dropout(0.25))
 model.add(layers.Dense(1, activation="sigmoid"))
 model.compile(loss="binary_crossentropy", optimizer="adam")
