@@ -65,7 +65,7 @@ env.Python(tables["longterm_panel"],
             tables["medicaid_enrollment_2"]])
 
 env.Python("#scratch/populations/longterm_demo.csv",
-           ["longterm_panel.py",
+           ["longterm_demo.py",
             tables["longterm_panel"],
             tables["mega_demo"]])
 

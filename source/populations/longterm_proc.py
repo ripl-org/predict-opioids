@@ -13,9 +13,10 @@ sql = """
    LEFT JOIN {opioid_proc_cde} opc
           ON pc.proc_cde = opc.proc_cde
        WHERE pc.claim_dt BETWEEN '01-Jan-07' AND '31-Dec-11'
-      """
+    GROUP BY p.riipl_id
+      """.format(**globals())
 
-with Conection as cxn:
+with Connection() as cxn:
     pd.read_sql(sql, cxn._connection, index_col="RIIPL_ID").to_csv(outfile)
 
 # vim: expandtab sw=4 ts=4
