@@ -29,10 +29,10 @@ plot <- function(df, title, grp_title, grp_labels) {
 }
 
 pdf(out_path, width=6, height=10)
-grid.arrange(plot(filter(csv, Demographic=="RACE_BLACK" | Demographic=="RACE_HISPANIC" | Demographic=="RACE_WHITE"),
+grid.arrange(plot(filter(csv, Demographic=="RACE_WHITE" | Demographic=="RACE_MINORITY"),
 		  "a",
 		  "Race/ethnicity",
-                  c("RACE_BLACK"="African-American", "RACE_HISPANIC"="Hispanic", "RACE_WHITE"="White")),
+                  c("RACE_WHITE"="White", "RACE_MINORITY"="Minority")),
 	     plot(filter(csv, Demographic=="INCARC" | Demographic=="NINCARC"),
 		  "b",
                   "Incarcerated during\nprevious year",

@@ -18,6 +18,7 @@ y = pd.read_csv(y_pred_file).sort_values("y_pred", ascending=False)\
       .merge(pd.read_csv(med_file),  on="RIIPL_ID")
 
 y["RACE_WHITE"] = ((y.RACE_BLACK | y.RACE_HISPANIC | y.RACE_OTHER | y.RACE_MISSING) + 1) % 2
+y["RACE_MINORITY"] = y.RACE_BLACK | y.RACE_HISPANIC | y.RACE_OTHER
 y["INCARC"] = y.DOC_COMMITED | y.DOC_RELEASED
 y["NINCARC"] = ~y.INCARC
 y["DISABLED"] = y.MEDICAID_DISABLED
@@ -40,7 +41,7 @@ with open(out_file, "w") as f:
         ris = [r.iloc[:i*decile] for r in replicates]
 
         # Recompute for each demographic
-        for var in ["RIIPL_ID", "RACE_BLACK", "RACE_HISPANIC", "RACE_WHITE", "INCARC", "NINCARC", "DISABLED", "NDISABLED"]:
+        for var in ["RIIPL_ID", "RACE_MINORITY", "RACE_WHITE", "INCARC", "NINCARC", "DISABLED", "NDISABLED"]:
 
             yd = yi[yi[var] != 0]
             if len(yd) < 11:
