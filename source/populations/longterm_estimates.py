@@ -21,7 +21,9 @@ with open(out_file, "w") as f:
 
     print("panel size:", len(panel), file=f)
     print("months enrolled:", file=f)
+    print("----------------", file=f)
     print(panel.MONTHS.describe(), file=f)
+    print("----------------", file=f)
 
     adverse = panel.OUTCOME_ANY.fillna(MAX_DT) < MAX_DT
 
@@ -31,12 +33,12 @@ with open(out_file, "w") as f:
     n_without_rx = panel[adverse].INITIAL_RX_DT.isnull().sum()
     print("adverse outcomes without rx: {} ({:.1f}%)".format(n_without_rx, 100.0 * n_without_rx / n_adverse), file=f)
 
-    rx = panel.INITIAL_RX_DT.notnull().sum()
+    rx = panel.INITIAL_RX_DT.notnull()
 
     n_rx = rx.sum()
     print("rx: {} ({:.1f}%)".format(n_rx, 100.0 * n_rx / len(panel)), file=f)
 
-    n_without_adverse = (panel[rx].OUTCOME_ANY.fillna(MAX_DT) < MAX_DT).sum()
+    n_without_adverse = (panel[rx].OUTCOME_ANY.fillna(MAX_DT) == MAX_DT).sum()
     print("rx without adverse outcomes: {} ({:.1f}%)".format(n_without_adverse, 100.0 * n_without_adverse / n_rx), file=f)
 
 

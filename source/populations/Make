@@ -72,8 +72,7 @@ env.Python("#scratch/populations/longterm_outcomes.csv",
 env.Python("#scratch/populations/longterm_rx.csv",
            ["longterm_rx.py",
             "#scratch/inputs/medicaid_pharmacy.h5",
-            "#input/other/ndc-opioids.csv",
-            "#scratch/populations/InitialOutcomes.csv"])
+            "#input/other/ndc-opioids.csv"])
 
 env.Python("#output/populations/longterm_estimates.txt",
            ["longterm_estimates.py",

@@ -74,7 +74,7 @@ def InitialRX(rx_class):
 
 if __name__ == "__main__":
 
-    rxfile, ndcfile, diagfile, outfile = sys.argv[1:]
+    rxfile, ndcfile, outfile = sys.argv[1:]
     start = "20070101"
     end   = "20120101"
 

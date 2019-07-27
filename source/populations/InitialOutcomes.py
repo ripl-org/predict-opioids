@@ -130,6 +130,6 @@ if __name__ == "__main__":
     outcomes_proc = Prepare(procfile, "PROC", start, end)
     outcomes_all = outcomes_diag.join(outcomes_proc, how="outer").fillna(MAX_DT)
 
-    Initial(outcomes_all).to_csv(outfile, float_format="%g")
+    Initial(outcomes_all).to_csv(outfile, float_format="%.0f")
 
 # vim: expandtab sw=4 ts=4
