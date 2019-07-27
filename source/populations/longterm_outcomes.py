@@ -36,14 +36,7 @@ OUTCOMES = {
                                  b"X0321", # Methadone maintenance, assesment and evaluation, counseling, medication, treatment and review, and lab testing
                                  b"H0020", # Alcohol and or drug services; methadone administration and or service
                                  b"J1230", # Injection, methadone, up to 10mg
-                                 b"83840", # methadone
-                                 b"946",   # Alcohol and drug rehabilitation and counseling
-                                 b"9464",  # drug rehabilitation
-                                 b"9465",  # drug detoxification
-                                 b"9466",  # drug rehabilitation and detoxification
-                                 b"9467",  # combined alcohol and drug rehabilitation
-                                 b"9468",  # combined alcohol and drug detoxification
-                                 b"9469"]  # combined alcohol and drug rehabilitation and detoxification
+                                 b"83840"] # methadone
   }
 }
 
@@ -124,7 +117,9 @@ def Initial(outcomes):
 
 if __name__ == "__main__":
 
-    diagfile, procfile, start, end, outfile  = sys.argv[1:]
+    diagfile, procfile, outfile  = sys.argv[1:]
+    start = "20070101"
+    end   = "20120101"
 
     outcomes_diag = Prepare(diagfile, "DIAG", start, end)
     outcomes_proc = Prepare(procfile, "PROC", start, end)

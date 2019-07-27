@@ -63,8 +63,22 @@ env.Python(tables["household"],
 env.Python(tables["longterm_panel"],
            ["longterm_panel.py",
             tables["medicaid_enrollment_2"]])
+
+env.Python("#scratch/populations/longterm_outcomes.csv",
+           ["longterm_outcomes.py",
+            "#scratch/inputs/medicaid_diag_cde.h5",
+            "#scratch/inputs/medicaid_proc_cde.h5"])
+
+env.Python("#scratch/populations/longterm_rx.csv"],
+           ["longterm_rx.py",
+            "#scratch/inputs/medicaid_pharmacy.h5",
+            "#input/other/ndc-opioids.csv",
+            "#scratch/populations/InitialOutcomes.csv"])
+
 env.Python("#output/populations/longterm_estimates.txt",
            ["longterm_estimates.py",
-            tables["longterm_panel"]])
+            tables["longterm_panel"],
+            "#scratch/populations/longterm_outcomes.csv",
+            "#scratch/populations/longterm_rx.csv"])
 
 # vim: syntax=python expandtab sw=4 ts=4

@@ -18,7 +18,7 @@ sql = """
                              TO_NUMBER(yrmo) AS yrmo
                         FROM %medicaid_enrollment%
                      )
-               WHERE yr BETWEEN 2008 AND 2012
+               WHERE yr BETWEEN 2007 AND 2011
             GROUP BY riipl_id, yr
               )
         WHERE n >= 6              
