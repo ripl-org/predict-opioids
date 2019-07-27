@@ -74,6 +74,12 @@ env.Python("#scratch/populations/longterm_rx.csv",
             "#scratch/inputs/medicaid_pharmacy.h5",
             "#input/other/ndc-opioids.csv"])
 
+env.Python("#scratch/populations/longterm_proc.csv",
+           ["longterm_proc.py",
+            tables["longterm_panel"],
+            tables["medicaid_proc_cde"],
+            tables["opioid_proc_cde"]])
+
 env.Python("#output/populations/longterm_estimates.txt",
            ["longterm_estimates.py",
             tables["longterm_panel"],

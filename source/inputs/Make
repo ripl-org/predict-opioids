@@ -116,4 +116,9 @@ env.Python([tables["ccs"],
             "#public-data/CCS/single_level_dxref_2015.csv",
             "#public-data/CCI/cci2015.csv"])
 
+env.Python(tables["opioid_proc_cde"],
+           ["LoadPandas.py",
+            "#public-data/opioid-proc-cde.csv"],
+           log_path="#output/inputs/load_opioid_proc_cde.log")
+
 # vim: syntax=python expandtab sw=4 ts=4
