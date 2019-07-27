@@ -69,7 +69,7 @@ env.Python("#scratch/populations/longterm_outcomes.csv",
             "#scratch/inputs/medicaid_diag_cde.h5",
             "#scratch/inputs/medicaid_proc_cde.h5"])
 
-env.Python("#scratch/populations/longterm_rx.csv"],
+env.Python("#scratch/populations/longterm_rx.csv",
            ["longterm_rx.py",
             "#scratch/inputs/medicaid_pharmacy.h5",
             "#input/other/ndc-opioids.csv",
