@@ -85,10 +85,12 @@ env.Python("#scratch/populations/longterm_proc.csv",
             tables["medicaid_proc_cde"],
             tables["opioid_proc_cde"]])
 
-env.Python("#output/populations/longterm_estimates.txt",
+env.Python(["#output/populations/longterm_estimates.txt",
+            "#output/populations/longterm_estimates.csv"],
            ["longterm_estimates.py",
             tables["longterm_panel"],
             "#scratch/populations/longterm_outcomes.csv",
-            "#scratch/populations/longterm_rx.csv"])
+            "#scratch/populations/longterm_rx.csv",
+            "#scratch/populations/longterm_proc.csv"])
 
 # vim: syntax=python expandtab sw=4 ts=4
