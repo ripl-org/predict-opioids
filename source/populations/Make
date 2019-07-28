@@ -91,6 +91,7 @@ env.Python(["#output/populations/longterm_estimates.txt",
             tables["longterm_panel"],
             "#scratch/populations/longterm_outcomes.csv",
             "#scratch/populations/longterm_rx.csv",
-            "#scratch/populations/longterm_proc.csv"])
+            "#scratch/populations/longterm_proc.csv",
+            "#scratch/populations/longterm_demo.csv"])
 
 # vim: syntax=python expandtab sw=4 ts=4

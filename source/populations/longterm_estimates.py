@@ -2,7 +2,7 @@ import pandas as pd
 import sys
 from riipl import Connection
 
-panel, outcomes_file, rx_file, proc_file, out_file, csv_file = sys.argv[1:]
+panel, outcomes_file, rx_file, proc_file, demo_file, out_file, csv_file = sys.argv[1:]
 
 MAX_DT = 99999999
 
@@ -18,6 +18,10 @@ panel = panel.merge(pd.read_csv(rx_file, usecols=["RIIPL_ID", "INITIAL_RX_DT"]),
                     on="RIIPL_ID")
 
 panel = panel.merge(pd.read_csv(proc_file, usecols=["RIIPL_ID", "OPIOID_PROC"]),
+                    how="left",
+                    on="RIIPL_ID")
+
+panel = panel.merge(pd.read_csv(demo_file),
                     how="left",
                     on="RIIPL_ID")
 
@@ -49,7 +53,7 @@ with open(csv_file, "w") as f:
 
     proc = panel.OPIOID_PROC > 0
     both = rx & proc
-    none = ~both
+    none = (~rx) & (~proc)
 
     perc = lambda val, n: "{} ({:.1f}%)".format(val, 100.0*val/n)
 
@@ -60,7 +64,8 @@ with open(csv_file, "w") as f:
         "OUTCOME_ABUSE": "Abuse",
         "OUTCOME_POISONING_RX": "Rx Poisoning",
         "OUTCOME_POISONING_HEROIN": "Heroin Poisoning",
-        "OUTCOME_PROCEDURE": "Treatment"
+        "OUTCOME_PROCEDURE": "Treatment",
+        "OUTCOME_ANY": "Any Outcome"
     }
     for outcome in outcomes:
         panel[outcome] = panel[outcome] < MAX_DT
