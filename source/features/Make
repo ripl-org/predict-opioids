@@ -147,12 +147,6 @@ InteractAll("risk_scores_x_all",
              "Medicaid/demographics", "Medicaid/enrollment", "Medicaid/household",
              "Mega/census", "Mega/demographics", "Mega/household", "Mega/payments",
              "Police/arrests", "Police/car_crashes", "Police/citations"])
-InteractAll("injection_x_all",
-            "Medicaid/injection",
-            ["DLT/unemp_ri", "DLT/unemp_naics", "DLT/ui", "DLT/wages", "DOC/events",
-             "Medicaid/demographics", "Medicaid/enrollment", "Medicaid/household", "Medicaid/risk_scores",
-             "Mega/census", "Mega/demographics", "Mega/household", "Mega/payments",
-             "Police/arrests", "Police/car_crashes", "Police/citations"])
 
 # Final Manifest
 
