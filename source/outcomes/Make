@@ -14,7 +14,7 @@ Export("outcomes")
 for name in outcomes:
     env.Python("#scratch/outcomes/{}.csv".format(name),
                ["Outcome.py",
-                "#scratch/populations/InitialRX.csv",
+                "#scratch/population.csv",
                 "#scratch/populations/InitialOutcomes.csv",
                 Value(name),
                 constants["OUTCOME_YEARS"]],

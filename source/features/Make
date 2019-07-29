@@ -13,7 +13,7 @@ def Feature(name, deps, *args):
                 "#output/features/{}.manifest".format(name)], 
                ["{}.py".format(name)] + [tables[name] for name in deps] + list(args))
     env.Python("#scratch/features/{}.normalized.csv".format(name),
-               ["normalize.py", "#scratch/populations/InitialRX.csv", "#scratch/features/{}.csv".format(name)],
+               ["normalize.py", "#scratch/population.csv", "#scratch/features/{}.csv".format(name)],
                log_path="#output/features/{}.normalize.log".format(name))
     features.append("#scratch/features/{}.normalized.csv".format(name))
     feature_manifests.append("#output/features/{}.manifest".format(name))

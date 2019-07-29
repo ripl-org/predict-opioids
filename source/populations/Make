@@ -14,18 +14,19 @@ env.Python("#scratch/populations/InitialRX.csv",
             constants["INITIAL_RX_END"],
             "#input/other/ndc-opioids.csv"])
 
-env.Python("#scratch/populations/InitialInjections.csv",
-           ["InitialInjections.py",
+env.Python("#scratch/populations/InitialInjection.csv",
+           ["InitialInjection.py",
             tables["medicaid_proc_cde"],
             tables["opioid_proc_cde"],
             constants["INITIAL_RX_START"],
             constants["INITIAL_RX_END"]])
 
-env.Python(tables["population"],
+env.Python([tables["population"],
+            "#scratch/population.csv"],
            ["population.py",
             "#scratch/populations/InitialOutcomes.csv",
             "#scratch/populations/InitialRX.csv",
-            "#scratch/populations/InitialInjections.csv",
+            "#scratch/populations/InitialInjection.csv",
             constants["RANDOM_SEED"]])
 
 env.Python(tables["lookback"],

@@ -6,13 +6,13 @@ proc_cde, opioid_proc_cde, start, end, outfile = sys.argv[1:]
 
 sql = """
       SELECT pc.riipl_id,
-             MIN(pc.claim_dt) AS initial_injection_dt,
+             TO_CHAR(MIN(pc.claim_dt), 'YYYYMMDD') AS initial_injection_dt,
              COUNT(pc.claim_dt) AS injection_count
-   LEFT JOIN {proc_cde} pc
+        FROM {proc_cde} pc
   INNER JOIN {opioid_proc_cde} opc
           ON pc.proc_cde = opc.proc_cde
        WHERE pc.claim_dt >= TO_DATE('{start}', 'YYYYMMDD') AND
-             pc.claim_dt <  TO_DATE('{end}', YYYYMMDD')
+             pc.claim_dt <  TO_DATE('{end}', 'YYYYMMDD')
     GROUP BY pc.riipl_id
       """.format(**globals())
 
