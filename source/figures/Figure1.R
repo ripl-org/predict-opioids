@@ -32,8 +32,15 @@ coef <- read_csv(coef_path) %>%
                                          startsWith(var, "UNEMP")     ~ "Employment",
                                          startsWith(var, "TDI")       ~ "Employment",
                                          startsWith(var, "UI")        ~ "Employment",
-                                         TRUE                         ~ "Demographics")))
+                                         TRUE                         ~ "Demographics"),
+                               levels=c("Medicaid claims and enrollment",
+                                        "Demographics",
+                                        "Social benefit and insurance programs",
+                                        "Employment",
+                                        "Incarceration and criminal justice",
+                                        "Interaction term")))
 
+print(table(coef$category))
 cats <- select(coef, "var", "category", "desc")
 write_csv(cats[order(cats$category, cats$var),], cats_path)
 
@@ -52,14 +59,13 @@ coef %>% ggplot(aes(x=jitter, y=odds, color=category)) +
                axis.ticks.x=element_blank(),
                axis.title.x=element_blank(),
                axis.text.y=element_text(size=5),
-               axis.text.y=element_title(size=8),
-               axis.ticks.y=element_blank(),
-               legend.background.box=element_rect(colour="black"),
+               axis.title.y=element_text(size=8),
+               legend.box.background=element_rect(colour="black"),
                legend.position="right",
                legend.text=element_text(size=7),
                legend.title=element_blank()) +
          scale_color_manual("Category",
-                            values=c("#E34E38", "#DF9826", "#45AFAF", "#7030A0", "#5B9BD5", "black"))
+                            values=c("#E34E38", "#DF9826", "#45AFAF", "#7030A0", "#5B9BD5", "gray"))
 dev.off()
 
 # vim: syntax=R expandtab sw=4 ts=4
