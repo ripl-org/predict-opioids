@@ -1,12 +1,12 @@
 Import("*")
 
 # Figure 1 - summary of logit odds ratios
-env.Python(["#output/figures/Figure1.categories.csv",
-            "#output/figures/Figure1.pdf"],
-           ["Figure1.R",
-            constants["RANDOM_SEED"],
-            "#output/models/postlasso.all.OUTCOME_ANY.csv",
-            "#output/features/manifest.tsv"])
+env.R(["#output/figures/Figure1.categories.csv",
+       "#output/figures/Figure1.pdf"],
+      ["Figure1.R",
+       constants["RANDOM_SEED"],
+       "#output/models/postlasso.all.OUTCOME_ANY.csv",
+       "#output/features/manifest.tsv"])
 
 # Figure 3 - cost ratio
 env.Python(["#output/figures/Figure3.csv"],
