@@ -12,7 +12,7 @@ def main():
                  STATS_MODE(di.i_sex) AS sex,
                  STATS_MODE(di.i_race) AS race,
                  STATS_MODE(di.i_spanish_lang) AS spanish_lang,
-                 STATS_MODE((pop.initial_rx_dt - di.i_dob) / 365.0) AS age
+                 STATS_MODE((pop.initial_dt - di.i_dob) / 365.0) AS age
             FROM {population} pop
       INNER JOIN {doc_ident} di
               ON pop.riipl_id = di.riipl_id

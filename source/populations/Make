@@ -1,7 +1,5 @@
 Import("*")
 
-### InitialOutcomes ###
-
 env.Python("#scratch/populations/InitialOutcomes.csv",
            ["InitialOutcomes.py",
             "#scratch/inputs/medicaid_diag_cde.h5",
@@ -9,17 +7,25 @@ env.Python("#scratch/populations/InitialOutcomes.csv",
             constants["INITIAL_OUTCOMES_START"],
             constants["INITIAL_OUTCOMES_END"]])
 
-
-### InitialRX ###
-
-env.Python([tables["population"],
-            "#scratch/populations/InitialRX.csv"],
+env.Python("#scratch/populations/InitialRX.csv",
            ["InitialRX.py",
             "#scratch/inputs/medicaid_pharmacy.h5",
             constants["INITIAL_RX_START"],
             constants["INITIAL_RX_END"],
-            "#input/other/ndc-opioids.csv",
+            "#input/other/ndc-opioids.csv"])
+
+env.Python("#scratch/populations/InitialInjections.csv",
+           ["InitialInjections.py",
+            tables["medicaid_proc_cde"],
+            tables["opioid_proc_cde"],
+            constants["INITIAL_RX_START"],
+            constants["INITIAL_RX_END"]])
+
+env.Python(tables["population",
+           ["population.py",
             "#scratch/populations/InitialOutcomes.csv",
+            "#scratch/populations/InitialRX.csv",
+            "#scratch/populations/InitialInjections.csv",
             constants["RANDOM_SEED"]])
 
 env.Python(tables["lookback"],

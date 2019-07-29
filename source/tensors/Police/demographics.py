@@ -11,7 +11,7 @@ def main():
           SELECT pop.riipl_id,
                  pd.sex,
                  pd.race,
-                 ((pop.initial_rx_dt - pd.dob) / 365.0) AS age
+                 ((pop.initial_dt - pd.dob) / 365.0) AS age
             FROM {population} pop
       INNER JOIN {police_demo} pd
               ON pop.riipl_id = pd.riipl_id

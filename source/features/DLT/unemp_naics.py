@@ -23,7 +23,7 @@ def main():
     sql = """
           SELECT DISTINCT
                  pop.riipl_id,
-                 TO_CHAR(pop.initial_rx_dt, 'YYYY') AS yr,
+                 TO_CHAR(pop.initial_dt, 'YYYY') AS yr,
                  dw.wages,
                  SUBSTR(dw.naics4, 1, 2) AS naics
             FROM {population} pop

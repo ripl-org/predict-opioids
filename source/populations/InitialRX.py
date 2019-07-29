@@ -65,81 +65,20 @@ def InitialRX(rx_class):
     rx_count = rx_class[rx_class.opioid == 1].groupby("RIIPL_ID")["opioid"].sum()
     rx_count.name = "RX_COUNT"
 
-    population = initial_rx_dt.to_frame().join(rx_count)
+    recovery_dt = rx_class[rx_class.recovery == 1].groupby("RIIPL_ID")["DISPENSED_DT"].min()
+    recovery_dt.name = "RECOVERY_DT"
+
+    population = initial_rx_dt.to_frame().join(rx_count).join(recovery_dt)
     print(population.head())
     print(len(population), "of", len(rx_class), "have initial opioid prescription")
 
     return population
 
 
-def ExcludeRecovery(population, rx_class):
-    """
-    Exclude recipients who have an opioid recovery prescription before their
-    initial opioid prescription.
-    """
-    recovery_dt = rx_class[rx_class.recovery == 1].groupby("RIIPL_ID")["DISPENSED_DT"].min()
-    recovery_dt.name = "RECOVERY_DT"
-
-    joined = population.join(recovery_dt, how="left")
-
-    excluded = (~joined.RECOVERY_DT.isnull()) & (joined.RECOVERY_DT <= joined.INITIAL_RX_DT)
-    print("excluding", excluded.sum(), "of", len(population), "with recovery prescription before initial prescription")
-
-    return population[~excluded]
-
-
-def ExcludePriorOutcome(population, diagfile):
-    """
-    Exclude recipients who have a diagnosis outcome prior to their initial
-    prescription.
-    """
-    diags = pd.read_csv(diagfile,
-                        usecols=["RIIPL_ID", "OUTCOME_ANY"],
-                        index_col="RIIPL_ID")
-
-    joined = population.join(diags, how="left")
-
-    excluded = (joined.OUTCOME_ANY <= joined.INITIAL_RX_DT)
-    print("excluding", excluded.sum(), "of", len(population), "with diagosis outcome before initial prescription")
-
-    return population[~excluded]
-
-
-def Partition(population, seed, training=0.5, validation=0.25, testing=0.25):
-    """
-    Partition population into training, validation, and testing sets.
-    """
-    np.random.seed(int(seed))
-    population["SUBSET"] = np.random.choice(["TRAINING", "VALIDATION", "TESTING"],
-                                            len(population),
-                                            p=[training, validation, testing])
-    print("partitioned into", (population.SUBSET == "TRAINING").sum(), "training,",
-                              (population.SUBSET == "VALIDATION").sum(), "validation,",
-                              (population.SUBSET == "TESTING").sum(), "testing")
-    return population
-
-
 if __name__ == "__main__":
 
-    rxfile, start, end, ndcfile, diagfile, seed, table, outfile = sys.argv[1:]
-
+    rxfile, start, end, ndcfile, outfile = sys.argv[1:]
     rx_class = ClassifyRX(LoadRX(rxfile, start, end), ndcfile)
-
-    population = InitialRX(rx_class)
-    population = ExcludeRecovery(population, rx_class)
-    population = ExcludePriorOutcome(population, diagfile)
-    population = Partition(population, seed)
-    print("final population size", len(population))
-
-    schema = (("RIIPL_ID", "NUMBER"),
-              ("INITIAL_RX_DT", "DATE 'YYYYMMDD'"),
-              ("RX_COUNT", "NUMBER"),
-              ("SUBSET", "VARCHAR2(10)"))
-
-    with Connection() as cxn:
-        cxn.read_dataframe(population.reset_index(), table, schema)
-        cxn.save_table(table, "RIIPL_ID")
-
-    population.to_csv(outfile)
+    InitialRX(rx_class).to_csv(outfile)
 
 # vim: expandtab sw=4 ts=4

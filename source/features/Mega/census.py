@@ -34,7 +34,7 @@ def main():
                     FROM {population} pop
               INNER JOIN {address} a
                       ON pop.riipl_id = a.riipl_id AND
-                         a.obs_date <= pop.initial_rx_dt
+                         a.obs_date <= pop.initial_dt
                 GROUP BY pop.riipl_id
                  ) pop
       INNER JOIN {address} a

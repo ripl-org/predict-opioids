@@ -22,7 +22,7 @@ def Outcome(rxfile, diagfile, name):
     TestMissing(outcome[name], 0.05)
 
     # Convert prescription and outcome dates to datetimes
-    initial_rx_dt = pd.to_datetime(rx["INITIAL_RX_DT"], format="%Y%m%d")
+    initial_dt = pd.to_datetime(rx["INITIAL_DT"], format="%Y%m%d")
     outcome_dt_str = outcome[name].replace(MAX_DT, np.NaN).apply("{:.0f}".format)
     outcome_dt = pd.to_datetime(outcome_dt_str, format="%Y%m%d")
 
@@ -30,7 +30,7 @@ def Outcome(rxfile, diagfile, name):
     outcome[name_dt] = outcome_dt
 
     # Outcome time in days since initial prescription
-    days = outcome_dt - initial_rx_dt
+    days = outcome_dt - initial_dt
     indicator = days.notnull()
 
     name_days = "{}_DAYS".format(name)

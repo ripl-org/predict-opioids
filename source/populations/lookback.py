@@ -12,7 +12,7 @@ def lookback(population, months, table):
 
     sql = """
           SELECT riipl_id,
-                 TO_CHAR(initial_rx_dt, 'YYYYMM') AS initial_rx_mo
+                 TO_CHAR(initial_dt, 'YYYYMM') AS initial_mo
             FROM {population}
         ORDER BY riipl_id
           """.format(**locals())
@@ -25,9 +25,9 @@ def lookback(population, months, table):
     yrmo = []
     yyq = []
 
-    for riipl_id, initial_rx_mo in population.itertuples():
-        year = int(initial_rx_mo[:4])
-        month = int(initial_rx_mo[4:])
+    for riipl_id, initial_mo in population.itertuples():
+        year = int(initial_mo[:4])
+        month = int(initial_mo[4:])
         for t in range(months):
             month = month - 1
             if month == 0:

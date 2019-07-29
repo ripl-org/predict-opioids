@@ -20,8 +20,8 @@ def main():
             FROM {population} pop
        LEFT JOIN {medicaid_cde} med
               ON pop.riipl_id = med.riipl_id AND
-                 med.claim_dt < pop.initial_rx_dt AND
-                 pop.initial_rx_dt - med.claim_dt <= 365 AND
+                 med.claim_dt < pop.initial_dt AND
+                 pop.initial_dt - med.claim_dt <= 365 AND
                  med.{cde_type}_cde IS NOT NULL
            WHERE pop.subset = 'TRAINING'
         GROUP BY pop.riipl_id,

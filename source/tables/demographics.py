@@ -15,7 +15,7 @@ def main():
                  bmi
             FROM {population} pop
        LEFT JOIN {dim_date} dd
-              ON pop.initial_rx_dt = dd.date_dt
+              ON pop.initial_dt = dd.date_dt
        LEFT JOIN {mega} mega
               ON pop.riipl_id = mega.riipl_id AND
                  dd.yrmo = mega.month
