@@ -1,3 +1,4 @@
+import numpy as np
 import pandas as pd
 import sys
 from riipl import Connection
@@ -17,7 +18,7 @@ panel = panel.merge(pd.read_csv(rx_file, usecols=["RIIPL_ID", "INITIAL_RX_DT"]),
                     how="left",
                     on="RIIPL_ID")
 
-panel = panel.merge(pd.read_csv(proc_file, usecols=["RIIPL_ID", "OPIOID_PROC"]),
+panel = panel.merge(pd.read_csv(proc_file, usecols=["RIIPL_ID", "INITIAL_INJECTION_DT"]),
                     how="left",
                     on="RIIPL_ID")
 
@@ -51,9 +52,11 @@ with open(out_file, "w") as f:
 
 with open(csv_file, "w") as f:
 
-    proc = panel.OPIOID_PROC > 0
+    proc = panel.INITIAL_INJECTION_DT.notnull()
     both = rx & proc
     none = (~rx) & (~proc)
+
+    panel["INITIAL_DT"] = np.min(panel.INITIAL_RX_DT, panel.INITIAL_INJECTION_DT)
 
     perc = lambda val, n: "{} ({:.1f}%)".format(val, 100.0*val/n)
 
@@ -75,8 +78,11 @@ with open(csv_file, "w") as f:
 
     for outcome, desc in outcomes.items():
         print(desc,
-              perc(panel[outcome].sum(), len(panel)),
-              *[perc(panel.loc[s, outcome].sum(), s.sum()) for s in subsets],
+              perc((panel[outcome] < MAX_DT).sum(), len(panel)),
+              perc((panel.loc[rx, outcome] < panel.loc[rx, "INITIAL_RX_DT"]).sum(), rx.sum()),
+              perc((panel.loc[proc, outcome] < panel.loc[proc, "INITIAL_INJECTION_DT"]).sum(), proc.sum()),
+              perc((panel.loc[both, outcome] < panel.loc[both, "INITIAL_DT"]).sum(), both.sum()),
+              perc((panel.loc[neither, outcome] < MAX_DT).sum(), neither.sum()),
               sep=",",
               file=f)
 
