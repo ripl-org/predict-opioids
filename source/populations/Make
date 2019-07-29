@@ -21,7 +21,7 @@ env.Python("#scratch/populations/InitialInjections.csv",
             constants["INITIAL_RX_START"],
             constants["INITIAL_RX_END"]])
 
-env.Python(tables["population",
+env.Python(tables["population"],
            ["population.py",
             "#scratch/populations/InitialOutcomes.csv",
             "#scratch/populations/InitialRX.csv",

@@ -6,7 +6,7 @@ panel, proc_cde, opioid_proc_cde, outfile = sys.argv[1:]
 
 sql = """
       SELECT p.riipl_id,
-             MIN(pc.claim_dt) AS initial_injection_dt
+             TO_CHAR(MIN(pc.claim_dt), 'YYYYMMDD') AS initial_injection_dt
         FROM {panel} p
    LEFT JOIN {proc_cde} pc
           ON p.riipl_id = pc.riipl_id

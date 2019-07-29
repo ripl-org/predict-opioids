@@ -56,7 +56,7 @@ with open(csv_file, "w") as f:
     both = rx & proc
     none = (~rx) & (~proc)
 
-    panel["INITIAL_DT"] = np.min(panel.INITIAL_RX_DT, panel.INITIAL_INJECTION_DT)
+    panel["INITIAL_DT"] = panel[["INITIAL_RX_DT", "INITIAL_INJECTION_DT"]].min(axis=1)
 
     perc = lambda val, n: "{} ({:.1f}%)".format(val, 100.0*val/n)
 
@@ -70,8 +70,6 @@ with open(csv_file, "w") as f:
         "OUTCOME_PROCEDURE": "Treatment",
         "OUTCOME_ANY": "Any Outcome"
     }
-    for outcome in outcomes:
-        panel[outcome] = panel[outcome] < MAX_DT
 
     print("", "All", "Opioid Rx", "Opioid Injection", "Both", "Neither", sep=",", file=f)
     print("N", len(panel), *[s.sum() for s in subsets], sep=",", file=f)
@@ -82,7 +80,7 @@ with open(csv_file, "w") as f:
               perc((panel.loc[rx, outcome] < panel.loc[rx, "INITIAL_RX_DT"]).sum(), rx.sum()),
               perc((panel.loc[proc, outcome] < panel.loc[proc, "INITIAL_INJECTION_DT"]).sum(), proc.sum()),
               perc((panel.loc[both, outcome] < panel.loc[both, "INITIAL_DT"]).sum(), both.sum()),
-              perc((panel.loc[neither, outcome] < MAX_DT).sum(), neither.sum()),
+              perc((panel.loc[none, outcome] < MAX_DT).sum(), none.sum()),
               sep=",",
               file=f)
 
