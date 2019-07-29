@@ -68,6 +68,8 @@ if __name__ == "__main__":
     population = Partition(population, seed)
     print("final population size", len(population))
 
+    population.to_csv(out_file, float_format="%.0f")
+
     schema = (("RIIPL_ID", "NUMBER"),
               ("INITIAL_RX_DT", "DATE 'YYYYMMDD'"),
               ("RX_COUNT", "NUMBER"),
@@ -79,9 +81,7 @@ if __name__ == "__main__":
               ("SUBSET", "VARCHAR2(10)"))
 
     with Connection() as cxn:
-        cxn.read_dataframe(population.reset_index(), table, schema)
+        cxn.read_csv(out_file, schema, table)
         cxn.save_table(table, "RIIPL_ID")
-
-    population.to_csv(out_file)
 
 # vim: expandtab sw=4 ts=4
