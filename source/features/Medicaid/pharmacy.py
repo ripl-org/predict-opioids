@@ -62,6 +62,24 @@ def main():
     # Drop NAICS categories that are missing for the entire population.
     features = features.dropna(axis=1, how="all").fillna(0)
 
+    # Merge categories with the same description
+    varnames = set(features.columns)
+    groups = defaultdict(set)
+    while(varnames):
+        var1 = varnames.pop()
+        for var2 in list(varnames):
+            if labels["var1"] == labels["var2"]:
+                groups[var1].add(var2)
+                varnames.remove(var2)
+    for k, v in groups.items():
+        group = [k] + list(v)
+        print("merging categories:", ", ".join(group))
+        merged = "ASHP_" + "_".join(var[5:] for var in group)
+        features[merged] = features[group[0]]
+        for var in group:
+            del features[var]
+        labels[merged] = labels[k]
+
     # Merge perfectly correlated categories
     training = (CachePopulationSubsets(population, index).set_index(index)["SUBSET"] == "TRAINING")
     varnames = set(features.columns)
