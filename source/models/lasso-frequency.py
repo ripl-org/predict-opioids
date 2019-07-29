@@ -10,13 +10,12 @@ selected_file = sys.argv[-1]
 manifest = pd.read_csv(manifest_file, sep="\t", names=["var", "desc"], index_col="var")
 
 # Load coefficients and calculate non-zero frequency
-var = pd.read_csv(coef_files[0], index_col="var")
+var = pd.read_csv(coef_files[0], names=["var", "coef"], skiprows=1, index_col="var")
 var["freq"] = (var.coef != 0).astype(int)
 for coef_file in coef_files[1:]:
-    var["freq"] += (pd.read_csv(coef_file, index_col="var").coef != 0).astype(int)
+    var["freq"] += (pd.read_csv(coef_file, names=["var", "coef"], skiprows=1, index_col="var").coef != 0).astype(int)
 var["freq"] /= len(coef_files)
 
-var.drop("intercept", inplace=True)
 del var["coef"]
 
 var.join(manifest).sort_values("freq", ascending=False).to_csv(freq_file)
