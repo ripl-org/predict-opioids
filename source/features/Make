@@ -77,6 +77,8 @@ Feature("Medicaid/enrollment",
         ["population", "lookback", "medicaid_enrollment_2", "dim_aid_ctg_cde", "eohhs_recip_x_ssn"])
 Feature("Medicaid/household",
         ["population", "lookback", "dim_date", "household", "medicaid_pharmacy", "ndc_opioids", "outcomes_all"])
+Feature("Medicaid/injection",
+        ["population"])
 Feature("Medicaid/payments",
         ["population", "lookback", "dim_date", "medicaid_claims", "medicaid_pharmacy"])
 Feature("Medicaid/pharmacy",
@@ -143,6 +145,12 @@ InteractAll("risk_scores_x_all",
             "Medicaid/risk_scores",
             ["DLT/unemp_ri", "DLT/unemp_naics", "DLT/ui", "DLT/wages", "DOC/events",
              "Medicaid/demographics", "Medicaid/enrollment", "Medicaid/household",
+             "Mega/census", "Mega/demographics", "Mega/household", "Mega/payments",
+             "Police/arrests", "Police/car_crashes", "Police/citations"])
+InteractAll("injection_x_all",
+            "Medicaid/injection",
+            ["DLT/unemp_ri", "DLT/unemp_naics", "DLT/ui", "DLT/wages", "DOC/events",
+             "Medicaid/demographics", "Medicaid/enrollment", "Medicaid/household", "Medicaid/risk_scores",
              "Mega/census", "Mega/demographics", "Mega/household", "Mega/payments",
              "Police/arrests", "Police/car_crashes", "Police/citations"])
 
