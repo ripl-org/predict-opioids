@@ -25,28 +25,12 @@ for feature in features:
                    Value(outcome),
                    Value(i)],
                   log_path="#output/models/bolasso/gamlr.{}.{}.{}.log".format(feature, outcome, i))
-        env.Python(["#output/models/bolasso.bootstraps.{}.{}.csv".format(feature, outcome),
-                    "#output/models/bolasso.freq.{}.{}.csv".format(feature, outcome)],
-                   ["bolasso.py", "#output/features/manifest.tsv"] + \
+        env.Python(["#output/models/lasso.bootstrap.{}.{}.freq.csv".format(feature, outcome),
+                    "#output/models/postlasso.{}.{}.selected.csv".format(feature, outcome)],
+                   ["lasso-frequency.py", "#output/features/manifest.tsv"] + \
                    ["#scratch/models/bolasso/gamlr.{}.{}.{}.beta.csv".format(feature, outcome, i) 
                     for i in range(env.BOLASSO_BOOTSTRAPS)],
-                   log_path="#output/models/bolasso.{}.{}.log".format(feature, outcome))
-
-# gbm interactions
-#for feature in features:
-#    for outcome in ["OUTCOME_ANY"]:
-#        env.R("#output/models/gbm.{}.{}.RData".format(feature, outcome),
-#              ["gbm.R",
-#               constants["RANDOM_SEED"],
-#               "#scratch/models/matrix.{}.RData".format(feature),
-#               Value(outcome),
-#               "#output/models/bolasso.freq.{}.{}.csv".format(feature, outcome)],
-#              log_path="#output/models/gbm.{}.{}.log".format(feature, outcome))
-#        env.R("#output/models/gbm-interact.{}.{}.csv".format(feature, outcome),
-#              ["gbm-interact.R",
-#               constants["RANDOM_SEED"],
-#               "#output/models/gbm.{}.{}.RData".format(feature, outcome)],
-#              log_path="#output/models/gbm-interact.{}.{}.log".format(feature, outcome))
+                   log_path="#output/models/lasso-frequency.{}.log".format(regression))
 
 # postlasso
 for feature in features:
@@ -57,7 +41,7 @@ for feature in features:
                constants["RANDOM_SEED"],
                "#scratch/models/matrix.{}.RData".format(feature),
                Value(outcome),
-               "#output/models/bolasso.freq.{}.{}.csv".format(feature, outcome)],
+               "#output/models/postlasso.{}.{}.selected.csv".format(feature, outcome)],
               log_path="#output/models/postlasso.{}.{}.log".format(feature, outcome))
         env.R("#output/models/bagged-lasso.{}.{}.y_pred.csv".format(feature, outcome),
               ["bagged-lasso.R",

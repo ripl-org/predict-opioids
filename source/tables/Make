@@ -34,7 +34,7 @@ env.Python("#output/tables/TableA5.tex",
 # Table A6 - BOLASSO Logit
 env.Python("#output/tables/TableA6.tex",
            ["TableA6.py",
-            "#output/models/bolasso.freq.all.OUTCOME_ANY.csv",
+            "#output/models/lasso.bootstrap.all.OUTCOME_ANY.freq.csv",
             "#output/models/postlasso.all.OUTCOME_ANY.csv"])
 
 # Table A7 - neural net AUCs

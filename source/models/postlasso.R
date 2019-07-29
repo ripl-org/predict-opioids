@@ -6,17 +6,16 @@ args <- commandArgs(trailingOnly=TRUE)
 
 set.seed(args[1])
 
-matrix_file  <- args[2]
-outcome_name <- args[3]
-beta_file    <- args[4]
-out_file     <- args[5]
-pred_file    <- args[6]
+matrix_file   <- args[2]
+outcome_name  <- args[3]
+selected_file <- args[4]
+out_file      <- args[5]
+pred_file     <- args[6]
 
 load(matrix_file, verbose=TRUE)
 y_train <- y_train[,c(outcome_name)]
 
-beta <- read.csv(beta_file, stringsAsFactors=FALSE)
-selected <- beta[which(beta$freq > 90), "var"]
+selected <- read.csv(selected_file, stringsAsFactors=FALSE)$var
 print(selected)
 
 X_train <- X_train[,selected]
