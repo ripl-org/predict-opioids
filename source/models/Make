@@ -30,7 +30,7 @@ for feature in features:
                    ["lasso-frequency.py", "#output/features/manifest.tsv"] + \
                    ["#scratch/models/bolasso/gamlr.{}.{}.{}.beta.csv".format(feature, outcome, i) 
                     for i in range(env.BOLASSO_BOOTSTRAPS)],
-                   log_path="#output/models/lasso-frequency.{}.log".format(regression))
+                   log_path="#output/models/lasso-frequency.{}.{}.log".format(feature, outcome))
 
 # postlasso
 for feature in features:

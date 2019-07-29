@@ -1,16 +1,12 @@
 Import("*")
 
 # Figure 1 - summary of logit odds ratios
-env.Python("#output/figures/Figure1.pdf",
-           ["Figure1.py",
-            "#output/models/postlasso.all.OUTCOME_ANY.csv"])
-
-# Figure 2 - fraction of true positives
-env.Python("#output/figures/Figures2.csv",
-           ["Figure2.py",
-            "#output/models/postlasso.all.OUTCOME_ANY.accuracy.csv",
-            "#output/models/bagged-lasso.all.OUTCOME_ANY.accuracy.csv",
-            "#output/models/lstm.all.OUTCOME_ANY.accuracy.csv"])
+env.Python(["#output/figures/Figure1.categories.csv",
+            "#output/figures/Figure1.pdf"],
+           ["Figure1.R",
+            constants["RANDOM_SEED"],
+            "#output/models/postlasso.all.OUTCOME_ANY.csv",
+            "#output/features/manifest.tsv"])
 
 # Figure 3 - cost ratio
 env.Python(["#output/figures/Figure3.csv"],
@@ -45,5 +41,12 @@ env.Python("#output/figures/FigureA3.csv",
 env.Python("#output/figures/FigureA3.pdf",
            ["FigureA3-plot.py",
             "#output/figures/FigureA3.csv"])
+
+# Figure 2 - fraction of true positives
+env.Python("#output/figures/Figures2.csv",
+           ["Figure2.py",
+            "#output/models/postlasso.all.OUTCOME_ANY.accuracy.csv",
+            "#output/models/bagged-lasso.all.OUTCOME_ANY.accuracy.csv",
+            "#output/models/lstm.all.OUTCOME_ANY.accuracy.csv"])
 
 # vim: syntax=python expandtab sw=4 ts=4

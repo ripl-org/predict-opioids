@@ -68,7 +68,7 @@ def main():
     while(varnames):
         var1 = varnames.pop()
         for var2 in list(varnames):
-            if labels["var1"] == labels["var2"]:
+            if labels[var1] == labels[var2]:
                 groups[var1].add(var2)
                 varnames.remove(var2)
     for k, v in groups.items():
