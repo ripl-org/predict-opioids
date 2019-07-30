@@ -1,5 +1,6 @@
 library(dplyr)
 library(ggplot2)
+library(ggrepel)
 library(readr)
 library(scales)
 
@@ -48,8 +49,13 @@ write_csv(cats[order(cats$category, cats$var),], cats_path)
 coef$jitter <- runif(nrow(coef), min=-1) * (1 - abs(coef$odds - 1)/1.25)^2
 
 pdf(pdf_path, width=3.4, height=5)
-coef %>% ggplot(aes(x=jitter, y=odds, color=category)) +
+coef %>% ggplot(aes(x=jitter, y=odds, color=category, label=desc)) +
          geom_point() +
+         geom_text_repel(data=subset(coef, odds < 0.75 | odds > 1.25),
+                         nudge_x=1.05 - coef$jitter,
+                         direction="y",
+                         hjust=0,
+                         segment.size=0.2) +
          labs(y="Odds Ratio") +
          scale_x_continuous(limits=c(-1, 1), breaks=c()) +
          scale_y_continuous(limits=c(0, 2.25), breaks=seq(0, 2.25, 0.25)) +
