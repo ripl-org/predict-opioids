@@ -92,6 +92,11 @@ env.Python("#scratch/populations/longterm_proc.csv",
             tables["medicaid_proc_cde"],
             tables["opioid_proc_cde"]])
 
+env.Python("#scratch/populations/longterm_visits.csv",
+           ["longterm_visits.py",
+            tables["longterm_panel"],
+            tables["medicaid_claims"]])
+
 env.Python(["#output/populations/longterm_estimates.txt",
             "#output/populations/longterm_estimates.csv"],
            ["longterm_estimates.py",
@@ -99,6 +104,7 @@ env.Python(["#output/populations/longterm_estimates.txt",
             "#scratch/populations/longterm_outcomes.csv",
             "#scratch/populations/longterm_rx.csv",
             "#scratch/populations/longterm_proc.csv",
-            "#scratch/populations/longterm_demo.csv"])
+            "#scratch/populations/longterm_demo.csv",
+            "#scratch/populations/longterm_visits.csv"])
 
 # vim: syntax=python expandtab sw=4 ts=4

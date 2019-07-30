@@ -3,7 +3,7 @@ import pandas as pd
 import sys
 from riipl import Connection
 
-panel, outcomes_file, rx_file, proc_file, demo_file, out_file, csv_file = sys.argv[1:]
+panel, outcomes_file, rx_file, proc_file, demo_file, visits_file, out_file, csv_file = sys.argv[1:]
 
 MAX_DT = 99999999
 
@@ -23,6 +23,10 @@ panel = panel.merge(pd.read_csv(proc_file, usecols=["RIIPL_ID", "INITIAL_INJECTI
                     on="RIIPL_ID")
 
 panel = panel.merge(pd.read_csv(demo_file),
+                    how="left",
+                    on="RIIPL_ID")
+
+panel = panel.merge(pd.read_csv(visits_file),
                     how="left",
                     on="RIIPL_ID")
 
@@ -49,6 +53,10 @@ with open(out_file, "w") as f:
 
     n_without_adverse = (panel[rx].OUTCOME_ANY.fillna(MAX_DT) == MAX_DT).sum()
     print("rx without adverse outcomes: {} ({:.1f}%)".format(n_without_adverse, 100.0 * n_without_adverse / n_rx), file=f)
+
+    print("average monthly visits:")
+    for race in ("White", "Black", "Hispanic"):
+        print(race, panel.loc[panel.RACE == race, "VISITS"].mean())
 
 with open(csv_file, "w") as f:
 
