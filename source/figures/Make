@@ -34,31 +34,31 @@ env.R(["#output/figures/Figure4.pdf"],
       ["Figure4.R",
        "#output/figures/Figure4.csv"])
 
-# Figure A1 - cumulative fraction of outcomes
-env.Python("#output/figures/FigureA1.csv",
-           ["FigureA1.py",
+# Figure S1 - cumulative fraction of outcomes
+env.Python("#output/figures/FigureS1.csv",
+           ["FigureS1.py",
             "#scratch/outcomes/all.csv"])
-env.Python("#output/figures/FigureA1.pdf",
-           ["FigureA1-plot.py",
-            "#output/figures/FigureA1.csv"])
+env.Python("#output/figures/FigureS1.pdf",
+           ["FigureS1-plot.py",
+            "#output/figures/FigureS1.csv"])
 
-# Figure A2 - fraction of true positives
-env.Python("#output/figures/FiguresA2.csv",
-           ["FigureA2.py",
+# Figure S2 - fraction of true positives
+env.Python("#output/figures/FigureS2.csv",
+           ["FigureS2.py",
             "#output/models/postlasso.all.OUTCOME_ANY.accuracy.csv",
             "#output/models/bagged-lasso.all.OUTCOME_ANY.accuracy.csv",
             "#output/models/lstm.all.OUTCOME_ANY.accuracy.csv"])
 
-# Figure A3 - summary of logit odds ratios for Medicaid only
-env.R(["#output/figures/FigureA3.categories.csv",
-       "#output/figures/FigureA3.pdf"],
+# Figure S3 - summary of logit odds ratios for Medicaid only
+env.R(["#output/figures/FigureS3.categories.csv",
+       "#output/figures/FigureS3.pdf"],
       ["Figure1.R",
        constants["RANDOM_SEED"],
        "#output/models/postlasso.Medicaid.OUTCOME_ANY.csv",
        "#output/features/manifest.tsv"])
 
-# Figure A4 - cost ratio for Medicaid only
-env.Python(["#output/figures/FigureA4.csv"],
+# Figure S4 - cost ratio for Medicaid only
+env.Python(["#output/figures/FigureS4.csv"],
            ["Figure3.py",
             constants["RANDOM_SEED"],
             constants["PLOT_BOOTSTRAPS"],
@@ -66,12 +66,12 @@ env.Python(["#output/figures/FigureA4.csv"],
             "#scratch/features/Mega/demographics.csv",
             "#scratch/features/DOC/events.csv",
             "#scratch/features/Medicaid/enrollment.csv"])
-env.R(["#output/figures/FigureA4.pdf"],
+env.R(["#output/figures/FigureS4.pdf"],
       ["Figure3.R",
-       "#output/figures/FigureA4.csv"])
+       "#output/figures/FigureS4.csv"])
 
-# Figure A5 - FDR for Medicaid only
-env.Python(["#output/figures/FigureA5.csv"],
+# Figure S5 - FDR for Medicaid only
+env.Python(["#output/figures/FigureS5.csv"],
            ["Figure4.py",
             constants["RANDOM_SEED"],
             constants["PLOT_BOOTSTRAPS"],
@@ -79,8 +79,8 @@ env.Python(["#output/figures/FigureA5.csv"],
             "#scratch/features/Mega/demographics.csv",
             "#scratch/features/DOC/events.csv",
             "#scratch/features/Medicaid/enrollment.csv"])
-env.R(["#output/figures/FigureA5.pdf"],
+env.R(["#output/figures/FigureS5.pdf"],
       ["Figure4.R",
-       "#output/figures/FigureA5.csv"])
+       "#output/figures/FigureS5.csv"])
 
 # vim: syntax=python expandtab sw=4 ts=4

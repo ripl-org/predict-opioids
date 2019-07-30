@@ -61,9 +61,9 @@ Additionally, we define a recovery prescription as any NDC containing one of fou
 
 For each individual in our panel, we examine all of the Medicaid claims following their initial opioid prescription to construct indicator variables for four types of adverse outcomes: opioid dependence, opioid abuse, prescription-opioid poisoning and heroin poisoning. We include heroin poisoning as an outcome given the increasing use of heroin among those who abuse opioids, and the high proportion (greater than 80 percent) of joint heroin-prescription-opioid users who abused opioids prior to using heroin.\endnote{\refjones}
 
-We determine these outcomes from the claim's International Classification of Diseases (ICD) diagnosis codes, which are used by medical professionals to classify a patient's health conditions following an encounter. Because our data span the transition from the ICD-9 to ICD-10 classification, we include diagnosis codes from both. Table S2 lists the exact codes used to indicate each of these four diagnosis-related outcomes. 
+We determine these outcomes from the claim's International Classification of Diseases (ICD) diagnosis codes, which are used by medical professionals to classify a patient's health conditions following an encounter. Because our data span the transition from the ICD-9 to ICD-10 classification, we include diagnosis codes from both. Table S3 lists the exact codes used to indicate each of these four diagnosis-related outcomes. 
 
-Not everyone with an opioid use disorder receives a diagnosis code. Though it is unknown precisely what fraction of opioid use disorders go undiagnosed, Carrell {\em et al}. found that diagnosis codes were missing for as many as a quarter of patients for whom their providers were aware of opioid abuse.\endnote{\refcarrell} Similarly, a study by Barocas {\em et al}. estimated that only 44\% of individuals with opioid use disorder were identified as such in claims and administrative records.\endnote{\refbarocas} To address the challenges with diagnoses codes, we define a fifth treatment outcome using procedure codes related to the treatment of opioid use disorder, and more generally for drug rehabilitation and detoxification (Table S2). Finally, we define a sixth ``any" outcome as the union of any of the diagnoses or treatment outcomes, to capture as broad a population of individual with opioid use disorder as possible. Data and measurement limitations notwithstanding, our model demonstrates that administrative data can be combined to form an accurate prediction of these outcomes, suggesting a feasible path forward for utilizing data to inform prescription risk. Figure S3 shows the accumulating fraction of adverse outcomes over the five year period following initial prescription.
+Not everyone with an opioid use disorder receives a diagnosis code. Though it is unknown precisely what fraction of opioid use disorders go undiagnosed, Carrell {\em et al}. found that diagnosis codes were missing for as many as a quarter of patients for whom their providers were aware of opioid abuse.\endnote{\refcarrell} Similarly, a study by Barocas {\em et al}. estimated that only 44\% of individuals with opioid use disorder were identified as such in claims and administrative records.\endnote{\refbarocas} To address the challenges with diagnoses codes, we define a fifth treatment outcome using procedure codes related to the treatment of opioid use disorder, and more generally for drug rehabilitation and detoxification (Table S3). Finally, we define a sixth ``any" outcome as the union of any of the diagnoses or treatment outcomes, to capture as broad a population of individual with opioid use disorder as possible. Data and measurement limitations notwithstanding, our model demonstrates that administrative data can be combined to form an accurate prediction of these outcomes, suggesting a feasible path forward for utilizing data to inform prescription risk. Figure S3 shows the accumulating fraction of adverse outcomes over the five year period following initial prescription.
 
 \subsection{Final Panel}
 
@@ -161,7 +161,29 @@ Naltrexone & 0.0 \\[1em]
 
 \newpage
 
-\textbf{Table S2.} Diagnosis and procedure codes used to indicate adverse outcomes when occurring in any claim after the initial opioid prescription.
+\textbf{Table S2.} Procedure codes used to identify opioid injections.
+
+\begin{tabular}{ll}
+\em Code & \em Description \\[1em]
+J2270 & Injection, morphine sulfate, up to 10 mg \\
+J2271 & Injection, morphine sulfate, 100mg \\
+J2275 & Injection, morphine sulfate (preservative-free sterile solution), per 10 mg \\
+Q9974 & Injection, morphine sulfate, preservative-free for epidural or intrathecal use, 10 mg \\
+S0093 & Injection, morphine sulfate, 500 )mg (loading dose for infusion pump \\
+J2274 & Injection, morphine sulfate, preservative-free for epidural or intrathecal use, 10 mg \\
+J2410 & Injection, oxymorphone hcl, up to 1 mg \\
+J1170 & Injection, hydromorphone, up to 4 mg \\
+S0092 & Injection, hydromorphone hydrochloride, 250 mg (loading dose for infusion pump) \\
+J0745 & Injection, codeine phosphate, per 30 mg \\
+J3010 & Injection, fentanyl citrate, 0.1 mg \\
+J1810 & Injection, droperidol and fentanyl citrate, up to 2 ml ampule \\
+J2175 & Injection, meperidine hydrochloride, per 100 mg \\
+J2180 & Injection, meperidine and promethazine hcl, up to 50 mg
+\end{tabular}
+
+\newpage
+
+\textbf{Table S3.} Diagnosis and procedure codes used to indicate adverse outcomes when occurring in any claim after the initial opioid prescription.
 
 \begin{tabular}{lll}
 \em Outcome & \em Code & \em Description \\[1em]
@@ -213,12 +235,6 @@ Naltrexone & 0.0 \\[1em]
 
 \newpage
 
-\textbf{Figure S3.} Cumulative frequency of adverse outcomes over time since initial opioid prescription. Adverse outcomes are indicated by the diagnosis and procedure codes in Medicaid claims following the initial prescription. An individual may experience multiple types of adverse outcomes, and ``any" is the union of the five specific outcome types. Opioid dependence is the most prevalent of the types.
-
-\includegraphics[width=6in]{output/figures/FigureA3}
-
-\newpage
-
 \textbf{Table S4.} Descriptive statistics for the final panel.
 
 \input{output/tables/TableA4}
@@ -250,5 +266,26 @@ Naltrexone & 0.0 \\[1em]
 \normalsize
 
 \newpage
+
+\textbf{Figure S1.} Cumulative frequency of adverse outcomes over time since initial opioid prescription. Adverse outcomes are indicated by the diagnosis and procedure codes in Medicaid claims following the initial prescription. An individual may experience multiple types of adverse outcomes, and ``any" is the union of the five specific outcome types. Opioid dependence is the most prevalent of the types.
+
+\includegraphics[width=6in]{output/figures/FigureS1}
+
+\newpage
+
+\textbf{Figure S2.}
+
+\newpage
+
+\textbf{Figure S3.}
+
+\newpage
+
+\textbf{Figure S4.}
+
+\newpage
+
+\textbf{Figure S5.}
+
 
 \end{document}
