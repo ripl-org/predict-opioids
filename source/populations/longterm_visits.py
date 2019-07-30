@@ -6,11 +6,11 @@ panel, claims, outfile = sys.argv[1:]
 
 sql = """
       SELECT p.riipl_id,
-             COUNT(DISTINCT claim_dt) / p.months AS visits
+             COUNT(DISTINCT c.claim_dt) / p.months AS visits
         FROM {panel} p
    LEFT JOIN {claims} c
           ON p.riipl_id = c.riipl_id
-    GROUP BY p.riipl_id
+    GROUP BY p.riipl_id, p.months
       """.format(**globals())
 
 with Connection() as cxn:

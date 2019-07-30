@@ -54,9 +54,9 @@ with open(out_file, "w") as f:
     n_without_adverse = (panel[rx].OUTCOME_ANY.fillna(MAX_DT) == MAX_DT).sum()
     print("rx without adverse outcomes: {} ({:.1f}%)".format(n_without_adverse, 100.0 * n_without_adverse / n_rx), file=f)
 
-    print("average monthly visits:")
+    print("average monthly visits:", file=f)
     for race in ("White", "Black", "Hispanic"):
-        print(race, panel.loc[panel.RACE == race, "VISITS"].mean())
+        print(race, "{:.2f}".format(panel.loc[rx & (panel.RACE == race), "VISITS"].mean()), file=f)
 
 with open(csv_file, "w") as f:
 
