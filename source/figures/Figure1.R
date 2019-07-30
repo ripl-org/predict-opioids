@@ -14,31 +14,32 @@ cats_path <- args[4]
 pdf_path  <- args[5]
 
 coef <- read_csv(coef_path) %>%
+        filter(var != "intercept") %>%
         left_join(read_tsv(desc_path, col_names=c("var", "desc")), by="var") %>%
         mutate(category=factor(case_when(grepl("_X_", var)            ~ "Interaction term",
-                                         startsWith(var, "MEDICAID")  ~ "Medicaid claims and enrollment",
-                                         startsWith(var, "ASHP")      ~ "Medicaid claims and enrollment",
-                                         startsWith(var, "DOC")       ~ "Incarceration and criminal justice",
-                                         startsWith(var, "ARREST")    ~ "Incarceration and criminal justice",
-                                         startsWith(var, "CAR_CRASH") ~ "Incarceration and criminal justice",
-                                         startsWith(var, "CITATION")  ~ "Incarceration and criminal justice",
-                                         startsWith(var, "DHS")       ~ "Social benefit and insurance programs",
-                                         startsWith(var, "SNAP")      ~ "Social benefit and insurance programs",
-                                         startsWith(var, "TANF")      ~ "Social benefit and insurance programs",
-                                         startsWith(var, "SSI")       ~ "Social benefit and insurance programs",
-                                         startsWith(var, "CCAP")      ~ "Social benefit and insurance programs",
-                                         startsWith(var, "GPA")       ~ "Social benefit and insurance programs",
+                                         startsWith(var, "MEDICAID")  ~ "Medicaid claims/enrollment",
+                                         startsWith(var, "ASHP")      ~ "Medicaid claims/enrollment",
+                                         startsWith(var, "DOC")       ~ "Criminal justice",
+                                         startsWith(var, "ARREST")    ~ "Criminal justice",
+                                         startsWith(var, "CAR_CRASH") ~ "Criminal justice",
+                                         startsWith(var, "CITATION")  ~ "Criminal justice",
+                                         startsWith(var, "DHS")       ~ "Social benefit/insurance programs",
+                                         startsWith(var, "SNAP")      ~ "Social benefit/insurance programs",
+                                         startsWith(var, "TANF")      ~ "Social benefit/insurance programs",
+                                         startsWith(var, "SSI")       ~ "Social benefit/insurance programs",
+                                         startsWith(var, "CCAP")      ~ "Social benefit/insurance programs",
+                                         startsWith(var, "GPA")       ~ "Social benefit/insurance programs",
                                          startsWith(var, "NAICS")     ~ "Employment",
                                          startsWith(var, "WAGE")      ~ "Employment",
                                          startsWith(var, "UNEMP")     ~ "Employment",
                                          startsWith(var, "TDI")       ~ "Employment",
                                          startsWith(var, "UI")        ~ "Employment",
                                          TRUE                         ~ "Demographics"),
-                               levels=c("Medicaid claims and enrollment",
+                               levels=c("Medicaid claims/enrollment",
                                         "Demographics",
-                                        "Social benefit and insurance programs",
+                                        "Social benefit/insurance programs",
                                         "Employment",
-                                        "Incarceration and criminal justice",
+                                        "Criminal justice",
                                         "Interaction term")))
 
 print(table(coef$category))
@@ -55,10 +56,12 @@ coef %>% ggplot(aes(x=jitter, y=odds, color=category, label=desc)) +
                          nudge_x=1.05 - coef$jitter,
                          direction="y",
                          hjust=0,
-                         segment.size=0.2) +
+                         segment.size=0.2,
+                         show.legend=FALSE,
+                         size=2) +
          labs(y="Odds Ratio") +
-         scale_x_continuous(limits=c(-1, 1), breaks=c()) +
-         scale_y_continuous(limits=c(0, 2.25), breaks=seq(0, 2.25, 0.25)) +
+         scale_x_continuous(limits=c(-1, 10), breaks=c()) +
+         scale_y_continuous(limits=c(-0.25, 2.25), breaks=seq(0, 2.25, 0.25)) +
          theme_classic() +
          theme(
                axis.text.x=element_blank(),
@@ -66,9 +69,10 @@ coef %>% ggplot(aes(x=jitter, y=odds, color=category, label=desc)) +
                axis.title.x=element_blank(),
                axis.text.y=element_text(size=5),
                axis.title.y=element_text(size=8),
-               legend.box.background=element_rect(colour="black"),
-               legend.position="right",
-               legend.text=element_text(size=7),
+               legend.key.size=unit(3, "mm"),
+               legend.justification=c(1, 0),
+               legend.position=c(1, 0),
+               legend.text=element_text(size=6),
                legend.title=element_blank()) +
          scale_color_manual("Category",
                             values=c("#E34E38", "#DF9826", "#45AFAF", "#7030A0", "#5B9BD5", "gray"))
