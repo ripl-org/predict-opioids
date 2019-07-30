@@ -154,7 +154,10 @@ env.Command(["#output/features/manifest.tsv"],
             ["#output/features/feature_manifest.tsv"] + interact_manifests,
             "cat $SOURCES > $TARGET")
 
-features = {"all": features}
+features = {
+    "all": features,
+    "Medicaid": [f for f in features if "Medicaid" in f] + ["#scratch/features/Mega/demographics.normalized.csv"]
+}
 Export("features")
 
 # vim: syntax=python expandtab sw=4 ts=4

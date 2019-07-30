@@ -59,29 +59,29 @@ for feature in features:
                    log_path="#output/models/bagged-lasso.{}.{}.accuracy.log".format(feature, outcome))
 
 # simple dense neural net
-for feature in features:
-    for outcome in ["OUTCOME_ANY"]:
-        env.Python("#scratch/models/neuralnet.{}.{}.h5".format(feature, outcome),
-                   ["neuralnet.py",
-                    constants["RANDOM_SEED"],
-                    "#scratch/population.csv",
-                    "#scratch/outcomes/{}.csv".format(outcome),
-                    Value(outcome),
-                    "#scratch/models/matrix.{}.train.txt".format(feature),
-                    "#scratch/models/matrix.{}.validate.txt".format(feature)],
-                   log_path="#output/models/neuralnet.{}.{}.log".format(feature, outcome))
-        env.Python(["#output/models/neuralnet.{}.{}.y_pred.csv".format(feature, outcome)],
-                   ["neuralnet_prediction.py",
-                    "#scratch/population.csv",
-                    "#scratch/outcomes/{}.csv".format(outcome),
-                    Value(outcome),
-                    "#scratch/models/matrix.{}.test.txt".format(feature),
-                    "#scratch/models/neuralnet.{}.{}.h5".format(feature, outcome)],
-                   log_path="#output/models/neuralnet_prediction.{}.{}.log".format(feature, outcome))
-        env.Python("#output/models/neuralnet.{}.{}.accuracy.csv".format(feature, outcome),
-                   ["accuracy.py",
-                    "#output/models/neuralnet.{}.{}.y_pred.csv".format(feature, outcome)],
-                   log_path="#output/models/neuralnet.{}.{}.accuracy.log".format(feature, outcome))
+#for feature in features:
+#    for outcome in ["OUTCOME_ANY"]:
+#        env.Python("#scratch/models/neuralnet.{}.{}.h5".format(feature, outcome),
+#                   ["neuralnet.py",
+#                    constants["RANDOM_SEED"],
+#                    "#scratch/population.csv",
+#                    "#scratch/outcomes/{}.csv".format(outcome),
+#                    Value(outcome),
+#                    "#scratch/models/matrix.{}.train.txt".format(feature),
+#                    "#scratch/models/matrix.{}.validate.txt".format(feature)],
+#                   log_path="#output/models/neuralnet.{}.{}.log".format(feature, outcome))
+#        env.Python(["#output/models/neuralnet.{}.{}.y_pred.csv".format(feature, outcome)],
+#                   ["neuralnet_prediction.py",
+#                    "#scratch/population.csv",
+#                    "#scratch/outcomes/{}.csv".format(outcome),
+#                    Value(outcome),
+#                    "#scratch/models/matrix.{}.test.txt".format(feature),
+#                    "#scratch/models/neuralnet.{}.{}.h5".format(feature, outcome)],
+#                   log_path="#output/models/neuralnet_prediction.{}.{}.log".format(feature, outcome))
+#        env.Python("#output/models/neuralnet.{}.{}.accuracy.csv".format(feature, outcome),
+#                   ["accuracy.py",
+#                    "#output/models/neuralnet.{}.{}.y_pred.csv".format(feature, outcome)],
+#                   log_path="#output/models/neuralnet.{}.{}.accuracy.log".format(feature, outcome))
 
 tensors = {
     "DHS":      ["#scratch/tensors/DHS/demographics.p",
