@@ -8,7 +8,7 @@ n_bootstrap = int(sys.argv[2])
 
 alphas = [1.0, 0.8]
 
-y_pred_file, demo_file, doc_file, med_file, out_file = sys.argv[3:]
+y_pred_file, out_file = sys.argv[3:]
 
 def cost_ratio(alpha, df):
     tp = alpha * (df.y_test == 1).sum()
