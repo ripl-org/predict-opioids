@@ -8,7 +8,17 @@ env.R(["#output/figures/Figure1.categories.csv",
        "#output/models/postlasso.all.OUTCOME_ANY.csv",
        "#output/features/manifest.tsv"])
 
-# Figure 3 - cost ratio
+# Figure 2 - cost ratio with alpha
+env.Python(["#output/figures/Figure2.csv"],
+           ["Figure2.py",
+            constants["RANDOM_SEED"],
+            constants["PLOT_BOOTSTRAPS"],
+            "#output/models/lstm.all.OUTCOME_ANY.y_pred.csv"])
+env.R(["#output/figures/Figure2.pdf"],
+      ["Figure2.R",
+       "#output/figures/Figure2.csv"])
+
+# Figure 3 - cost ratio by demographics
 env.Python(["#output/figures/Figure3.csv"],
            ["Figure3.py",
             constants["RANDOM_SEED"],
