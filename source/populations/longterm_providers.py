@@ -6,7 +6,7 @@ panel, address, nppes, outfile = sys.argv[1:]
 
 sql = """
       SELECT p.riipl_id,
-             AVERAGE(n.providers) AS providers
+             AVG(n.providers) AS providers
         FROM (
               SELECT DISTINCT 
                      p.riipl_id,
