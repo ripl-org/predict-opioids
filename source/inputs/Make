@@ -122,4 +122,10 @@ env.Python(tables["opioid_proc_cde"],
             Value("PROC_CDE")],
            log_path="#output/inputs/load_opioid_proc_cde.log")
 
+env.Python(tables["nppes"],
+           ["LoadPandas.py",
+            "#public-data/nppes-blkgrp-201112-median.csv",
+            Value("BLKGRP,YRMO")],
+           log_path="#output/inputs/load_nppes.log")
+
 # vim: syntax=python expandtab sw=4 ts=4

@@ -3,7 +3,7 @@ import pandas as pd
 import sys
 from riipl import Connection
 
-panel, outcomes_file, rx_file, proc_file, demo_file, visits_file, out_file, csv_file = sys.argv[1:]
+panel, outcomes_file, rx_file, proc_file, demo_file, visits_file, prov_file, out_file, csv_file = sys.argv[1:]
 
 MAX_DT = 99999999
 
@@ -27,6 +27,10 @@ panel = panel.merge(pd.read_csv(demo_file),
                     on="RIIPL_ID")
 
 panel = panel.merge(pd.read_csv(visits_file),
+                    how="left",
+                    on="RIIPL_ID")
+
+panel = panel.merge(pd.read_csv(prov_file),
                     how="left",
                     on="RIIPL_ID")
 
@@ -57,6 +61,10 @@ with open(out_file, "w") as f:
     print("average monthly visits:", file=f)
     for race in ("White", "Black", "Hispanic"):
         print(race, "{:.2f}".format(panel.loc[rx & (panel.RACE == race), "VISITS"].mean()), file=f)
+
+    print("average median distance to providers:", file=f)
+    for race in ("White", "Black", "Hispanic"):
+        print(race, "{:.2f}".format(panel.loc[rx & (panel.RACE == race), "PROVIDERS"].mean()), file=f)
 
 with open(csv_file, "w") as f:
 
