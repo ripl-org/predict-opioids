@@ -18,10 +18,9 @@ labels = {
 outcomes = pd.read_csv(outcomes_file, index_col="RIIPL_ID")
 n = len(outcomes)
 
-data = {"Years": years}
-for var, label in labels.items():
-    data[label] = []
+with open(out_file, "w") as f:
+    print("Years", "Outcome", "Fraction", sep=",", file=f)
     for yr in years:
-        data[label].append(100 * (outcomes["{}_DAYS".format(var)] <= (yr*365)).sum() / n)
+        for var, label in labels.items():
+            print(yr, label, (outcomes["{}_DAYS".format(var)] <= (yr*365)).sum() / n, sep=",", file=f)
 
-pd.DataFrame(data).to_csv(out_file, index=False, float_format="%.2f")

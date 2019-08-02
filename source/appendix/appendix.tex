@@ -59,7 +59,7 @@ Additionally, we define a recovery prescription as any NDC containing one of fou
 
 \subsection{Opioid Injections}
 
-In addition to identifying opioid prescriptions in pharmacy claims, we also identified procedure codes for subdermal or intraveneous opioid injections in all of the Medicaid claims. Table S2 lists these codes, which were identified by searching the descriptions of all HCPCS codes for each of the opioid ingredients in the Washington State prescribing guidelines used to identify prescription drugs.
+In addition to identifying opioid prescriptions in pharmacy claims, we also identified procedure codes for epidural or intraveneous opioid injections in all of the Medicaid claims. Table S2 lists these codes, which were identified by searching the descriptions of all HCPCS codes for each of the opioid ingredients in the Washington State prescribing guidelines used to identify prescription drugs.
 
 \subsection{Outcomes}
 
@@ -87,7 +87,7 @@ We construct the topic models using a technique called non-negative matrix facto
 
 NMF works by factorizing the non-negative $d \times w$ matrix of the documents' word frequencies into non-negative matrices $d \times t$ and $t \times w$, where $d$ is the number of documents, $w$ is the number of distinct words, and $t$ is the number of topics. We apply a term frequency-inverse document frequency (TF-IDF) transformation to the $d \times w$ matrix to reweight the word frequencies by their overall frequencies in the entire corpus, which is common practice when implementing NMF. The $d \times t$ matrix represents the weighting of topics for each document, and the $t \times w$ matrix represents the weighting of words for each topic. We summarize each topic using the 10 words with the greatest frequency in the $t \times w$ matrix.
 
-Because the number of topics $t$ is not known \emph{a priori}, we tune this parameter by finding the $t$ with the best out-of-sample area under the operating-receiver characteristic curve (AUC) in a logistic regression that includes only the topic model variables. We use only the training set for this tuning, and further subdivide it in half into topic training and topic validation sets. The tuning achieves AUCs on the topic validation set of 0.660 for 10 topics, 0.674 for 20 topics, 0.703 for 50 topics, 0.714 for 100 topics, 0.716 for 200 topics, and 0.696 for 500 topics. Therefore, we select the model with 200 topics as the final variables.
+Because the number of topics $t$ is not known \emph{a priori}, we tune this parameter by finding the $t$ with the best out-of-sample area under the operating-receiver characteristic curve (AUC) in a logistic regression that includes only the topic model variables. We use only the training set for this tuning, and further subdivide it in half into topic training and topic validation sets. We consider an increasing number of topics and terminate the tuning procedure when the AUC does not improve by more than 0.001. The tuning achieves AUCs on the topic validation set of 0.663 for 10 topics, 0.670 for 20 topics, 0.684 for 50 topics, 0.685 for 100 topics. Therefore, we select the model with 50 topics for the final variables.
 
 \subsection{Low-Dosage Opioids}
 
@@ -277,19 +277,32 @@ J2180 & Injection, meperidine and promethazine hcl, up to 50 mg
 
 \newpage
 
-\textbf{Figure S2.}
+\textbf{Figure S2.} Odds ratios from the post-BOLASSO regression, using variables only from Medicaid data.
+
+\includegraphics[width=3.4in]{output/figures/FigureS2}
 
 \newpage
 
 \textbf{Figure S3.}
 
+\includegraphics[width=3.4in]{output/figures/FigureS3}
+
 \newpage
 
 \textbf{Figure S4.}
+
+\includegraphics[width=3.4in]{output/figures/FigureS4}
 
 \newpage
 
 \textbf{Figure S5.}
 
+\includegraphics[width=3.4in]{output/figures/FigureS5}
+
+\newpage
+
+\textbf{Figure S6.} The fraction of true outcomes by risk decile in the test sample. The vertical black line indicates the base rate of outcomes among the entire population, which is 0.06.
+
+%\includegraphics[width=6in]{output/figures/FigureS6}
 
 \end{document}

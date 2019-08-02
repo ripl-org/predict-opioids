@@ -14,7 +14,7 @@ csv <- read_csv(csv_path)
 csv$Decile <- csv$Decile * 0.1
 csv$Alpha <- factor(csv$Alpha)
 
-pdf(out_path, width=6, height=4)
+pdf(out_path, width=3.4, height=2.8)
 csv %>% ggplot(aes(x=Decile, y=CostRatio, color=Alpha)) +
         geom_ribbon(aes(ymin=CostRatioLower, ymax=CostRatioUpper, fill=Alpha), alpha=0.25, color=NA) +
         geom_point(shape=1) +
