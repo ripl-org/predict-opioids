@@ -46,22 +46,21 @@ print(table(coef$category))
 cats <- select(coef, "var", "category", "desc")
 write_csv(cats[order(cats$category, cats$var),], cats_path)
 
-# Random jitter for x axis, proportional to distance from odds ratio of 1
-coef$jitter <- runif(nrow(coef), min=-1) * (1 - abs(coef$odds - 1)/1.25)^2
+coef$desc <- gsub(" \\(", "\n\\(", coef$desc)
 
 pdf(pdf_path, width=3.4, height=5)
-coef %>% ggplot(aes(x=jitter, y=odds, color=category, label=desc)) +
-         geom_point() +
-         geom_text_repel(data=subset(coef, odds < 0.75 | odds > 1.25),
-                         nudge_x=1.05 - coef$jitter,
+coef %>% ggplot(aes(x=0, y=odds, color=category, label=desc)) +
+         geom_point(shape=1) +
+         geom_text_repel(data=subset(coef, odds < 0.9 | odds > 1.1),
+                         nudge_x=1,
                          direction="y",
                          hjust=0,
                          segment.size=0.2,
                          show.legend=FALSE,
-                         size=2) +
+                         size=1.25) +
          labs(y="Odds Ratio") +
-         scale_x_continuous(limits=c(-1, 10), breaks=c()) +
-         scale_y_continuous(limits=c(-0.25, 2.25), breaks=seq(0, 2.25, 0.25)) +
+         scale_x_continuous(limits=c(0, 10), breaks=c()) +
+         scale_y_continuous(limits=c(0, 2.25), breaks=seq(0, 2.25, 0.25)) +
          theme_classic() +
          theme(
                axis.text.x=element_blank(),

@@ -48,9 +48,9 @@ env.R(["#output/figures/Figure4.pdf"],
 env.Python("#output/figures/FigureS1.csv",
            ["FigureS1.py",
             "#scratch/outcomes/all.csv"])
-env.Python("#output/figures/FigureS1.pdf",
-           ["FigureS1-plot.py",
-            "#output/figures/FigureS1.csv"])
+env.R("#output/figures/FigureS1.pdf",
+      ["FigureS1.R",
+       "#output/figures/FigureS1.csv"])
 
 # Figure S2 - summary of logit odds ratios for Medicaid only
 env.R(["#output/figures/FigureS2.categories.csv",
