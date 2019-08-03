@@ -559,8 +559,8 @@ FUNCTION {format.article.crossref}
 	  warning$
 	  ""
 	}
-%	{ "In {\em " journal * "\/}" * }
-    { "In " format.journal * "\/" * }
+	{ "In {\em " journal * "\/}" * }
+%    { "In " format.journal * "\/" * }
       if$
     }
     { "In " key * }
