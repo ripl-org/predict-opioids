@@ -6,7 +6,7 @@ from functools import partial
 seed        = int(sys.argv[1])
 n_bootstrap = int(sys.argv[2])
 
-alphas = [1.0, 0.8]
+alphas = [1.0, 0.893]
 
 y_pred_file, out_file = sys.argv[3:]
 
