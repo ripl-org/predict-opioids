@@ -46,20 +46,21 @@ print(table(coef$category))
 cats <- select(coef, "var", "category", "desc")
 write_csv(cats[order(cats$category, cats$var),], cats_path)
 
-coef$desc <- gsub(" \\(", "\n\\(", coef$desc)
+coef$jitter <- runif(nrow(coef), min=-1) * (1 - abs(coef$odds - 1)/1.25)^2
+labels <- subset(coef, odds < 0.9 | odds > 1.1)
 
-pdf(pdf_path, width=3.4, height=5)
-coef %>% ggplot(aes(x=0, y=odds, color=category, label=desc)) +
+pdf(pdf_path, width=6.8, height=4.5)
+coef %>% ggplot(aes(x=jitter, y=odds, color=category, label=desc)) +
          geom_point(shape=1) +
-         geom_text_repel(data=subset(coef, odds < 0.9 | odds > 1.1),
-                         nudge_x=1,
+         geom_text_repel(data=labels,
+                         nudge_x=1.75-labels$jitter,
                          direction="y",
                          hjust=0,
                          segment.size=0.2,
                          show.legend=FALSE,
-                         size=1.25) +
+                         size=2.25) +
          labs(y="Odds Ratio") +
-         scale_x_continuous(limits=c(0, 10), breaks=c()) +
+         scale_x_continuous(limits=c(min(coef$jitter), 10), breaks=c()) +
          scale_y_continuous(limits=c(0, 2.25), breaks=seq(0, 2.25, 0.25)) +
          theme_classic() +
          theme(
@@ -71,7 +72,7 @@ coef %>% ggplot(aes(x=0, y=odds, color=category, label=desc)) +
                legend.key.size=unit(3, "mm"),
                legend.justification=c(1, 0),
                legend.position=c(1, 0),
-               legend.text=element_text(size=6),
+               legend.text=element_text(size=8),
                legend.title=element_blank()) +
          scale_color_manual("Category",
                             values=c("#E34E38", "#DF9826", "#45AFAF", "#7030A0", "#5B9BD5", "gray"))
