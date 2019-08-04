@@ -28,7 +28,7 @@ plot <- function(df, title, grp_title, grp_labels) {
            scale_fill_brewer(grp_title, labels=grp_labels, palette="Set2"))
 }
 
-pdf(out_path, width=3.4, height=5.5)
+pdf(out_path, width=6.8, height=11)
 grid.arrange(plot(filter(csv, Demographic=="RACE_WHITE" | Demographic=="RACE_MINORITY"),
 		  "a",
 		  "Race/ethnicity",
