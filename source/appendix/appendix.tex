@@ -102,8 +102,8 @@ The neural networks are optimized to minimize the binary cross-entropy, also kno
 
 \newpage
 
-\textbf{Table S1.} Minimum amounts of ingredients in a drug to classify it as an opioid prescription or a recovery prescription.
-
+\begin{table}
+\caption{Minimum amounts of ingredients in a drug to classify it as an opioid prescription or a recovery prescription.}
 \begin{tabular}{lc}
 \em Opioid Ingredient & \em Minimum Amount (mg) \\[0.5em]
 Codeine & 30.0 \\
@@ -128,12 +128,12 @@ Naltrexone & 0.0 \\[1em]
 \footnotesize
 * Meperidine has no recommended starting dose for treatment of chronic pain because of its risk for complications in older adults; therefore, we consider any amount as evidence that the drug is an opioid. \\
 ° We consider any amount of a recovery ingredient as evidence that the drug may have been used to treat a prior opioid use disorder.
-\normalsize
+\end{table}
 
 \newpage
 
-\textbf{Table S2.} Procedure codes used to identify opioid injections.
-
+\begin{table}
+\caption{Procedure codes used to identify opioid injections.}
 \begin{tabular}{ll}
 \em Code & \em Description \\[0.5em]
 J2270 & Injection, morphine sulfate, up to 10 mg \\
@@ -151,11 +151,12 @@ J1810 & Injection, droperidol and fentanyl citrate, up to 2 ml ampule \\
 J2175 & Injection, meperidine hydrochloride, per 100 mg \\
 J2180 & Injection, meperidine and promethazine hcl, up to 50 mg
 \end{tabular}
+\end{table}
 
 \newpage
 
-\textbf{Table S3.} Diagnosis and procedure codes used to indicate adverse outcomes when occurring in any claim after the initial opioid prescription.
-
+\begin{table}
+\caption{Diagnosis and procedure codes used to indicate adverse outcomes when occurring in any claim after the initial opioid prescription.}
 \begin{tabular}{lll}
 \em Outcome & \em Code & \em Description \\[0.5em]
 \textbf{Opioid} & 304.0 & Opioid type dependence \\
@@ -202,87 +203,114 @@ J2180 & Injection, meperidine and promethazine hcl, up to 50 mg
 \footnotesize
 * ICD-10 diagnosis code \\
 ° HCPCS procedure code
-\normalsize
+\end{table}
 
 \newpage
 
-\textbf{Table S4.} Descriptive statistics for the final panel.
-
+\begin{table}
+\caption{Descriptive statistics for the final panel.}
 \input{../../output/tables/TableS4}
+\end{table}
 
 \newpage
 
-\textbf{Table S5.} Low-dosage prescription opioids identified by the AHFS Pharmacologic/Therapeutic Classification category for opiate agonists.
-
+\begin{table}
+\caption{Low-dosage prescription opioids identified by the AHFS Pharmacologic/Therapeutic Classification category for opiate agonists.}
 \tiny
 \input{../../output/tables/TableS5}
 
 * NDC code exists in AHFS Pharmacologic/Therapeutic Classification but does not exist in NDC directory
-\normalsize
+\end{table}
 
 \newpage
 
-\textbf{Table S6.} Regression output for the post-BOLASSO regression (a logistic regression of variables selected by BOLASSO as occurring with a non-zero coefficient in more than 90\% of LASSO bootstrap replicates).
-
+\begin{table}
+\caption{Regression output for the post-BOLASSO regression (a logistic regression of variables selected by BOLASSO as occurring with a non-zero coefficient in more than 90\% of LASSO bootstrap replicates).}
 \scriptsize
 \input{../../output/tables/TableS6}
-\normalsize
+\end{table}
 
 \newpage
 
-\textbf{Table S7.} Area under the receiver-operating characteristic curve (AUC) of neural network models using different subsets of administrative data and outcome definitions. Confidence intervals are calculated from 100 bootstrap replicates.
-
+\begin{table}
+\caption{Area under the receiver-operating characteristic curve (AUC) of neural network models using different subsets of administrative data and outcome definitions. Confidence intervals are calculated from 100 bootstrap replicates.}
 \scriptsize
 \input{../../output/tables/TableS7}
-\normalsize
+\end{table}
 
 \newpage
 
-\textbf{Table S8.} Power calculations
-
-\input{../../output/tables/TableS8}
+\begin{table}
+\caption{Power calculations}
+\begin{tabular}{lrrrrr}
+\em Decile & \em N White & \em N Minority & \em FDR White & \em FDR Minority & \em FDR Difference \\[0.5em]
+1 & 1,736 & 218 & 0.762 & 0.844 & 0.082 \\
+2 & 3,319 & 521 & 0.815 & 0.864 & 0.049 \\
+3 & 4,863 & 843 & 0.850 & 0.886 & 0.036 \\
+4 & 6,397 & 1,136 & 0.875 & 0.904 & 0.029 \\
+5 & 7,829 & 1,483 & 0.890 & 0.914 & 0.024 \\
+6 & 9,098 & 1,910 & 0.902 & 0.922 & 0.020 \\
+7 & 10,074 & 2,540 & 0.909 & 0.926 & 0.017 \\
+8 & 10,851 & 3,336 & 0.915 & 0.930 & 0.015 \\
+9 & 11,391 & 4,344 & 0.918 & 0.931 & 0.013 \\
+10 & 11,790 & 5,571 & 0.921 & 0.933 & 0.012 
+\end{tabular}
+\end{table}
 
 \newpage
 
-\textbf{Table S9.} Cost of medication-assisted treatment (MAT) for 1,000 individuals.
-
-\input{../../output/tables/TableS8}
+\begin{table}
+\caption{Cost of medication-assisted treatment (MAT) for 1,000 individuals assuming a 50\% remission rate and annual MAT cost of \$6,552 (low) to \$14,112 (high).}
+\begin{tabular}{lrrrr}
+\em Year & \em Cost (Low) & \em Cost (High) & \em In Remission & \em \% In Remission \\[0.5em]
+1 & \$3,276,000 & \$7,056,000 & 500 & 50\% \\
+2 & \$1,638,000 & \$3,528,000 & 750 & 75\% \\
+3 & \$819,000 & \$1,764,000 & 875 & 88\% \\[0.5em]
+\em Total & \em \$5,733,000 & \em \$12,348,000 & &
+\end{tabular}
+\end{table}
 
 \newpage
 
-\textbf{Figure S1.} Cumulative frequency of adverse outcomes over time since initial opioid prescription. Adverse outcomes are indicated by the diagnosis and procedure codes in Medicaid claims following the initial prescription. An individual may experience multiple types of adverse outcomes, and ``any" is the union of the five specific outcome types. Opioid dependence is the most prevalent of the types.
-
+\begin{figure}
+\caption{Cumulative frequency of adverse outcomes over time since initial opioid prescription. Adverse outcomes are indicated by the diagnosis and procedure codes in Medicaid claims following the initial prescription. An individual may experience multiple types of adverse outcomes, and ``any" is the union of the five specific outcome types. Opioid dependence is the most prevalent of the types.}
 \includegraphics[width=6in]{../../output/figures/FigureS1}
+\end{figure}
 
 \newpage
 
-\textbf{Figure S2.} Odds ratios from the post-BOLASSO regression, using variables only from Medicaid data.
-
+\begin{figure}
+\caption{Odds ratios from the post-BOLASSO regression (Figure 1), using variables from Medicaid data only.}
 \includegraphics[width=3.4in]{../../output/figures/FigureS2}
+\end{figure}
 
 \newpage
 
-\textbf{Figure S3.}
-
+\begin{figure}
+\caption{The break-even cost ratio by cumulative risk decile and for three values of the effectiveness rate $\alpha$ (Figure 1), for Medicaid data only.}
 \includegraphics[width=3.4in]{../../output/figures/FigureS3}
+\end{figure}
 
 \newpage
 
-\textbf{Figure S4.}
-
+\begin{figure}
+\caption{The false discovery rate by cumulative risk decile for race/ethnicity, incarceration history, and disability status (Figure 3), for Medicaid data only.}
 \includegraphics[width=3.4in]{../../output/figures/FigureS4}
+\end{figure}
 
 \newpage
 
-\textbf{Figure S5.}
-
+\begin{figure}
+\caption{The break-even cost ratio by cumulative risk decile for race/ethnicity, incarceration history, and disability status (Figure 4), for Medicaid data only.}
 \includegraphics[width=3.4in]{../../output/figures/FigureS5}
+\end{figure}
 
 \newpage
 
-\textbf{Figure S6.} The fraction of true outcomes by risk decile in the test sample. The vertical black line indicates the base rate of outcomes among the entire population, which is 0.06.
-
+\begin{figure}
+\caption{The fraction of true outcomes by risk decile in the test sample. The vertical black line indicates the base rate of outcomes among the entire population, which is 0.057.}
 %\includegraphics[width=6in]{../../output/figures/FigureS6}
+\end{figure}
 
 \newpage
 
