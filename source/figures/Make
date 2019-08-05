@@ -55,7 +55,7 @@ env.R("#output/figures/FigureS1.pdf",
 # Figure S2 - summary of logit odds ratios for Medicaid only
 env.R(["#output/figures/FigureS2.categories.csv",
        "#output/figures/FigureS2.pdf"],
-      ["Figure1.R",
+      ["FigureS2.R",
        constants["RANDOM_SEED"],
        "#output/models/postlasso.Medicaid.OUTCOME_ANY.csv",
        "#output/features/manifest.tsv"])
@@ -70,7 +70,7 @@ env.R(["#output/figures/FigureS3.pdf"],
       ["Figure2.R",
        "#output/figures/FigureS3.csv"])
 
-# Figure S4 - cost ratio for Medicaid only
+# Figure S4 - FDR for Medicaid only
 env.Python(["#output/figures/FigureS4.csv"],
            ["Figure3.py",
             constants["RANDOM_SEED"],
@@ -83,7 +83,7 @@ env.R(["#output/figures/FigureS4.pdf"],
       ["Figure3.R",
        "#output/figures/FigureS4.csv"])
 
-# Figure S5 - FDR for Medicaid only
+# Figure S5 - cost ratio for Medicaid only
 env.Python(["#output/figures/FigureS5.csv"],
            ["Figure4.py",
             constants["RANDOM_SEED"],
