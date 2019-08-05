@@ -26,6 +26,9 @@ y["NDISABLED"] = ~y.DISABLED
 
 decile = len(y) // 10
 
+print("Incarceration for top 2 risk deciles:", y.iloc[:2*decile]["INCARC"].mean())
+print("Incarceration for lower 8 risk deciles:", y.iloc[2*decile:]["INCARC"].mean())
+
 replicates = [y.sample(n=len(y),
                        replace=True,
                        random_state=seed+i).sort_values("y_pred", ascending=False)

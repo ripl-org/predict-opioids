@@ -66,9 +66,11 @@ with open(out_file, "w") as f:
     for race in ("White", "Black", "Hispanic"):
         print(race, "{:.2f}".format(panel.loc[rx & (panel.RACE == race), "PROVIDERS"].mean()), file=f)
 
+    either = panel.INITIAL_DT.notnull()
+    outcome_any = panel.loc[either, "OUTCOME_ANY"] > panel.loc[either, "INITIAL_DT"]).sum(), rx.sum()),
+
 with open(csv_file, "w") as f:
 
-    proc = panel.INITIAL_INJECTION_DT.notnull()
     both = rx & proc
     none = (~rx) & (~proc)
 

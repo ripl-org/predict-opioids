@@ -1,4 +1,6 @@
 \documentclass[9pt,twoside]{pnas-new}
+\usepackage[flushleft]{threeparttable}
+\usepackage{longtable}
 
 \templatetype{pnassupportinginfo}
 
@@ -104,10 +106,13 @@ The neural networks are optimized to minimize the binary cross-entropy, also kno
 
 To estimate population-level characteristics of Medicaid enrollees in Rhode Island, we constructed a second panel of longterm Medicaid enrollees. We included all enrollees who were enrolled for at least six out of 12 months in each of the five years between 2007 and 2011. This panel comprises 120,584 enrollees, who were enrolled with a median of 60 months (interquartile range of 59 to 60 months). 
 
-\newpage
+\section{Cost Estimates}
+
+We estimated the adverse outcome cost.
 
 \begin{table}
 \caption{Minimum amounts of ingredients in a drug to classify it as an opioid prescription or a recovery prescription.}
+\centering
 \begin{tabular}{lc}
 \em Opioid Ingredient & \em Minimum Amount (mg) \\[0.5em]
 Codeine & 30.0 \\
@@ -126,18 +131,17 @@ Methadone & 0.0 \\
 Naloxone & 0.0 \\
 Naltrexone & 0.0 \\[1em]
 \end{tabular}
-
 \hrule
-
+\begin{tablenotes}
 \footnotesize
-* Meperidine has no recommended starting dose for treatment of chronic pain because of its risk for complications in older adults; therefore, we consider any amount as evidence that the drug is an opioid. \\
-° We consider any amount of a recovery ingredient as evidence that the drug may have been used to treat a prior opioid use disorder.
+\item * Meperidine has no recommended starting dose for treatment of chronic pain because of its risk for complications in older adults; therefore, we consider any amount as evidence that the drug is an opioid.
+\item ° We consider any amount of a recovery ingredient as evidence that the drug may have been used to treat a prior opioid use disorder.
+\end{tablenotes}
 \end{table}
-
-\newpage
 
 \begin{table}
 \caption{Procedure codes used to identify opioid injections.}
+\centering
 \begin{tabular}{ll}
 \em Code & \em Description \\[0.5em]
 J2270 & Injection, morphine sulfate, up to 10 mg \\
@@ -157,10 +161,9 @@ J2180 & Injection, meperidine and promethazine hcl, up to 50 mg
 \end{tabular}
 \end{table}
 
-\newpage
-
 \begin{table}
 \caption{Diagnosis and procedure codes used to indicate adverse outcomes when occurring in any claim after the initial opioid prescription.}
+\centering
 \begin{tabular}{lll}
 \em Outcome & \em Code & \em Description \\[0.5em]
 \textbf{Opioid} & 304.0 & Opioid type dependence \\
@@ -201,51 +204,46 @@ J2180 & Injection, meperidine and promethazine hcl, up to 50 mg
  & 9468° & combined alcohol and drug detoxification \\
  & 9469° & combined alcohol and drug rehabilitation and detoxification \\[1em]
 \end{tabular}
-
 \hrule
-
+\begin{tablenotes}
 \footnotesize
-* ICD-10 diagnosis code \\
-° HCPCS procedure code
+\item * ICD-10 diagnosis code
+\item ° HCPCS procedure code
+\end{tablenotes}
 \end{table}
-
-\newpage
 
 \begin{table}
 \caption{Descriptive statistics for the final panel.}
+\centering
 \input{../../output/tables/TableS4}
 \end{table}
 
-\newpage
-
-\begin{table}
-\caption{Low-dosage prescription opioids identified by the AHFS Pharmacologic/Therapeutic Classification category for opiate agonists.}
-\tiny
+\begin{longtable}[p]{lll}
+\caption{Low-dosage prescription opioids identified by the AHFS Pharmacologic/Therapeutic Classification category for opiate agonists.} \\
 \input{../../output/tables/TableS5}
-
-* NDC code exists in AHFS Pharmacologic/Therapeutic Classification but does not exist in NDC directory
-\end{table}
-
-\newpage
+\end{longtable}
+\begin{tablenotes}
+\footnotesize
+\item * NDC code exists in AHFS Pharmacologic/Therapeutic Classification but does not exist in NDC directory
+\end{tablenotes}
 
 \begin{table}
 \caption{Regression output for the post-BOLASSO regression (a logistic regression of variables selected by BOLASSO as occurring with a non-zero coefficient in more than 90\% of LASSO bootstrap replicates).}
+\centering
 \scriptsize
 \input{../../output/tables/TableS6}
 \end{table}
 
-\newpage
-
 \begin{table}
 \caption{Area under the receiver-operating characteristic curve (AUC) of neural network models using different subsets of administrative data and outcome definitions. Confidence intervals are calculated from 100 bootstrap replicates.}
+\centering
 \scriptsize
 \input{../../output/tables/TableS7}
 \end{table}
 
-\newpage
-
 \begin{table}
 \caption{Power calculations}
+\centering
 \begin{tabular}{lrrrrr}
 \em Decile & \em N White & \em N Minority & \em FDR White & \em FDR Minority & \em FDR Difference \\[0.5em]
 1 & 1,736 & 218 & 0.762 & 0.844 & 0.082 \\
@@ -261,16 +259,14 @@ J2180 & Injection, meperidine and promethazine hcl, up to 50 mg
 \end{tabular}
 \end{table}
 
-\newpage
-
 \begin{table}
 \caption{Population estimates}
+\centering
 \end{table}
-
-\newpage
 
 \begin{table}
 \caption{Population estimates for minorities vs. non-minorities.}
+\centering
 \begin{tabular}{lrr}
 \em Group & \em Average days per month with a claim & \em Average median distance to providers \\[0.5em]
 White & 5.62 & 25.18km \\
@@ -279,10 +275,9 @@ Hispanic & 4.34 & 17.56km
 \end{tabular}
 \end{table}
 
-\newpage
-
 \begin{table}
 \caption{Cost of medication-assisted treatment (MAT) for 1,000 individuals assuming a 50\% remission rate and annual MAT cost of \$6,552 (low) to \$14,112 (high).}
+\centering
 \begin{tabular}{lrrrr}
 \em Year & \em Cost (Low) & \em Cost (High) & \em In Remission & \em \% In Remission \\[0.5em]
 1 & \$3,276,000 & \$7,056,000 & 500 & 50\% \\
@@ -292,7 +287,10 @@ Hispanic & 4.34 & 17.56km
 \end{tabular}
 \end{table}
 
-\newpage
+\begin{table}
+\caption{Estimation of the adverse outcome cost.}
+\centering
+\end{table}
 
 \begin{figure}
 \caption{Cumulative frequency of adverse outcomes over time since initial opioid prescription. Adverse outcomes are indicated by the diagnosis and procedure codes in Medicaid claims following the initial prescription. An individual may experience multiple types of adverse outcomes, and ``any" is the union of the five specific outcome types. Opioid dependence is the most prevalent of the types.}
@@ -300,15 +298,11 @@ Hispanic & 4.34 & 17.56km
 \includegraphics[width=6in]{../../output/figures/FigureS1}
 \end{figure}
 
-\newpage
-
 \begin{figure}
 \caption{Odds ratios from the post-BOLASSO regression (Figure 1), using variables from Medicaid data only.}
 \centering
 \includegraphics[width=6.8in]{../../output/figures/FigureS2}
 \end{figure}
-
-\newpage
 
 \begin{figure}
 \caption{The break-even cost ratio by cumulative risk decile and for three values of the effectiveness rate $\alpha$ (Figure 1), for Medicaid data only.}
@@ -316,15 +310,11 @@ Hispanic & 4.34 & 17.56km
 \includegraphics[width=3.4in]{../../output/figures/FigureS3}
 \end{figure}
 
-\newpage
-
 \begin{figure}
 \caption{The false discovery rate by cumulative risk decile for race/ethnicity, incarceration history, and disability status (Figure 3), for Medicaid data only.}
 \centering
 \includegraphics[width=3.4in]{../../output/figures/FigureS4}
 \end{figure}
-
-\newpage
 
 \begin{figure}
 \caption{The break-even cost ratio by cumulative risk decile for race/ethnicity, incarceration history, and disability status (Figure 4), for Medicaid data only.}
@@ -332,15 +322,11 @@ Hispanic & 4.34 & 17.56km
 \includegraphics[width=3.4in]{../../output/figures/FigureS5}
 \end{figure}
 
-\newpage
-
 \begin{figure}
 \caption{The fraction of true outcomes by risk decile in the test sample. The vertical black line indicates the base rate of outcomes among the entire population, which is 0.057.}
 \centering
 \includegraphics[width=6in]{../../output/figures/FigureS6}
 \end{figure}
-
-\newpage
 
 \bibliography{references}
 
