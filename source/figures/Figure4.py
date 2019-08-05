@@ -7,10 +7,10 @@ n_bootstrap = int(sys.argv[2])
 
 y_pred_file, demo_file, doc_file, med_file, out_file = sys.argv[3:]
 
-def fdr(df):
+def cost_ratio(df):
     tp = (df.y_test == 1).sum()
     fp = (df.y_test == 0).sum()
-    return fp/(fp+tp)
+    return tp/(fp+tp)
 
 y = pd.read_csv(y_pred_file).sort_values("y_pred", ascending=False)\
       .merge(pd.read_csv(demo_file), on="RIIPL_ID")\
@@ -33,7 +33,7 @@ replicates = [y.sample(n=len(y),
 
 with open(out_file, "w") as f:
 
-    print("Decile", "Demographic", "N", "FDR", "FDRLower", "FDRUpper", sep=",", file=f)
+    print("Decile", "Demographic", "N", "CostRatio", "CostRatioLower", "CostRatioUpper", sep=",", file=f)
 
     for i in range(1, 11):
 
@@ -47,8 +47,8 @@ with open(out_file, "w") as f:
             if len(yd) < 11:
                 estimates = ["NA", "NA", "NA"]
             else:
-                bootstraps = sorted(map(fdr, [ri[ri[var] != 0] for ri in ris]))
-                estimates = map("{:.3f}".format, [fdr(yd),
+                bootstraps = sorted(map(cost_ratio, [ri[ri[var] != 0] for ri in ris]))
+                estimates = map("{:.3f}".format, [cost_ratio(yd),
                                                   bootstraps[int(0.025 * len(bootstraps))],
                                                   bootstraps[int(0.975 * len(bootstraps))]])
             print(i, var, len(yd), *estimates, sep=",", file=f)

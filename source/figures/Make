@@ -18,7 +18,7 @@ env.R(["#output/figures/Figure2.pdf"],
       ["Figure2.R",
        "#output/figures/Figure2.csv"])
 
-# Figure 3 - cost ratio by demographics
+# Figure 3 - FDR
 env.Python(["#output/figures/Figure3.csv"],
            ["Figure3.py",
             constants["RANDOM_SEED"],
@@ -31,7 +31,7 @@ env.R(["#output/figures/Figure3.pdf"],
       ["Figure3.R",
        "#output/figures/Figure3.csv"])
 
-# Figure 4 - FDR
+# Figure 4 - cost ratio by demographics
 env.Python(["#output/figures/Figure4.csv"],
            ["Figure4.py",
             constants["RANDOM_SEED"],
