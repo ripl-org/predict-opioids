@@ -102,5 +102,8 @@ env.Python("#output/figures/FigureS6.csv",
             "#output/models/postlasso.all.OUTCOME_ANY.accuracy.csv",
             "#output/models/bagged-lasso.all.OUTCOME_ANY.accuracy.csv",
             "#output/models/lstm.all.OUTCOME_ANY.accuracy.csv"])
+env.R(["#output/figures/FigureS6.pdf"],
+      ["FigureS6.R",
+       "#output/figures/FigureS6.csv"])
 
 # vim: syntax=python expandtab sw=4 ts=4
