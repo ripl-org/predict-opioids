@@ -1,4 +1,4 @@
-\documentclass[9pt,twoside,lineno]{pnas-new}
+\documentclass[9pt,twoside]{pnas-new}
 
 \templatetype{pnassupportinginfo}
 
@@ -99,6 +99,10 @@ We fit each LASSO bootstrap replicate on the training set using a regularized lo
 We train a neural network model for each tensor using the Python package Keras \cite{chollet}, which provides an interface to the TensorFlow library \cite{abadi}. Specifically, we train a recurrent neural network (RNN), since RNNs have the ability to model temporal patterns in the input data. We input our training data into a two-layer network of 10x10 Long Short-Term Memory (LSTM) \cite{hochreiter} units with the tanh activation function. We input the last LSTM layer into a dense layer that applies a sigmoid activation function to the weighted sum of the 10 inputs in order to produce a single predicted probability of adverse outcome. We employ regularization prior to each layer in the form of a dropout factor of 0.25, which causes a random deactivation of units within the layer during training with a fixed probability of 0.25 \cite{srivastava}.
 
 The neural networks are optimized to minimize the binary cross-entropy, also known as log-loss, on the training data. We use the Adam optimization algorithm \cite{kingma}, training with a batch size of 16. We tune the model on the validation set by allowing the neural network to train for as many epochs as needed until the area under the receiver-operating curve (AUC) from predictions on the validation set does not improve by 0.001. Table S7 shows the AUC from predictions on the testing set for each data source and each individual outcome.
+
+\section{Population Estimates}
+
+To estimate population-level characteristics of Medicaid enrollees in Rhode Island, we also constructed a second panel of longterm Medicaid enrollees. We included all enrollees who were enrolled for at least six out of 12 months in each of the five years between 2007 and 2011. This panel comprises 120,584 enrollees, who were enrolled with a median of 60 months (interquartile range of 59 to 60 months). 
 
 \newpage
 
@@ -254,6 +258,24 @@ J2180 & Injection, meperidine and promethazine hcl, up to 50 mg
 8 & 10,851 & 3,336 & 0.915 & 0.930 & 0.015 \\
 9 & 11,391 & 4,344 & 0.918 & 0.931 & 0.013 \\
 10 & 11,790 & 5,571 & 0.921 & 0.933 & 0.012 
+\end{tabular}
+\end{table}
+
+\newpage
+
+\begin{table}
+\caption{Population estimates}
+\end{table}
+
+\newpage
+
+\begin{table}
+\caption{Population estimates for minorities vs. non-minorities.}
+\begin{tabular}{lrr}
+\em Group & \em Average days per month with a claim & \em Average median distance to providers \\[0.5em]
+White & 5.62 & 25.18km \\
+African-American & 4.79 & 19.64km \\
+Hispanic & 4.34 & 17.56km
 \end{tabular}
 \end{table}
 
