@@ -26,11 +26,32 @@ panel = panel.merge(pd.read_csv(demo_file),
                     how="left",
                     on="RIIPL_ID")
 
-panel = panel.merge(pd.read_csv(visits_file),
+visits = pd.read_csv(visits_file).merge(panel[["RIIPL_ID", "INITIAL_RX_DT"]],
+                                        how="left",
+                                        on="RIIPL_ID")
+visits["DELTA"] = visits.INITIAL_RX_DT - visits.CLAIM_DT
+visits = visits[(visits.DELTA > 1) & (visits.DELTA <= 30)]
+print(visits)
+
+visits = visits.groupby("RIIPL_ID").sum()["VISITS"].reset_index()
+print(len(visits))
+print(visits)
+
+panel = panel.merge(visits[["RIIPL_ID", "VISITS"]],
                     how="left",
                     on="RIIPL_ID")
 
-panel = panel.merge(pd.read_csv(prov_file),
+prov = pd.read_csv(prov_file).merge(panel[["RIIPL_ID", "INITIAL_RX_DT"]],
+                                    how="left",
+                                    on="RIIPL_ID")
+prov = prov[prov.PROVIDER_DT < prov.INITIAL_RX_DT].sort_values(["RIIPL_ID", "PROVIDER_DT"])
+print(prov)
+
+prov = prov.drop_duplicates("RIIPL_ID", keep="last")
+print(len(prov))
+print(prov)
+
+panel = panel.merge(prov[["RIIPL_ID", "PROVIDERS"]],
                     how="left",
                     on="RIIPL_ID")
 
@@ -66,11 +87,20 @@ with open(out_file, "w") as f:
     for race in ("White", "Black", "Hispanic"):
         print(race, "{:.2f}".format(panel.loc[rx & (panel.RACE == race), "PROVIDERS"].mean()), file=f)
 
-    either = panel.INITIAL_DT.notnull()
-    outcome_any = panel.loc[either, "OUTCOME_ANY"] > panel.loc[either, "INITIAL_DT"]).sum(), rx.sum()),
+    adverse = (panel.OUTCOME_ANY.fillna(MAX_DT) < MAX_DT) & (panel.OUTCOME_ANY.fillna(MAX_DT) > panel["INITIAL_RX_DT"])
+
+    print("average monthly visits:", file=f)
+    print("Adverse outcome", "{:.2f}".format(panel.loc[rx & adverse, "VISITS"].mean()), file=f)
+    print("No adverse outcome", "{:.2f}".format(panel.loc[rx & ~adverse, "VISITS"].mean()), file=f)
+
+    print("average median distance to providers:", file=f)
+    print("Adverse outcome", "{:.2f}".format(panel.loc[rx & adverse, "PROVIDERS"].mean()), file=f)
+    print("No adverse outcome", "{:.2f}".format(panel.loc[rx & ~adverse, "PROVIDERS"].mean()), file=f)
+
 
 with open(csv_file, "w") as f:
 
+    proc = panel.INITIAL_INJECTION_DT.notnull()
     both = rx & proc
     none = (~rx) & (~proc)
 

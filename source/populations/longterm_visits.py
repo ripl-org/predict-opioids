@@ -5,12 +5,14 @@ from riipl import Connection
 panel, claims, outfile = sys.argv[1:]
 
 sql = """
-      SELECT p.riipl_id,
-             COUNT(DISTINCT c.claim_dt) / p.months AS visits
+      SELECT DISTINCT
+             p.riipl_id,
+             TO_CHAR(c.claim_dt, 'YYYYMMDD') AS claim_dt,
+             1 AS visits
         FROM {panel} p
    LEFT JOIN {claims} c
           ON p.riipl_id = c.riipl_id
-    GROUP BY p.riipl_id, p.months
+       WHERE c.claim_dt BETWEEN '01-Jan-07' AND '31-Dec-11'
       """.format(**globals())
 
 with Connection() as cxn:
