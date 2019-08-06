@@ -12,7 +12,7 @@ sql = """
         FROM (
               SELECT DISTINCT 
                      p.riipl_id,
-                     a.obs_date
+                     a.obs_date,
                      TO_NUMBER(a.state || a.county || a.trct || a.blkgrp) AS blkgrp
                 FROM {panel} p
           INNER JOIN {address} a

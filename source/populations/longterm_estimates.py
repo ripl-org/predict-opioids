@@ -40,6 +40,7 @@ print(visits)
 panel = panel.merge(visits[["RIIPL_ID", "VISITS"]],
                     how="left",
                     on="RIIPL_ID")
+panel["VISITS"] = panel.VISITS.fillna(0)
 
 prov = pd.read_csv(prov_file).merge(panel[["RIIPL_ID", "INITIAL_RX_DT"]],
                                     how="left",
