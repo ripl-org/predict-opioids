@@ -1,6 +1,6 @@
 \documentclass[9pt,twoside]{pnas-new}
 \usepackage[flushleft]{threeparttable}
-\usepackage{longtable}
+\usepackage{tabularx}
 
 \templatetype{pnassupportinginfo}
 
@@ -218,26 +218,33 @@ J2180 & Injection, meperidine and promethazine hcl, up to 50 mg
 \input{../../output/tables/TableS4}
 \end{table}
 
-\begin{longtable}[p]{lll}
-\caption{Low-dosage prescription opioids identified by the AHFS Pharmacologic/Therapeutic Classification category for opiate agonists.} \\
+\begin{table}
+\caption{Low-dosage prescription opioids identified by the AHFS Pharmacologic/Therapeutic Classification category for opiate agonists.}
+\centering
+\footnotesize
 \input{../../output/tables/TableS5}
-\end{longtable}
+\hrule
 \begin{tablenotes}
 \footnotesize
-\item * NDC code exists in AHFS Pharmacologic/Therapeutic Classification but does not exist in NDC directory
+\item * NDC code exists in AHFS Pharmacologic/Therapeutic Classification but does not exist in NDC directory.
 \end{tablenotes}
+\end{table}
 
 \begin{table}
 \caption{Regression output for the post-BOLASSO regression (a logistic regression of variables selected by BOLASSO as occurring with a non-zero coefficient in more than 90\% of LASSO bootstrap replicates).}
 \centering
-\scriptsize
+\small
 \input{../../output/tables/TableS6}
+\hrule
+\begin{tablenotes}
+\footnotesize
+\item * The frequency can be less than 90\% for variables that were included in the post-BOLASSO as base terms of a selected interaction term.
+\end{tablenotes}
 \end{table}
 
 \begin{table}
 \caption{Area under the receiver-operating characteristic curve (AUC) of neural network models using different subsets of administrative data and outcome definitions. Confidence intervals are calculated from 100 bootstrap replicates.}
 \centering
-\scriptsize
 \input{../../output/tables/TableS7}
 \end{table}
 
