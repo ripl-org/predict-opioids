@@ -22,31 +22,35 @@ Data are from the period 2005-2017, and include Rhode Island administrative reco
 
 Although our data span the years 2005 to 2017, we construct a panel of individuals with initial prescriptions between 2006 and 2012 to allow for the construction of variables a year before the initial prescription and to define outcomes up to five years after the initial prescription.
 
+\subsection{Data Availability}
+
+Data are available through individual data sharing agreements with each of the following Rhode Island agencies and municipal police departments: RI Department of Corrections, RI Department of Labor and Training, RI Executive Office of Health and Human Services, RI State Police, Central Falls Police Department, Cranston Police Department, Cumberland Police Department, Middletown Police Department, Narragansett Police Department, Providence Police Department, Warwick Police Department, Woonsocket Police Department.
+
 \section{Panel and Outcome Definitions}
 
 \subsection{Opioid Prescriptions}
 
 To define our panel, we first establish which pharmacy claims correspond to opioid prescriptions. The primary identifier for the dispensed drug is a standardized 11-digit National Drug Code (NDC) from the U.S. Food and Drug Administration's NDC Directory \cite{ndc}. This directory is only available as a current snapshot, and because our claims data start in 2005, there are many unmapped NDCs to the current directory. Out of approximately 14.8 million pharmacy claims between 2006 and 2012, only 66.8 percent join to the current directory. Therefore, we construct a historical NDC directory using a data mining framework that downloads and collates all available Internet Archive snapshots of the FDA's NDC website since 2000 \cite{historicalndc}. This historical directory also includes full ingredient lists for each NDC, standardized to milligrams. Using this improved directory, 88.1 percent of pharmacy claims between 2006 and 2012 map to an NDC entry. 
 
-We define an opioid prescription as any claim for a drug containing an opioid ingredient at or above the recommended starting dose when initiating opioid therapy for chronic pain management, as established in Washington State's 2015 prescribing guideline and further cited in the Centers for Disease Control's 2016 prescribing guideline \cite{amdg, dowell}. Table S1 lists these ingredients and the minimum amounts we use to define an opioid drug. Of the 4,359 drugs containing one of these ingredients, 4,175 meet the minimum threshold amount and appear in 3.9 percent of claims.
+We define an opioid prescription as any claim for a drug containing an opioid ingredient at or above the recommended starting dose when initiating opioid therapy for chronic pain management, as established in Washington State's 2015 prescribing guideline and further cited in the Centers for Disease Control's 2016 prescribing guideline \cite{amdg, dowell}. Table S8 lists these ingredients and the minimum amounts we use to define an opioid drug. Of the 4,359 drugs containing one of these ingredients, 4,175 meet the minimum threshold amount and appear in 3.9 percent of claims.
 
 Additionally, we define a recovery prescription as any NDC containing one of four ingredients commonly used in medication-assisted treatment of an opioid use disorder, which identifies 412 such drugs that appear in 0.5 percent of claims. These prescriptions may indicate that an individual has a preexisting opioid use disorder.
 
 \subsection{Opioid Injections}
 
-In addition to identifying opioid prescriptions in pharmacy claims, we also identified procedure codes for epidural or intraveneous opioid injections in all of the Medicaid claims. Table S2 lists these codes, which were identified by searching the descriptions of all HCPCS codes for each of the opioid ingredients in the Washington State prescribing guidelines used to identify prescription drugs.
+In addition to identifying opioid prescriptions in pharmacy claims, we also identified procedure codes for epidural or intraveneous opioid injections in all of the Medicaid claims. Table S9 lists these codes, which were identified by searching the descriptions of all HCPCS codes for each of the opioid ingredients in the Washington State prescribing guidelines used to identify prescription drugs.
 
 \subsection{Outcomes}
 
 For each individual in our panel, we examine all of the Medicaid claims following their initial opioid prescription to construct indicator variables for four types of adverse outcomes: opioid dependence, opioid abuse, prescription-opioid poisoning and heroin poisoning. We include heroin poisoning as an outcome given the increasing use of heroin among those who abuse opioids, and the high proportion (greater than 80 percent) of joint heroin-prescription-opioid users who abused opioids prior to using heroin \cite{jones}.
 
-We determine these outcomes from the claim's International Classification of Diseases (ICD) diagnosis codes, which are used by medical professionals to classify a patient's health conditions following an encounter. Because our data span the transition from the ICD-9 to ICD-10 classification, we include diagnosis codes from both. Table S3 lists the exact codes used to indicate each of these four diagnosis-related outcomes. 
+We determine these outcomes from the claim's International Classification of Diseases (ICD) diagnosis codes, which are used by medical professionals to classify a patient's health conditions following an encounter. Because our data span the transition from the ICD-9 to ICD-10 classification, we include diagnosis codes from both. Table S10 lists the exact codes used to indicate each of these four diagnosis-related outcomes. 
 
-Not everyone with an opioid use disorder receives a diagnosis code. Though it is unknown precisely what fraction of opioid use disorders go undiagnosed, Carrell {\em et al}. found that diagnosis codes were missing for as many as a quarter of patients for whom their providers were aware of opioid abuse \cite{carrell}. Similarly, a study by Barocas {\em et al}. estimated that only 44\% of individuals with opioid use disorder were identified as such in claims and administrative records \cite{barocas}. To address the challenges with diagnoses codes, we define a fifth treatment outcome using procedure codes related to the treatment of opioid use disorder, and more generally for drug rehabilitation and detoxification (Table S3). Finally, we define a sixth ``any" outcome as the union of any of the diagnoses or treatment outcomes, to capture as broad a population of individual with opioid use disorder as possible. Data and measurement limitations notwithstanding, our model demonstrates that administrative data can be combined to form an accurate prediction of these outcomes, suggesting a feasible path forward for utilizing data to inform prescription risk. Figure S3 shows the accumulating fraction of adverse outcomes over the five year period following initial prescription.
+Not everyone with an opioid use disorder receives a diagnosis code. Though it is unknown precisely what fraction of opioid use disorders go undiagnosed, Carrell {\em et al}. found that diagnosis codes were missing for as many as a quarter of patients for whom their providers were aware of opioid abuse \cite{carrell}. Similarly, a study by Barocas {\em et al}. estimated that only 44\% of individuals with opioid use disorder were identified as such in claims and administrative records \cite{barocas}. To address the challenges with diagnoses codes, we define a fifth treatment outcome using procedure codes related to the treatment of opioid use disorder, and more generally for drug rehabilitation and detoxification (Table S10). Finally, we define a sixth ``any" outcome as the union of any of the diagnoses or treatment outcomes, to capture as broad a population of individual with opioid use disorder as possible. Data and measurement limitations notwithstanding, our model demonstrates that administrative data can be combined to form an accurate prediction of these outcomes, suggesting a feasible path forward for utilizing data to inform prescription risk. Figure S1 shows the accumulating fraction of adverse outcomes over the five year period following initial prescription.
 
 \subsection{Final Panel}
 
-Out of 400,024 distinct Medicaid enrollees between 2006 and 2012, our panel initially contains 85,377 individuals who received at least one opioid prescription or injection in that period. We exclude 500 individuals who received a recovery prescription before their initial opioid prescription or injection, since this indicates they may have been seeking treatment for an opioid use disorder. We exclude 4,109 individuals with an adverse outcome prior to their initial opioid prescription or injection, since we assume they were already receiving opioids from another source, such as through private insurance before enrolling in Medicaid. Our final panel includes 80,768 individuals. Table S4 shows the incidence of adverse outcomes among these individuals by baseline characteristics.
+Out of 400,024 distinct Medicaid enrollees between 2006 and 2012, our panel initially contains 85,377 individuals who received at least one opioid prescription or injection in that period. We exclude 500 individuals who received a recovery prescription before their initial opioid prescription or injection, since this indicates they may have been seeking treatment for an opioid use disorder. We exclude 4,109 individuals with an adverse outcome prior to their initial opioid prescription or injection, since we assume they were already receiving opioids from another source, such as through private insurance before enrolling in Medicaid. Our final panel includes 80,768 individuals. Table S1 shows the incidence of adverse outcomes among these individuals by baseline characteristics.
 
 \section{Variable Construction}
 
@@ -54,7 +58,7 @@ We construct variables that summarize information known in the 12 months prior t
 
 Using the demographics from the integrated RI 360 database \cite{hastings}, we construct variables for (modal) age, sex, race, marital status, body mass index, and median income and fraction below the federal povery line in the home Census block group. Using DHS data, we construct variables for household size and new births in the household, and monthly payments for the Supplemental Nutrition Assistance Program (SNAP), the Temporary Assistance for Needy Families (TANF), the General Public Assistance (GPA), the Child Care Assistance Program (CCAP), and State Supplemental Payment portions of Supplemental Security Income benefits. Using DLT data, we construct indicators for sector of work derived from the first two digits of industry codes assigned according to the North American Industry Classification System (NAICS); monthly payments for Temporary Disability Insurance (TDI) and Unemployment Insurance (UI); and quarterly wage history, including average quarterly wages and variance, the number of employers and the number of hours worked (for hourly employees); the monthly unemployment rate in Rhode Island; and the annual national unemployment rate for two-digit NAICS industries that the individual has worked in. Using DOC data, we construct indicators for charges, seven categories of sentencing, and commitments and releases from prison. Using police data, we construct variables for arrests; the number of car crashes involved and injured in; and the number of and total fines for citations.
 
-The largest set of variables comes from the Medicaid data. These include indicators for enrollment eligibility categories, plan type, and payer codes; number of claims and total bill and payment amounts for all claims and for Emergency Department claims; indicators for prescriptions in 262 drug categories from the AHFS Pharmacologic/Therapeutic Classification;\footnote{{\em AHFS\textsuperscript \textregistered Pharmacologic/Therapeutic Classification\textsuperscript \textcopyright} used with permission. \textcopyright\ 2019, the American Society of Health-System Pharmacists, Inc. (ASHP). The Data is a part of the {\em AHFS Drug Information\textsuperscript \textregistered}; ASHP is not responsible for the accuracy of transpositions from the original context.} and topic models summarizing the concatenated text descriptions for all of the individual's ICD-9 diagnosis codes and HCPCS procedure codes.
+The largest set of variables comes from the Medicaid data. These include indicators for enrollment eligibility categories, plan type, and payer codes; number of claims and total bill and payment amounts for all claims and for Emergency Department claims; indicators for prescriptions in 262 drug categories from the AHFS Pharmacologic/Therapeutic Classification;\footnote{{\em AHFS\textsuperscript \textregistered Pharmacologic/Therapeutic Classification\textsuperscript \textcopyright} used with permission. \textcopyright\ 2019, the American Society of Health-System Pharmacists, Inc. (ASHP). The Data is a part of the {\em AHFS Drug Information\textsuperscript \textregistered}; ASHP is not responsible for the accuracy of transpositions from the original context.} and topic models summarizing the concatenated text descriptions for all of the individual's ICD-9 diagnosis codes and HCPCS procedure codes. We also include summary counts of the number of distinct diseases using the Clinical Classifications Software (CCS) \cite{ccs}, of distinct chronic conditions using the Chronic Condition Indicators \cite{cci}, and of distinct procedure codes.
 
 \subsection{Topic Modeling}
 
@@ -66,7 +70,7 @@ Because the number of topics $t$ is not known \emph{a priori}, we tune this para
 
 \subsection{Low-Dosage Opioids}
 
-Within the prescription drug categories, there is a category for opiate agonists. By construction of our panel, no individuals should have previously received an opioid prescription. However, the opiate agonist category includes 152 drugs that were not identified in the 4,175 opioid drugs from our historical NDC directory, and which are listed in Table S5. These drugs either contain an opioid ingredient at a lower amount than the minimum thresholds defined by the Washington State prescribing guidelines, or contain an ingredient not identified in those guidelines (e.g., ``opium''). Therefore, the opiate agonist variable indicates that the individual received a drug that was not likely for initiating opioid therapy, but nonetheless contains a small amount of an opioid ingredient. Most of these drugs are over-the-counter cough syrups or painkillers combined with small amounts of an opioid ingredient. Of the 152, there are eight that are not present in the historical NDC directory, possibly because they were on the market for a short enough time that they do not occur in any of the available historical snapshots of the NDC directory.
+Within the prescription drug categories, there is a category for opiate agonists. By construction of our panel, no individuals should have previously received an opioid prescription. However, the opiate agonist category includes 152 drugs that were not identified in the 4,175 opioid drugs from our historical NDC directory, and which are listed in Table S3. These drugs either contain an opioid ingredient at a lower amount than the minimum thresholds defined by the Washington State prescribing guidelines, or contain an ingredient not identified in those guidelines (e.g., ``opium''). Therefore, the opiate agonist variable indicates that the individual received a drug that was not likely for initiating opioid therapy, but nonetheless contains a small amount of an opioid ingredient. Most of these drugs are over-the-counter cough syrups or painkillers combined with small amounts of an opioid ingredient. Of the 152, there are eight that are not present in the historical NDC directory, possibly because they were on the market for a short enough time that they do not occur in any of the available historical snapshots of the NDC directory.
 
 \subsection{Tensors}
 
@@ -100,13 +104,110 @@ We fit each LASSO bootstrap replicate on the training set using a regularized lo
 
 We train a neural network model for each tensor using the Python package Keras \cite{chollet}, which provides an interface to the TensorFlow library \cite{abadi}. Specifically, we train a recurrent neural network (RNN), since RNNs have the ability to model temporal patterns in the input data. We input our training data into a two-layer network of 10x10 Long Short-Term Memory (LSTM) \cite{hochreiter} units with the tanh activation function. We input the last LSTM layer into a dense layer that applies a sigmoid activation function to the weighted sum of the 10 inputs in order to produce a single predicted probability of adverse outcome. We employ regularization prior to each layer in the form of a dropout factor of 0.25, which causes a random deactivation of units within the layer during training with a fixed probability of 0.25 \cite{srivastava}.
 
-The neural networks are optimized to minimize the binary cross-entropy, also known as log-loss, on the training data. We use the Adam optimization algorithm \cite{kingma}, training with a batch size of 16. We tune the model on the validation set by allowing the neural network to train for as many epochs as needed until the area under the receiver-operating curve (AUC) from predictions on the validation set does not improve by 0.001. Table S7 shows the AUC from predictions on the testing set for each data source and each individual outcome.
+The neural networks are optimized to minimize the binary cross-entropy, also known as log-loss, on the training data. We use the Adam optimization algorithm \cite{kingma}, training with a batch size of 16. We tune the model on the validation set by allowing the neural network to train for as many epochs as needed until the area under the receiver-operating curve (AUC) from predictions on the validation set does not improve by 0.001. Table S11 shows the AUC from predictions on the testing set for each data source and each individual outcome.
 
 \section{Population Estimates}
 
-To estimate population-level characteristics of Medicaid enrollees in Rhode Island, we constructed a second panel of longterm Medicaid enrollees. We included all enrollees who were enrolled for at least six out of 12 months in each of the five years between 2007 and 2011. This panel comprises 120,584 enrollees, who were enrolled with a median of 60 months (interquartile range of 59 to 60 months). Using this panel, we estimated the fraction of adverse outcomes, race/ethnicity, and median age among all enrollees and only those who received an opioid prescription, an opioid injection, both, or neither (Table S9). For those with an opioid prescription, we calculated the average number of visits in the 30 days prior to the prescription, and the average distance to the five closest providers based on the Census block group of the last known home address before the prescription (Table S10).
+To estimate population-level characteristics of Medicaid enrollees in Rhode Island, we constructed a second panel of longterm Medicaid enrollees. We included all enrollees who were enrolled for at least six out of 12 months in each of the five years between 2007 and 2011. This panel comprises 120,584 enrollees, who were enrolled with a median of 60 months (interquartile range of 59 to 60 months). Using this panel, we estimated the fraction of adverse outcomes, race/ethnicity, and median age among all enrollees and only those who received an opioid prescription, an opioid injection, both, or neither (Table S4). For those with an opioid prescription, we calculated the average number of visits in the 30 days prior to the prescription, and the average distance to the five closest providers based on the Census block group of the last known home address before the prescription (Table S6).
+
+\section{Estimatation of Adverse Outcome Cost}
+
+In 2015, 33,091 people died from drug overdoses involving opioids \cite{nida1}, and 2,375,000 individuals over the age of 12 had an opioid use disorder \cite{cbhsq}. The U.S. Department of Transportation's Value of a Statistical Life is \$10.1 million. Florence \textit{et al}. \cite{florence} estimate the aggregate annual societal cost of an opioid use disorder to be \$61,297 (including additional cost of health care, substance abuse treatment, lost productivity, and criminal justice activities). Weiss and Rao \cite{weiss} estimate a 50 percent recovery probability after one year of medication-assisted treatment. Using these statistics, with the simplifying assumption that once an individual receives a prescription, they either overdose resulting in death, become dependent but successfully recover after one year of treatment, or continue to be dependent for ten years, we estimate a ballpark present discounted value of \$450,000 for $C_A$ (see Table S12).
 
 \bibliography{references}
+
+\begin{table}
+\caption{Descriptive statistics for the final panel.}
+\centering
+\input{../../output/tables/TableS4}
+\end{table}
+
+\begin{table}
+\caption{Regression output for the post-BOLASSO regression (a logistic regression of variables selected by BOLASSO as occurring with a non-zero coefficient in more than 90\% of LASSO bootstrap replicates).}
+\centering
+\small
+\input{../../output/tables/TableS6}
+\hrule
+\begin{tablenotes}
+\footnotesize
+\item * The frequency can be less than 90\% for variables that were included in the post-BOLASSO as base terms of a selected interaction term.
+\end{tablenotes}
+\end{table}
+
+\begin{table}
+\caption{Low-dosage prescription opioids identified by the AHFS Pharmacologic/Therapeutic Classification category for opiate agonists.}
+\centering
+\footnotesize
+\input{../../output/tables/TableS5}
+\hrule
+\begin{tablenotes}
+\footnotesize
+\item * NDC code exists in AHFS Pharmacologic/Therapeutic Classification but does not exist in NDC directory.
+\end{tablenotes}
+\end{table}
+
+\begin{table}
+\caption{Population estimates based on a five-year panel of longterm Medicaid enrollees.}
+\centering
+\begin{tabular}{lrrrrr}
+ & \em All & \em Opioid Rx & \em Opioid Injection & \em Both & \em Neither \\[0.5em]
+\em N & 120,584 & 29,623 & 11,916 & 4,842 & 83,887 \\
+Adverse Outcome & 4,545 (3.8\%) & 983 (3.3\%) & 732 (6.1\%) & 218 (4.5\%) & 1,114 (1.3\%) \\
+White & 59,756 (49.6\%) & 17,465 (59.0\%) & 7,814 (65.6\%) & 3,210 (66.3\%) & 37,687 (44.9\%) \\
+African-American & 13,480 (11.2\%) & 3,419 (11.5\%) & 1,006 (8.4\%) & 498 (10.3\%) & 9,553 (11.4\%) \\
+Hispanic & 22,305 (18.5\%) & 3,112 (10.5\%) & 1,001 (8.4\%) & 418 (8.6\%) & 18,610 (22.2\%) \\
+Median Age & 24 & 34 & 50 & 42 & 12
+\end{tabular}
+\end{table}
+
+\begin{table}
+\caption{Calculations of the difference in False Discovery Rate (FDR) between whites and minorities that can be detected given our sample size at a power of 0.8.}
+\centering
+\begin{tabular}{lrrrrr}
+\em Decile & \em N White & \em N Minority & \em FDR White & \em FDR Minority$^*$ & \em FDR Difference$^*$ \\[0.5em]
+1 & 1,736 & 218 & 0.762 & 0.844 & 0.082 \\
+2 & 3,319 & 521 & 0.815 & 0.864 & 0.049 \\
+3 & 4,863 & 843 & 0.850 & 0.886 & 0.036 \\
+4 & 6,397 & 1,136 & 0.875 & 0.904 & 0.029 \\
+5 & 7,829 & 1,483 & 0.890 & 0.914 & 0.024 \\
+6 & 9,098 & 1,910 & 0.902 & 0.922 & 0.020 \\
+7 & 10,074 & 2,540 & 0.909 & 0.926 & 0.017 \\
+8 & 10,851 & 3,336 & 0.915 & 0.930 & 0.015 \\
+9 & 11,391 & 4,344 & 0.918 & 0.931 & 0.013 \\
+10 & 11,790 & 5,571 & 0.921 & 0.933 & 0.012 \\[1em]
+\end{tabular}
+\hrule
+\begin{tablenotes}
+\footnotesize
+\item * The FDR for minorities and the difference in FDR was calculated from the other parameters using the \texttt{power twoprop} command in Stata version 14.2 (StataCorp LLC, College Station, TX).
+\end{tablenotes}
+\end{table}
+
+\begin{table}
+\caption{Population estimates of access to health care providers by minority status and adverse outcome status.}
+\centering
+\begin{tabular}{lrr}
+\em Group & \em Average visits in 30 days & \em Average distance to closest five providers at the last known \\
+ & \em prior to initial opioid prescription & \em home address prior to initial opioid prescription \\[0.5em]
+White & 1.10 & 1.25km \\
+African-American & 1.12 & 0.89km \\
+Hispanic & 1.09 & 0.85km \\[0.5em]
+Adverse outcome & 1.03 & 1.14km \\
+No adverse outcome & 1.04 & 1.15km
+\end{tabular}
+\end{table}
+
+\begin{table}
+\caption{Cost of medication-assisted treatment (MAT) for 1,000 individuals assuming a 50\% remission rate and annual MAT cost of \$6,552 (low) to \$14,112 (high).}
+\centering
+\begin{tabular}{lrrrr}
+\em Year & \em Cost (Low) & \em Cost (High) & \em In Remission & \em \% In Remission \\[0.5em]
+1 & \$3,276,000 & \$7,056,000 & 500 & 50\% \\
+2 & \$1,638,000 & \$3,528,000 & 750 & 75\% \\
+3 & \$819,000 & \$1,764,000 & 875 & 88\% \\[0.5em]
+\em Total & \em \$5,733,000 & \em \$12,348,000 & &
+\end{tabular}
+\end{table}
 
 \begin{table}
 \caption{Minimum amounts of ingredients in a drug to classify it as an opioid prescription or a recovery prescription.}
@@ -211,102 +312,9 @@ J2180 & Injection, meperidine and promethazine hcl, up to 50 mg
 \end{table}
 
 \begin{table}
-\caption{Descriptive statistics for the final panel.}
-\centering
-\input{../../output/tables/TableS4}
-\end{table}
-
-\begin{table}
-\caption{Low-dosage prescription opioids identified by the AHFS Pharmacologic/Therapeutic Classification category for opiate agonists.}
-\centering
-\footnotesize
-\input{../../output/tables/TableS5}
-\hrule
-\begin{tablenotes}
-\footnotesize
-\item * NDC code exists in AHFS Pharmacologic/Therapeutic Classification but does not exist in NDC directory.
-\end{tablenotes}
-\end{table}
-
-\begin{table}
-\caption{Regression output for the post-BOLASSO regression (a logistic regression of variables selected by BOLASSO as occurring with a non-zero coefficient in more than 90\% of LASSO bootstrap replicates).}
-\centering
-\small
-\input{../../output/tables/TableS6}
-\hrule
-\begin{tablenotes}
-\footnotesize
-\item * The frequency can be less than 90\% for variables that were included in the post-BOLASSO as base terms of a selected interaction term.
-\end{tablenotes}
-\end{table}
-
-\begin{table}
 \caption{Area under the receiver-operating characteristic curve (AUC) of neural network models using different subsets of administrative data and outcome definitions. Confidence intervals are calculated from 100 bootstrap replicates.}
 \centering
 \input{../../output/tables/TableS7}
-\end{table}
-
-\begin{table}
-\caption{Calculations of the difference in False Discovery Rate (FDR) between whites and minorities that can be detected given our sample size at a power of 0.8.}
-\centering
-\begin{tabular}{lrrrrr}
-\em Decile & \em N White & \em N Minority & \em FDR White & \em FDR Minority$^*$ & \em FDR Difference$^*$ \\[0.5em]
-1 & 1,736 & 218 & 0.762 & 0.844 & 0.082 \\
-2 & 3,319 & 521 & 0.815 & 0.864 & 0.049 \\
-3 & 4,863 & 843 & 0.850 & 0.886 & 0.036 \\
-4 & 6,397 & 1,136 & 0.875 & 0.904 & 0.029 \\
-5 & 7,829 & 1,483 & 0.890 & 0.914 & 0.024 \\
-6 & 9,098 & 1,910 & 0.902 & 0.922 & 0.020 \\
-7 & 10,074 & 2,540 & 0.909 & 0.926 & 0.017 \\
-8 & 10,851 & 3,336 & 0.915 & 0.930 & 0.015 \\
-9 & 11,391 & 4,344 & 0.918 & 0.931 & 0.013 \\
-10 & 11,790 & 5,571 & 0.921 & 0.933 & 0.012 \\[1em]
-\end{tabular}
-\hrule
-\begin{tablenotes}
-\footnotesize
-\item * The FDR for minorities and the difference in FDR was calculated from the other parameters using the \texttt{power twoprop} command in Stata version 14.2 (StataCorp LLC, College Station, TX).
-\end{tablenotes}
-\end{table}
-
-\begin{table}
-\caption{Population estimates based on a five-year panel of longterm Medicaid enrollees.}
-\centering
-\begin{tabular}{lrrrrr}
- & \em All & \em Opioid Rx & \em Opioid Injection & \em Both & \em Neither \\[0.5em]
-\em N & 120,584 & 29,623 & 11,916 & 4,842 & 83,887 \\
-Adverse Outcome & 4,545 (3.8\%) & 983 (3.3\%) & 732 (6.1\%) & 218 (4.5\%) & 1,114 (1.3\%) \\
-White & 59,756 (49.6\%) & 17,465 (59.0\%) & 7,814 (65.6\%) & 3,210 (66.3\%) & 37,687 (44.9\%) \\
-African-American & 13,480 (11.2\%) & 3,419 (11.5\%) & 1,006 (8.4\%) & 498 (10.3\%) & 9,553 (11.4\%) \\
-Hispanic & 22,305 (18.5\%) & 3,112 (10.5\%) & 1,001 (8.4\%) & 418 (8.6\%) & 18,610 (22.2\%) \\
-Median Age & 24 & 34 & 50 & 42 & 12
-\end{tabular}
-\end{table}
-
-\begin{table}
-\caption{Population estimates of access to health care providers by minority status and adverse outcome status.}
-\centering
-\begin{tabular}{lrr}
-\em Group & \em Average visits in 30 days & \em Average distance to closest five providers at the last known \\
- & \em prior to initial opioid prescription & \em home address prior to initial opioid prescription \\[0.5em]
-White & 1.10 & 1.25km \\
-African-American & 1.12 & 0.89km \\
-Hispanic & 1.09 & 0.85km \\[0.5em]
-Adverse outcome & 1.03 & 1.14km \\
-No adverse outcome & 1.04 & 1.15km
-\end{tabular}
-\end{table}
-
-\begin{table}
-\caption{Cost of medication-assisted treatment (MAT) for 1,000 individuals assuming a 50\% remission rate and annual MAT cost of \$6,552 (low) to \$14,112 (high).}
-\centering
-\begin{tabular}{lrrrr}
-\em Year & \em Cost (Low) & \em Cost (High) & \em In Remission & \em \% In Remission \\[0.5em]
-1 & \$3,276,000 & \$7,056,000 & 500 & 50\% \\
-2 & \$1,638,000 & \$3,528,000 & 750 & 75\% \\
-3 & \$819,000 & \$1,764,000 & 875 & 88\% \\[0.5em]
-\em Total & \em \$5,733,000 & \em \$12,348,000 & &
-\end{tabular}
 \end{table}
 
 \begin{table}
@@ -335,33 +343,39 @@ Cost of relapsed treatment for 10 years$^3$ & \$269,282 \\
 \end{figure}
 
 \begin{figure}
+\caption{The fraction of true outcomes in the test sample. The vertical black line indicates the base rate of outcomes among the entire population, which is 0.057.}
+\centering
+\includegraphics[width=6in]{../../output/figures/FigureS6}
+\end{figure}
+
+\begin{figure}
+\caption{The break-even cost ratio for minority status (a), incarceration history (b), and disability status (c). Error bars indicate the 95\% confidence interval calculated from 100 bootstrap replicates.}
+\centering
+\includegraphics[width=3.4in]{../../output/figures/Figure4.pdf}
+\end{figure}
+
+\begin{figure}
 \caption{Odds ratios from the post-BOLASSO regression (Figure 1), using variables from Medicaid data only.}
 \centering
 \includegraphics[width=6.8in]{../../output/figures/FigureS2}
 \end{figure}
 
 \begin{figure}
-\caption{The break-even cost ratio by cumulative risk decile and for three values of the effectiveness rate $\alpha$ (Figure 1), for Medicaid data only.}
+\caption{The break-even cost ratio for three values of the effectiveness rate $\alpha$ (Figure 2), for Medicaid data only.}
 \centering
 \includegraphics[width=3.4in]{../../output/figures/FigureS3}
 \end{figure}
 
 \begin{figure}
-\caption{The false discovery rate by cumulative risk decile for race/ethnicity, incarceration history, and disability status (Figure 3), for Medicaid data only.}
+\caption{The false discovery rate for minority status, incarceration history, and disability status (Figure 3), for Medicaid data only.}
 \centering
-\includegraphics[width=3.4in]{../../output/figures/FigureS4}
+\includegraphics[width=6.8in]{../../output/figures/FigureS4}
 \end{figure}
 
-\begin{figure}
-\caption{The break-even cost ratio by cumulative risk decile for race/ethnicity, incarceration history, and disability status (Figure 4), for Medicaid data only.}
-\centering
-\includegraphics[width=3.4in]{../../output/figures/FigureS5}
-\end{figure}
-
-\begin{figure}
-\caption{The fraction of true outcomes by risk decile in the test sample. The vertical black line indicates the base rate of outcomes among the entire population, which is 0.057.}
-\centering
-\includegraphics[width=6in]{../../output/figures/FigureS6}
-\end{figure}
+%\begin{figure}
+%\caption{The break-even cost ratio by cumulative risk decile for race/ethnicity, incarceration history, and disability status (Figure 4), for Medicaid data only.}
+%\centering
+%\includegraphics[width=3.4in]{../../output/figures/FigureS5}
+%\end{figure}
 
 \end{document}

@@ -49,7 +49,7 @@ write_csv(cats[order(cats$category, cats$var),], cats_path)
 coef$jitter <- runif(nrow(coef), min=-1) * (1 - abs(coef$odds - 1)/1.25)^2
 labels <- subset(coef, odds < 0.9 | odds > 1.1)
 
-pdf(pdf_path, width=6.8, height=4.5)
+pdf(pdf_path, width=6.8, height=3.5)
 coef %>% ggplot(aes(x=jitter, y=odds, color=category, label=desc)) +
          geom_point(shape=1) +
          geom_text_repel(data=labels,
@@ -57,6 +57,7 @@ coef %>% ggplot(aes(x=jitter, y=odds, color=category, label=desc)) +
                          direction="y",
                          hjust=0,
                          segment.size=0.2,
+			 segment.alpha=0.3,
                          show.legend=FALSE,
                          size=2.25) +
          labs(y="Odds Ratio") +

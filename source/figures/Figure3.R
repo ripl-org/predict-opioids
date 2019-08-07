@@ -18,17 +18,17 @@ plot <- function(df, title, grp_title, grp_labels) {
            ggplot(aes(x=Decile, y=FDR, color=Demographic)) +
            ggtitle(title) +
            geom_ribbon(aes(ymin=FDRLower, ymax=FDRUpper, fill=Demographic), alpha=0.25, color=NA) +
-           geom_point(shape=1) +
+           geom_point() +
            labs(x="Cumulative Deciles by Decreasing Risk", y="False Discovery Rate") +
            theme_classic() +
            theme(legend.position=c(0.8, 0.3), plot.title=element_text(face="bold")) +
-           scale_x_continuous(limits=c(0.1, 1), breaks=seq(0.1, 1, 0.1), labels=percent) +
+           scale_x_continuous(limits=c(0.1, 1), breaks=seq(0.1, 1, 0.1), labels=percent_format(accuracy=1)) +
            scale_y_continuous(limits=c(0, 1), breaks=seq(0, 1, 0.2)) +
            scale_color_brewer(grp_title, labels=grp_labels, palette="Set2") +
            scale_fill_brewer(grp_title, labels=grp_labels, palette="Set2"))
 }
 
-pdf(out_path, width=6.8, height=11)
+pdf(out_path, width=13.6, height=3.4)
 grid.arrange(plot(filter(csv, Demographic=="RACE_WHITE" | Demographic=="RACE_MINORITY"),
 		  "a",
 		  "Race/ethnicity",
@@ -41,6 +41,6 @@ grid.arrange(plot(filter(csv, Demographic=="RACE_WHITE" | Demographic=="RACE_MIN
 		  "c",
                   "Medicaid-eligible\ndue to disablement",
                   c("DISABLED"="Yes", "NDISABLED"="No")),
-             nrow=3)
+             ncol=3)
 dev.off()
 
