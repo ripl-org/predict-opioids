@@ -3,15 +3,15 @@ Import("*")
 env.Latex("#output/appendix.pdf",
           ["#source/appendix/appendix.tex",
            "#source/appendix/references.bib",
-           "#output/tables/TableS4.tex",
-           "#output/tables/TableS5.tex",
-           "#output/tables/TableS6.tex",
-           "#output/tables/TableS7.tex",
-           "#output/tables/TableS8.tex",
+           "#output/tables/TableS1.tex",
+           "#output/tables/TableS2.tex",
+           "#output/tables/TableS3.tex",
+           "#output/tables/TableS12.tex",
            "#output/figures/FigureS1.pdf",
            "#output/figures/FigureS2.pdf",
            "#output/figures/FigureS3.pdf",
            "#output/figures/FigureS4.pdf",
-           "#output/figures/FigureS5.pdf"])
+           "#output/figures/FigureS5.pdf",
+           "#output/figures/FigureS6.pdf"])
 
 # vim: syntax=python expandtab sw=4 ts=4

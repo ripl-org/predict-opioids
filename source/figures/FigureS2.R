@@ -1,75 +1,49 @@
 library(dplyr)
 library(ggplot2)
-library(ggrepel)
+library(gridExtra)
 library(readr)
+library(reshape2)
 library(scales)
+library(tidyr)
 
 args <- commandArgs(trailingOnly=TRUE)
 
-set.seed(args[1])
+csv_path <- args[1]
+out_path <- args[2]
 
-coef_path <- args[2]
-desc_path <- args[3]
-cats_path <- args[4]
-pdf_path  <- args[5]
+csv <- read_csv(csv_path)
+csv$Decile <- csv$decile * 0.1
+csv$bolasso <- csv$"BOLASSO Logit" / csv$size
+csv$ensemble <- csv$"BOLASSO Ensemble" / csv$size
+csv$neural <- csv$"Neural Network" / csv$size
+csv <- csv %>%
+       select(Decile, bolasso, ensemble, neural) %>%
+       gather(key="Model", value="Fraction", bolasso, ensemble, neural)
+csv$Model <- factor(csv$Model, c("bolasso", "ensemble", "neural"))
+print(min(csv$Fraction))
+print(max(csv$Fraction))
 
-coef <- read_csv(coef_path) %>%
-        filter(var != "intercept") %>%
-        left_join(read_tsv(desc_path, col_names=c("var", "desc")), by="var") %>%
-        mutate(category=factor(case_when(grepl("_X_", var)            ~ "Interaction term",
-                                         startsWith(var, "MEDICAID")  ~ "Medicaid claims/enrollment",
-                                         startsWith(var, "ASHP")      ~ "Medicaid claims/enrollment",
-                                         startsWith(var, "DOC")       ~ "Criminal justice",
-                                         startsWith(var, "ARREST")    ~ "Criminal justice",
-                                         startsWith(var, "CAR_CRASH") ~ "Criminal justice",
-                                         startsWith(var, "CITATION")  ~ "Criminal justice",
-                                         startsWith(var, "DHS")       ~ "Social benefit/insurance programs",
-                                         startsWith(var, "SNAP")      ~ "Social benefit/insurance programs",
-                                         startsWith(var, "TANF")      ~ "Social benefit/insurance programs",
-                                         startsWith(var, "SSI")       ~ "Social benefit/insurance programs",
-                                         startsWith(var, "CCAP")      ~ "Social benefit/insurance programs",
-                                         startsWith(var, "GPA")       ~ "Social benefit/insurance programs",
-                                         startsWith(var, "NAICS")     ~ "Employment",
-                                         startsWith(var, "WAGE")      ~ "Employment",
-                                         startsWith(var, "UNEMP")     ~ "Employment",
-                                         startsWith(var, "TDI")       ~ "Employment",
-                                         startsWith(var, "UI")        ~ "Employment",
-                                         TRUE                         ~ "Demographics"),
-                               levels=c("Medicaid claims/enrollment",
-                                        "Demographics",
-                                        "Social benefit/insurance programs",
-                                        "Employment",
-                                        "Criminal justice",
-                                        "Interaction term")))
+grplabels <- c("bolasso"="Post-BOLASSO",
+               "ensemble"="LASSO Ensemble",
+               "neural"="Neural Network")
 
-print(table(coef$category))
-cats <- select(coef, "var", "category", "desc")
-write_csv(cats[order(cats$category, cats$var),], cats_path)
-
-coef$jitter <- runif(nrow(coef), min=-1) * (1 - abs(coef$odds - 1)/4.5)^2
-labels <- subset(coef, odds < 0.75 | odds > 1.25)
-
-pdf(pdf_path, width=6.8, height=3.5)
-coef %>% ggplot(aes(x=jitter, y=odds, label=desc)) +
-         geom_point(shape=1) +
-         geom_text_repel(data=labels,
-                         nudge_x=1.75-labels$jitter,
-                         direction="y",
-                         hjust=0,
-                         segment.size=0.2,
-			 segment.alpha=0.3,
-                         show.legend=FALSE,
-                         size=2.25) +
-         labs(y="Odds Ratio") +
-         scale_x_continuous(limits=c(min(coef$jitter), 10), breaks=c()) +
-         scale_y_continuous(limits=c(0, 5.5), breaks=seq(0, 5.5, 0.25)) +
-         theme_classic() +
-         theme(
-               axis.text.x=element_blank(),
-               axis.ticks.x=element_blank(),
-               axis.title.x=element_blank(),
-               axis.text.y=element_text(size=5),
-               axis.title.y=element_text(size=8))
+pdf(out_path, width=6, height=6)
+csv %>% ggplot(aes(x=Decile, y=Fraction, fill=Model)) +
+        geom_hline(yintercept=0.057) +
+        geom_bar(position="dodge", stat="identity") +
+        coord_flip() +
+        labs(x="Cumulative Deciles by Decreasing Risk", y="Fraction of True Outcomes") +
+        theme_classic() +
+        theme(axis.line.x=element_blank(),
+              axis.ticks.x=element_blank(),
+              legend.justification=c(1, 0),
+              legend.position=c(1, 0),
+              panel.grid.major.x=element_line("gray", 0.5, "dotted"),
+              plot.title=element_text(face="bold")) +
+        scale_x_reverse(limits=c(1.05, 0.05), breaks=seq(0.1, 1, 0.1), labels=percent) +
+        scale_y_continuous(limits=c(0, 0.25), breaks=seq(0, 0.25, 0.05), position="bottom") +
+        scale_fill_manual("Model",
+                          labels=grplabels,
+                          values=c("#E34E38", "#DF9826", "#45AFAF"))
 dev.off()
 
-# vim: syntax=R expandtab sw=4 ts=4

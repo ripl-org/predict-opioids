@@ -9,15 +9,15 @@ env.Python("#output/tables/Table1.csv",
             "#output/models/bagged-lasso.all.OUTCOME_ANY.y_pred.csv",
             "#output/models/lstm.all.OUTCOME_ANY.y_pred.csv"])
 
-# Table A4 - baseline characteristics
+# Table S1 - baseline characteristics
 env.Python(["#scratch/tables/demographics.csv",
             "#scratch/tables/demographics.manifest"],
            ["demographics.py",
             tables["population"],
             tables["dim_date"],
             tables["mega_demo"]])
-env.R("#output/tables/TableA4.tex",
-      ["TableA4.R",
+env.R("#output/tables/TableS1.tex",
+      ["TableS1.R",
        "#scratch/outcomes/all.csv",
        "#scratch/tables/demographics.csv",
        "#scratch/features/Mega/census.csv",
@@ -26,21 +26,21 @@ env.R("#output/tables/TableA4.tex",
        "#scratch/features/DLT/wages.csv",
        "#input/public/ACS_15_5YR_B17010_with_ann.csv"])
 
-# Table A5 - low-dosage opioids
-env.Python("#output/tables/TableA5.tex",
-           ["TableA5.py",
-            "#output/populations/CompareOpioids.csv"])
-
-# Table A6 - BOLASSO Logit
-env.Python("#output/tables/TableA6.tex",
-           ["TableA6.py",
+# Table S2 - regression output
+env.Python("#output/tables/TableS2.tex",
+           ["TableS2.py",
             "#output/models/lasso.bootstrap.all.OUTCOME_ANY.freq.csv",
             "#output/models/postlasso.all.OUTCOME_ANY.csv"])
 
-# Table A7 - neural net AUCs
+# Table S3 - low-dosage opioids
+env.Python("#output/tables/TableS3.tex",
+           ["TableS3.py",
+            "#output/populations/CompareOpioids.csv"])
+
+# Table S12 - neural net AUCs
 tensors = ["DHS", "DLT", "DOC", "Medicaid", "Police", "all"]
-env.Python("#output/tables/TableA7.tex",
-           ["TableA7.py",
+env.Python("#output/tables/TableS12.tex",
+           ["TableS12.py",
             constants["RANDOM_SEED"],
             constants["PLOT_BOOTSTRAPS"],
             Value(",".join(outcomes)),

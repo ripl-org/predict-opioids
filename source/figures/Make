@@ -31,19 +31,6 @@ env.R(["#output/figures/Figure3.pdf"],
       ["Figure3.R",
        "#output/figures/Figure3.csv"])
 
-# Figure 4 - cost ratio by demographics
-env.Python(["#output/figures/Figure4.csv"],
-           ["Figure4.py",
-            constants["RANDOM_SEED"],
-            constants["PLOT_BOOTSTRAPS"],
-            "#output/models/lstm.all.OUTCOME_ANY.y_pred.csv",
-            "#scratch/features/Mega/demographics.csv",
-            "#scratch/features/DOC/events.csv",
-            "#scratch/features/Medicaid/enrollment.csv"])
-env.R(["#output/figures/Figure4.pdf"],
-      ["Figure4.R",
-       "#output/figures/Figure4.csv"])
-
 # Figure S1 - cumulative fraction of outcomes
 env.Python("#output/figures/FigureS1.csv",
            ["FigureS1.py",
@@ -52,26 +39,49 @@ env.R("#output/figures/FigureS1.pdf",
       ["FigureS1.R",
        "#output/figures/FigureS1.csv"])
 
-# Figure S2 - summary of logit odds ratios for Medicaid only
-env.R(["#output/figures/FigureS2.categories.csv",
-       "#output/figures/FigureS2.pdf"],
+# Figure S2 - fraction of true positives
+env.Python("#output/figures/FigureS2.csv",
+           ["FigureS2.py",
+            "#output/models/postlasso.all.OUTCOME_ANY.accuracy.csv",
+            "#output/models/bagged-lasso.all.OUTCOME_ANY.accuracy.csv",
+            "#output/models/lstm.all.OUTCOME_ANY.accuracy.csv"])
+env.R(["#output/figures/FigureS2.pdf"],
       ["FigureS2.R",
+       "#output/figures/FigureS2.csv"])
+
+# Figure S3 - cost ratio by demographics
+env.Python(["#output/figures/FigureS3.csv"],
+           ["FigureS3.py",
+            constants["RANDOM_SEED"],
+            constants["PLOT_BOOTSTRAPS"],
+            "#output/models/lstm.all.OUTCOME_ANY.y_pred.csv",
+            "#scratch/features/Mega/demographics.csv",
+            "#scratch/features/DOC/events.csv",
+            "#scratch/features/Medicaid/enrollment.csv"])
+env.R(["#output/figures/FigureS3.pdf"],
+      ["FigureS3.R",
+       "#output/figures/FigureS3.csv"])
+
+# Figure S4 - summary of logit odds ratios for Medicaid only
+env.R(["#output/figures/FigureS4.categories.csv",
+       "#output/figures/FigureS4.pdf"],
+      ["FigureS4.R",
        constants["RANDOM_SEED"],
        "#output/models/postlasso.Medicaid.OUTCOME_ANY.csv",
        "#output/features/manifest.tsv"])
 
-# Figure S3 - cost ratio with alpha for Medicaid only
-env.Python(["#output/figures/FigureS3.csv"],
+# Figure S5 - cost ratio with alpha for Medicaid only
+env.Python(["#output/figures/FigureS5.csv"],
            ["Figure2.py",
             constants["RANDOM_SEED"],
             constants["PLOT_BOOTSTRAPS"],
             "#output/models/lstm.Medicaid.OUTCOME_ANY.y_pred.csv"])
-env.R(["#output/figures/FigureS3.pdf"],
+env.R(["#output/figures/FigureS5.pdf"],
       ["Figure2.R",
-       "#output/figures/FigureS3.csv"])
+       "#output/figures/FigureS5.csv"])
 
-# Figure S4 - FDR for Medicaid only
-env.Python(["#output/figures/FigureS4.csv"],
+# Figure S6 - FDR for Medicaid only
+env.Python(["#output/figures/FigureS6.csv"],
            ["Figure3.py",
             constants["RANDOM_SEED"],
             constants["PLOT_BOOTSTRAPS"],
@@ -79,31 +89,8 @@ env.Python(["#output/figures/FigureS4.csv"],
             "#scratch/features/Mega/demographics.csv",
             "#scratch/features/DOC/events.csv",
             "#scratch/features/Medicaid/enrollment.csv"])
-env.R(["#output/figures/FigureS4.pdf"],
-      ["Figure3.R",
-       "#output/figures/FigureS4.csv"])
-
-# Figure S5 - cost ratio for Medicaid only
-env.Python(["#output/figures/FigureS5.csv"],
-           ["Figure4.py",
-            constants["RANDOM_SEED"],
-            constants["PLOT_BOOTSTRAPS"],
-            "#output/models/lstm.Medicaid.OUTCOME_ANY.y_pred.csv",
-            "#scratch/features/Mega/demographics.csv",
-            "#scratch/features/DOC/events.csv",
-            "#scratch/features/Medicaid/enrollment.csv"])
-env.R(["#output/figures/FigureS5.pdf"],
-      ["Figure4.R",
-       "#output/figures/FigureS5.csv"])
-
-# Figure S6 - fraction of true positives
-env.Python("#output/figures/FigureS6.csv",
-           ["FigureS6.py",
-            "#output/models/postlasso.all.OUTCOME_ANY.accuracy.csv",
-            "#output/models/bagged-lasso.all.OUTCOME_ANY.accuracy.csv",
-            "#output/models/lstm.all.OUTCOME_ANY.accuracy.csv"])
 env.R(["#output/figures/FigureS6.pdf"],
-      ["FigureS6.R",
+      ["Figure3.R",
        "#output/figures/FigureS6.csv"])
 
 # vim: syntax=python expandtab sw=4 ts=4
