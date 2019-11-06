@@ -18,11 +18,9 @@ injection  <- which(colnames(X_train) == "INJECTION")
 
 y_train    <- X_train[,injection]
 y_validate <- X_validate[,injection]
-y_test     <- X_test[,injection]
 
 X_train    <- X_train[,-injection]
 X_validate <- X_validate[,-injection]
-X_test     <- X_test[,-injection]
 
 # Grid search for model with best gamma and lambda
 models <- lapply(gammas, function(gamma) {
@@ -45,7 +43,7 @@ print(paste0("best gamma: ", best_gamma))
 best_lambda <- model$best_lambda
 print(paste0("best lambda: ", best_lambda))
 
-y_predicted <- predict(model, newdata=X_test, type="response", select=model$best_lambda)
+y_predicted <- predict(model, newdata=X_train, type="response", select=model$best_lambda)
 
-save(model, best_gamma, y_predicted, y_test, file=model_file)
+save(model, best_gamma, y_predicted, y_train, file=model_file)
 write.csv(model$beta[,best_lambda], file=beta_file)
