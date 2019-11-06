@@ -64,7 +64,7 @@ env.R(["#scratch/models/propensity/stage1.RData",
       ["propensity-stage1.R",
        constants["RANDOM_SEED"],
        "#scratch/models/matrix.all.RData"])
-env.R(["scratch/models/propensity/balance.csv"],
+env.R(["#scratch/models/propensity/balance.csv"],
       ["propensity-balance.R",
        "#scratch/models/matrix.all.RData",
        "#scratch/models/propensity/stage1.RData"])
