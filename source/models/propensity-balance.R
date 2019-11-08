@@ -4,12 +4,20 @@ args <- commandArgs(trailingOnly=TRUE)
 
 matrix_file <- args[1]
 model_file  <- args[2]
-out_file    <- args[3]
+beta_file   <- args[3]
+out_file    <- args[4]
 
 load(matrix_file, verbose=TRUE)
+
+# Create injection indicator
 injection <- which(colnames(X_train) == "INJECTION")
 I <- (X_train[,injection] == 1)
-X <- as.matrix(X_train[,-injection])
+
+# Keep variables selected by propensity score LASSO
+beta <- read.csv(beta_file)
+colnames(beta) <- c("var", "coef")
+beta <- filter(beta, coef != 0)
+X <- as.matrix(X_train[,which(colnames(X_train) %in% beta$var)])
 
 # Calculate weights from propensity scores
 load(model_file, verbose=TRUE)
