@@ -93,4 +93,9 @@ env.R(["#output/figures/FigureS6.pdf"],
       ["Figure3.R",
        "#output/figures/FigureS6.csv"])
 
+# Figure S7 - rebalancing by injection propensity scores
+env.R(["#output/figures/FigureS7.pdf"],
+      ["FigureS7.R",
+       "#scratch/models/propensity/balance.csv"])
+
 # vim: syntax=python expandtab sw=4 ts=4
