@@ -22,7 +22,7 @@ k <- kappa(X, exact=TRUE)
 print(paste("condition number (kappa):", k))
 assert_that(k < 100)
 
-df <- as.dta.frame(X)
+df <- as.data.frame(X)
 df$INJECTION <- as.vector(X_train[,c("INJECTION")])
 
 model <- glm(INJECTION ~ ., data=df, family=binomial)
