@@ -59,11 +59,13 @@ for feature in features:
                    log_path="#output/models/bagged-lasso.{}.{}.accuracy.log".format(feature, outcome))
 
 # propensity score for injection
-env.R(["#scratch/models/propensity/stage1.RData",
-       "#scratch/models/propensity/stage1.beta.csv"],
+env.R(["#scratch/models/propensity/stage1.glm.txt",
+       "#scratch/models/propensity/stage1.beta.csv",
+       "#scratch/models/propensity/stage1.y_pred.csv"],
       ["propensity-stage1.R",
        constants["RANDOM_SEED"],
-       "#scratch/models/matrix.all.RData"])
+       "#scratch/models/matrix.all.RData",
+       "#output/models/postlasso.all.OUTCOME_ANY.selected.csv"])
 env.R(["#scratch/models/propensity/balance.csv"],
       ["propensity-balance.R",
        "#scratch/models/matrix.all.RData",

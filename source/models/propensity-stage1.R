@@ -1,49 +1,47 @@
-library(gamlr)
-library(PRROC)
-
-gammas <- c(0,1,10,100,1000)
+library(assertthat)
+library(AUC)
+library(Matrix)
 
 args <- commandArgs(trailingOnly=TRUE)
 
 set.seed(args[1])
 
 matrix_file   <- args[2]
-model_file    <- args[3]
-beta_file     <- args[4]
+selected_file <- args[3]
+summary_file  <- args[4]
+coef_file     <- args[5]
+pred_file     <- args[6]
 
 load(matrix_file, verbose=TRUE)
+riipl_id <- y_train[,c("RIIPL_ID")]
+y_train <- as.vector(X_train[,c("INJECTION")])
 
-# Use injection status as outcome
-injection  <- which(colnames(X_train) == "INJECTION")
+selected <- read.csv(selected_file, stringsAsFactors=FALSE)$var
+print(selected)
 
-y_train    <- X_train[,injection]
-y_validate <- X_validate[,injection]
+X_train <- X_train[,selected]
 
-X_train    <- X_train[,-injection]
-X_validate <- X_validate[,-injection]
+k <- kappa(X_train, exact=TRUE)
+print(paste("condition number (kappa):", k))
+assert_that(k < 100)
 
-# Grid search for model with best gamma and lambda
-models <- lapply(gammas, function(gamma) {
-  model <- gamlr(x=X_train, y=y_train, family="binomial", gamma=gamma, standardize=FALSE)
-  model$auprcs <- sapply(1:100, function(i) {
-    y_predicted <- predict(model, newdata=X_validate, type="response", select=i)
-    return(pr.curve(y_predicted, weights.class0=y_validate)$auc.integral)
-  })
-  model$auprc <- max(model$auprcs)
-  model$best_lambda <- which.max(model$auprcs)
-  return(model)
-})
+# add intercept
+X_train <- cbind(X_train, 1)
 
-best_model <- which.max(lapply(models, function(model) { model$auprc }))
-model <- models[[best_model]]
+model <- glm.fit(x=X_train, y=y_train, family=binomial())
+cat(summary.glm(model), file=summary_file)
+params <- summary.glm(model)$coefficients
 
-best_gamma  <- gammas[best_model]
-print(paste0("best gamma: ", best_gamma))
+# Convert coefficients to odds ratios and standard errors to 95% C.I.
+odds <- exp(params[,1])
+ci_lower <- exp(params[,1] - 1.96*params[,2])
+ci_upper <- exp(params[,1] + 1.96*params[,2])
+write.csv(data.frame(var=c(selected, "intercept"), odds=odds, ci_lower=ci_lower, ci_upper=ci_upper, p=params[,4]),
+          file=coef_file, row.names=FALSE)
 
-best_lambda <- model$best_lambda
-print(paste0("best lambda: ", best_lambda))
+# Predict on training data for propensity score
+coef <- as.matrix(model$coef)
+eta <- as.matrix(X_train) %*% as.matrix(coef)
+y_pred <- exp(eta)/(1 + exp(eta))
+write.csv(data.frame(RIIPL_ID=riipl_id, y_pred=y_pred, y_train=y_train), file=pred_file, row.names=FALSE)
 
-y_predicted <- predict(model, newdata=X_train, type="response", select=model$best_lambda)
-
-save(model, best_gamma, y_predicted, y_train, file=model_file)
-write.csv(model$beta[,best_lambda], file=beta_file)
