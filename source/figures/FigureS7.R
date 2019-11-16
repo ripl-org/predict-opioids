@@ -7,8 +7,8 @@ out_path <- args[2]
 
 csv <- read_csv(csv_path)
 
-csv0 <- csv[!csv$selected]
-csv1 <- csv[ csv$selected]
+csv0 <- csv[!csv$selected,]
+csv1 <- csv[ csv$selected,]
 
 ranges <- c(min(csv1$dw), max(csv1$dw), min(csv1$d), max(csv1$d))
 print(ranges)

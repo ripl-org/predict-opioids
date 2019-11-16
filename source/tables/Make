@@ -49,4 +49,10 @@ env.Python("#output/tables/TableS12.tex",
             for tensor in tensors
             for outcome in outcomes])
 
+# Table S13 - balance of propensity score weighting
+env.Python("#output/tables/TableS13.tex",
+           ["TableS13.py",
+            "#output/features/manifest.tsv",
+            "#scratch/models/propensity/balance.csv"])
+
 # vim: syntax=python expandtab sw=4 ts=4
