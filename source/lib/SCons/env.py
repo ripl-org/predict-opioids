@@ -15,7 +15,7 @@ env_vars.update({
     "PYTHONPATH": os.path.abspath("./source/lib/Python"),
     "ORACLE_SID": "RIPL1",
     "R_LIBS": "",
-    "R_LIBS_USER": ""
+    "R_LIBS_USER": "/data/opioid/R/x86_64-pc-linux-gnu-library/3.4"
 })
 
 env = Environment(ENV=env_vars)

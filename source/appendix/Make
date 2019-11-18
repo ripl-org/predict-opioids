@@ -1,18 +1,19 @@
 Import("*")
 
-env.Latex("#output/appendix.pdf",
-          ["#source/appendix/appendix.tex",
-           "#source/appendix/references.bib",
-           "#output/tables/TableS1.tex",
-           "#output/tables/TableS2.tex",
-           "#output/tables/TableS3.tex",
-           "#output/tables/TableS12.tex",
-           "#output/tables/TableS13.tex",
-           "#output/figures/FigureS1.pdf",
-           "#output/figures/FigureS2.pdf",
-           "#output/figures/FigureS3.pdf",
-           "#output/figures/FigureS4.pdf",
-           "#output/figures/FigureS5.pdf",
-           "#output/figures/FigureS6.pdf"])
+env.Depends(
+    env.PDF("#output/appendix.pdf",
+            "#source/appendix/appendix.tex"),
+    ["#source/appendix/references.bib",
+     "#output/tables/TableS1.tex",
+     "#output/tables/TableS2.tex",
+     "#output/tables/TableS3.tex",
+     "#output/tables/TableS12.tex",
+     "#output/tables/TableS13.tex",
+     "#output/figures/FigureS1.pdf",
+     "#output/figures/FigureS2.pdf",
+     "#output/figures/FigureS3.pdf",
+     "#output/figures/FigureS4.pdf",
+     "#output/figures/FigureS5.pdf",
+     "#output/figures/FigureS6.pdf"])
 
 # vim: syntax=python expandtab sw=4 ts=4

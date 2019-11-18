@@ -1,8 +1,4 @@
-library(dplyr)
-library(ggplot2)
-library(gridExtra)
-library(readr)
-library(reshape2)
+library(tidyverse)
 library(scales)
 
 args <- commandArgs(trailingOnly=TRUE)

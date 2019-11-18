@@ -69,8 +69,8 @@ env.R(["#scratch/models/propensity/stage1.glm.txt",
 env.R(["#scratch/models/propensity/balance.csv"],
       ["propensity-balance.R",
        "#scratch/models/matrix.all.RData",
-       "#scratch/models/propensity/stage1.RData",
-       "#scratch/models/propensity/stage1.beta.csv"])
+       "#scratch/models/propensity/stage1.beta.csv",
+       "#scratch/models/propensity/stage1.y_pred.csv"])
 env.R(["#scratch/models/propensity/stage2.RData",
        "#scratch/models/propensity/stage2.beta.csv"],
       ["propensity-stage2.R",

@@ -24,7 +24,7 @@ selected <- read_csv(coef_file) %>%
             filter(p <= 0.05)
 print(selected)
 df <- as.data.frame(as.matrix(X_train[,selected$var]))
-df$I <- I
+df$INJECTION <- as.vector(X_train[,c("INJECTION")])
 
 # Calculate weights from propensity scores
 y_pred <- read_csv(pred_file)$y_pred
@@ -38,12 +38,12 @@ wparams <- sapply(selected$var, function(x) { summary(glm(as.formula(paste("INJE
 
 write.csv(data.frame(var=selected$var,
                      odds=exp(params[1,]),
-                     ci_lower=exp(params[,1] - 1.96*params[,2]),
-                     ci_upper=exp(params[,1] + 1.96*params[,2]),
-                     p=params[,4],
+                     ci_lower=exp(params[1,] - 1.96*params[2,]),
+                     ci_upper=exp(params[1,] + 1.96*params[2,]),
+                     p=params[4,],
                      w_odds=exp(wparams[1,]),
-                     w_ci_lower=exp(wparams[,1] - 1.96*wparams[,2]),
-                     w_ci_upper=exp(wparams[,1] + 1.96*wparams[,2]),
-                     w_p=wparams[,4]),
+                     w_ci_lower=exp(wparams[1,] - 1.96*wparams[2,]),
+                     w_ci_upper=exp(wparams[1,] + 1.96*wparams[2,]),
+                     w_p=wparams[4,]),
           row.names=FALSE,
           file=out_file)

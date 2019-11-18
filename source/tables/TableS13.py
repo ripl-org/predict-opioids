@@ -9,7 +9,7 @@ odds = pd.read_csv(odds_file)
 
 table = odds.merge(manifest, on="var", how="left").sort_values("odds", ascending=False)
 
-def signficance(p):
+def significance(p):
     if   p < 0.001 : return "$^{***}$"
     elif p < 0.01  : return "$^{**}$"
     elif p < 0.05  : return "$^{*}$"

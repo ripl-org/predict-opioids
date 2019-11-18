@@ -1,7 +1,4 @@
-library(dplyr)
-library(ggplot2)
-library(ggrepel)
-library(readr)
+library(tidyverse)
 library(scales)
 
 args <- commandArgs(trailingOnly=TRUE)

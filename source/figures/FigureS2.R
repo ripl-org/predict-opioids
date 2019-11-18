@@ -1,10 +1,6 @@
-library(dplyr)
-library(ggplot2)
-library(gridExtra)
-library(readr)
-library(reshape2)
+library(tidyverse)
 library(scales)
-library(tidyr)
+library(gridExtra)
 
 args <- commandArgs(trailingOnly=TRUE)
 
@@ -40,7 +36,7 @@ csv %>% ggplot(aes(x=Decile, y=Fraction, fill=Model)) +
               legend.position=c(1, 0),
               panel.grid.major.x=element_line("gray", 0.5, "dotted"),
               plot.title=element_text(face="bold")) +
-        scale_x_reverse(limits=c(1.05, 0.05), breaks=seq(0.1, 1, 0.1), labels=percent) +
+        scale_x_reverse(limits=c(1.05, 0.05), breaks=seq(0.1, 1, 0.1), labels=percent_format(accuracy=0)) +
         scale_y_continuous(limits=c(0, 0.25), breaks=seq(0, 0.25, 0.05), position="bottom") +
         scale_fill_manual("Model",
                           labels=grplabels,
