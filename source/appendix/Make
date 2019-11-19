@@ -9,6 +9,8 @@ env.Depends(
      "#output/tables/TableS3.tex",
      "#output/tables/TableS12.tex",
      "#output/tables/TableS13.tex",
+     "#output/tables/TableS14.tex",
+     "#output/tables/TableS15.tex",
      "#output/figures/FigureS1.pdf",
      "#output/figures/FigureS2.pdf",
      "#output/figures/FigureS3.pdf",

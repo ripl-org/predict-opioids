@@ -71,11 +71,14 @@ env.R(["#scratch/models/propensity/balance.csv"],
        "#scratch/models/matrix.all.RData",
        "#scratch/models/propensity/stage1.beta.csv",
        "#scratch/models/propensity/stage1.y_pred.csv"])
-env.R(["#scratch/models/propensity/stage2.RData",
-       "#scratch/models/propensity/stage2.beta.csv"],
+env.R(["#scratch/models/propensity/stage2.glm.txt",
+       "#scratch/models/propensity/stage2.beta1.csv",
+       "#scratch/models/propensity/stage2.beta2.csv"],
       ["propensity-stage2.R",
        constants["RANDOM_SEED"],
-       "#scratch/models/matrix.all.RData"])
+       "#scratch/models/matrix.all.RData",
+       "#scratch/models/propensity/stage1.beta.csv",
+       "#scratch/models/propensity/stage1.y_pred.csv"],
 
 # neural networks
 tensors = {

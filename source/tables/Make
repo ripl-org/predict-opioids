@@ -55,4 +55,15 @@ env.Python("#output/tables/TableS13.tex",
             "#output/features/manifest.tsv",
             "#scratch/models/propensity/balance.csv"])
 
+# Table S13/S14 - weighted propensity score regressions
+env.Python("#output/tables/TableS14.tex",
+           ["TableS14.py",
+            "#output/features/manifest.tsv",
+            "#scratch/models/propensity/stage2.beta1.csv"])
+env.Python("#output/tables/TableS15.tex",
+           ["TableS14.py",
+            "#output/features/manifest.tsv",
+            "#scratch/models/propensity/stage2.beta2.csv"])
+
+
 # vim: syntax=python expandtab sw=4 ts=4
