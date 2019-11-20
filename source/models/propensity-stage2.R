@@ -23,11 +23,11 @@ selected <- read_csv(coef_file) %>%
             filter(var != "(Intercept)")
 
 # Add injection to selected variables
-selected <- c("INJECTION", selected)
+selected <- c("INJECTION", selected$var)
 print(selected)
 
 # Create dataframe
-df <- as.data.frame(as.matrix(X_train[,selected$var]))
+df <- as.data.frame(as.matrix(X_train[,selected]))
 df$OUTCOME <- y_train[,c("OUTCOME_ANY")]
 
 # Calculate weights from propensity scores

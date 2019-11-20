@@ -21,10 +21,13 @@ with open(out_file, "w") as f:
     for row in table.itertuples():
         if row.var.endswith("MISSING"):
             desc = "{} is missing".format(row.var.partition("_")[0].title())
+        elif row.var == "(Intercept)":
+            desc = "(Intercept)"
         else:
             desc = row.desc
+        desc = desc[0].upper() + desc[1:]
         print(r"{} & {:.3f} & ({:.3f} - {:.3f}) & {:.3f}{} \\".format(
-                  desc, row.odds, row.ci_lower, row.ci_upper, row.p, significance(row.p))
+                  desc, row.odds, row.ci_lower, row.ci_upper, row.p, significance(row.p)),
               file=f)
     print(r"\end{tabular}", file=f)
 

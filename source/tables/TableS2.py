@@ -17,6 +17,7 @@ with open(out_file, "w") as f:
             desc = "{} is missing".format(row.var.partition("_")[0].title())
         else:
             desc = row.desc
+        desc = desc[0].upper() + desc[1:]
         print(r"{} & {:.3f} & ({:.3f} - {:.3f}) & {:.3f} & {:.0f}\% \\".format(
                   desc, row.odds, row.ci_lower, row.ci_upper, row.p, 100*row.freq),
               file=f)
