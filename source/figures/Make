@@ -62,26 +62,36 @@ env.R(["#output/figures/FigureS3.pdf"],
       ["FigureS3.R",
        "#output/figures/FigureS3.csv"])
 
-# Figure S4 - summary of logit odds ratios for Medicaid only
-env.R(["#output/figures/FigureS4.categories.csv",
-       "#output/figures/FigureS4.pdf"],
+# Figure S4 - rho by diversion cost and decile
+env.Python(["#output/figures/FigureS4.csv"],
+           ["FigureS4.py",
+            constants["RANDOM_SEED"],
+            constants["PLOT_BOOTSTRAPS"],
+            "#output/models/lstm.all.OUTCOME_ANY.y_pred.csv"])
+env.R(["#output/figures/FigureS4.pdf"],
       ["FigureS4.R",
+       "#output/figures/FigureS4.csv"])
+
+# Figure S5 - summary of logit odds ratios for Medicaid only
+env.R(["#output/figures/FigureS5.categories.csv",
+       "#output/figures/FigureS5.pdf"],
+      ["FigureS5.R",
        constants["RANDOM_SEED"],
        "#output/models/postlasso.Medicaid.OUTCOME_ANY.csv",
        "#output/features/manifest.tsv"])
 
-# Figure S5 - cost ratio with alpha for Medicaid only
-env.Python(["#output/figures/FigureS5.csv"],
+# Figure S6 - cost ratio with alpha for Medicaid only
+env.Python(["#output/figures/FigureS6.csv"],
            ["Figure2.py",
             constants["RANDOM_SEED"],
             constants["PLOT_BOOTSTRAPS"],
             "#output/models/lstm.Medicaid.OUTCOME_ANY.y_pred.csv"])
-env.R(["#output/figures/FigureS5.pdf"],
+env.R(["#output/figures/FigureS6.pdf"],
       ["Figure2.R",
-       "#output/figures/FigureS5.csv"])
+       "#output/figures/FigureS6.csv"])
 
-# Figure S6 - FDR for Medicaid only
-env.Python(["#output/figures/FigureS6.csv"],
+# Figure S7 - FDR for Medicaid only
+env.Python(["#output/figures/FigureS7.csv"],
            ["Figure3.py",
             constants["RANDOM_SEED"],
             constants["PLOT_BOOTSTRAPS"],
@@ -89,13 +99,8 @@ env.Python(["#output/figures/FigureS6.csv"],
             "#scratch/features/Mega/demographics.csv",
             "#scratch/features/DOC/events.csv",
             "#scratch/features/Medicaid/enrollment.csv"])
-env.R(["#output/figures/FigureS6.pdf"],
-      ["Figure3.R",
-       "#output/figures/FigureS6.csv"])
-
-# Figure S7 - rebalancing by injection propensity scores
 env.R(["#output/figures/FigureS7.pdf"],
-      ["FigureS7.R",
-       "#scratch/models/propensity/balance.csv"])
+      ["Figure3.R",
+       "#output/figures/FigureS7.csv"])
 
 # vim: syntax=python expandtab sw=4 ts=4
