@@ -8,7 +8,7 @@ out_path <- args[2]
 
 csv <- read_csv(csv_path)
 csv$Decile <- csv$Decile * 0.1
-csv$Rho <- factor(csv$Rho, c(1, 0.5, 0.25))
+csv$Rho <- factor(csv$Rho, c(0, 0.5, 1, 4.31))
 
 pdf(out_path, width=6.8, height=3.4)
 csv %>% ggplot(aes(x=Decile, y=CostRatio, color=Rho)) +
@@ -20,7 +20,7 @@ csv %>% ggplot(aes(x=Decile, y=CostRatio, color=Rho)) +
         scale_x_continuous(limits=c(0.1, 1), breaks=seq(0.1, 1, 0.1), labels=percent_format(accuracy=1)) +
         scale_y_continuous(limits=c(0, 0.5), breaks=seq(0, 0.5, 0.1),
                            sec.axis=sec_axis(~ . * 450000, name="Break-even Diversion Cost", breaks=seq(0, 225000, 45000), labels=dollar_format())) +
-        scale_color_brewer(expression(alpha), labels=c("1"="1.00", "0.5"="0.50"), palette="Set2") +
-        scale_fill_brewer(expression(alpha), labels=c("1"="1.00", "0.5"="0.50"), palette="Set2")
+        scale_color_brewer(expression(rho), labels=c("1"="1.00", "0.5"="0.50", "0"="0.00"), palette="Set2") +
+        scale_fill_brewer(expression(rho), labels=c("1"="1.00", "0.5"="0.50", "0=0.00"), palette="Set2")
 dev.off()
 
