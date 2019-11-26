@@ -11,9 +11,9 @@ rhos = [0, 0.5, 1.0, 4.31]
 y_pred_file, out_file = sys.argv[3:]
 
 def cost_ratio(rho, df):
-    tp = (df.y_test == 1).sum()
+    tp = (df.y_test == 1).sum() / len(df)
     tp = tp * (1 - rho * tp)
-    fp = (df.y_test == 0).sum()
+    fp = (df.y_test == 0).sum() / len(df)
     return tp/(fp+tp)
 
 y = pd.read_csv(y_pred_file).sort_values("y_pred", ascending=False)
