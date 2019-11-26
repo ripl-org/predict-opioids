@@ -49,25 +49,25 @@ env.R(["#output/figures/FigureS2.pdf"],
       ["FigureS2.R",
        "#output/figures/FigureS2.csv"])
 
-# Figure S3 - cost ratio by demographics
+# Figure S3 - rho by diversion cost and decile
 env.Python(["#output/figures/FigureS3.csv"],
            ["FigureS3.py",
+            constants["RANDOM_SEED"],
+            constants["PLOT_BOOTSTRAPS"],
+            "#output/models/lstm.all.OUTCOME_ANY.y_pred.csv"])
+env.R(["#output/figures/FigureS3.pdf"],
+      ["FigureS3.R",
+       "#output/figures/FigureS3.csv"])
+
+# Figure S4 - cost ratio by demographics
+env.Python(["#output/figures/FigureS4.csv"],
+           ["FigureS4.py",
             constants["RANDOM_SEED"],
             constants["PLOT_BOOTSTRAPS"],
             "#output/models/lstm.all.OUTCOME_ANY.y_pred.csv",
             "#scratch/features/Mega/demographics.csv",
             "#scratch/features/DOC/events.csv",
             "#scratch/features/Medicaid/enrollment.csv"])
-env.R(["#output/figures/FigureS3.pdf"],
-      ["FigureS3.R",
-       "#output/figures/FigureS3.csv"])
-
-# Figure S4 - rho by diversion cost and decile
-env.Python(["#output/figures/FigureS4.csv"],
-           ["FigureS4.py",
-            constants["RANDOM_SEED"],
-            constants["PLOT_BOOTSTRAPS"],
-            "#output/models/lstm.all.OUTCOME_ANY.y_pred.csv"])
 env.R(["#output/figures/FigureS4.pdf"],
       ["FigureS4.R",
        "#output/figures/FigureS4.csv"])

@@ -1,22 +1,28 @@
 import pandas as pd
 import os
 import sys
-from functools import partial
 
 seed        = int(sys.argv[1])
 n_bootstrap = int(sys.argv[2])
 
-c_a = 450000
-c_d = 104400
+y_pred_file, demo_file, doc_file, med_file, out_file = sys.argv[3:]
 
-y_pred_file, out_file = sys.argv[3:]
-
-def rho(c_d, df):
+def cost_ratio(df):
     tp = (df.y_test == 1).sum()
     fp = (df.y_test == 0).sum()
-    return fp * c_d / (tp * tp * (c_a - c_d))
+    return tp/(fp+tp)
 
-y = pd.read_csv(y_pred_file).sort_values("y_pred", ascending=False)
+y = pd.read_csv(y_pred_file).sort_values("y_pred", ascending=False)\
+      .merge(pd.read_csv(demo_file), on="RIIPL_ID")\
+      .merge(pd.read_csv(doc_file),  on="RIIPL_ID")\
+      .merge(pd.read_csv(med_file),  on="RIIPL_ID")
+
+y["RACE_WHITE"] = ((y.RACE_BLACK | y.RACE_HISPANIC | y.RACE_OTHER | y.RACE_MISSING) + 1) % 2
+y["RACE_MINORITY"] = y.RACE_BLACK | y.RACE_HISPANIC | y.RACE_OTHER
+y["INCARC"] = y.DOC_COMMITED | y.DOC_RELEASED
+y["NINCARC"] = ~y.INCARC
+y["DISABLED"] = y.MEDICAID_DISABLED
+y["NDISABLED"] = ~y.DISABLED
 
 decile = len(y) // 10
 
@@ -27,19 +33,24 @@ replicates = [y.sample(n=len(y),
 
 with open(out_file, "w") as f:
 
-    print("Decile", "DiversionCost", "Rho", "RhoLower", "RhoUpper", sep=",", file=f)
+    print("Decile", "Demographic", "N", "CostRatio", "CostRatioLower", "CostRatioUpper", sep=",", file=f)
 
     for i in range(1, 11):
 
         yi = y.iloc[:i*decile]
         ris = [r.iloc[:i*decile] for r in replicates]
 
-        # Recompute for each diversion cost
-        for c in [0.5*c_d, c_d, 1.5*c_d]:
-            bootstraps = sorted(map(partial(rho, c), ris))
-            estimates = map("{:.3f}".format, [rho(c, yi),
-                                              bootstraps[int(0.025 * len(bootstraps))],
-                                              bootstraps[int(0.975 * len(bootstraps))]])
-            print(i, c, *estimates, sep=",", file=f)
+        # Recompute for each demographic
+        for var in ["RIIPL_ID", "RACE_MINORITY", "RACE_WHITE", "INCARC", "NINCARC", "DISABLED", "NDISABLED"]:
+
+            yd = yi[yi[var] != 0]
+            if len(yd) < 11:
+                estimates = ["NA", "NA", "NA"]
+            else:
+                bootstraps = sorted(map(cost_ratio, [ri[ri[var] != 0] for ri in ris]))
+                estimates = map("{:.3f}".format, [cost_ratio(yd),
+                                                  bootstraps[int(0.025 * len(bootstraps))],
+                                                  bootstraps[int(0.975 * len(bootstraps))]])
+            print(i, var, len(yd), *estimates, sep=",", file=f)
 
 # vim: syntax=python expandtab sw=4 ts=4
