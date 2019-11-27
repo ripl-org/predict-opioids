@@ -110,7 +110,11 @@ The neural networks are optimized to minimize the binary cross-entropy, also kno
 
 In 2015, 33,091 people died from drug overdoses involving opioids \cite{nida1}, and 2,375,000 individuals over the age of 12 had an opioid use disorder \cite{cbhsq}. The U.S. Department of Transportation's Value of a Statistical Life is \$10.1 million. Florence \textit{et al}. \cite{florence} estimate the aggregate annual societal cost of an opioid use disorder to be \$61,297 (including additional cost of health care, substance abuse treatment, lost productivity, and criminal justice activities). Weiss and Rao \cite{weiss} estimate a 50 percent recovery probability after one year of medication-assisted treatment. Using these statistics, with the simplifying assumption that once an individual receives a prescription, they either overdose resulting in death, become dependent but successfully recover after one year of treatment, or continue to be dependent for ten years, we estimate a ballpark present discounted value of \$450,000 for $C_A$ (see Table S4).
 
-\section{Propensity-score Models for Opioid Injection}
+\section{Population Estimates}
+
+To estimate population-level characteristics of Medicaid enrollees in Rhode Island, we constructed a second panel of longterm Medicaid enrollees. We included all enrollees who were enrolled for at least six out of 12 months in each of the five years between 2007 and 2011. This panel comprises 120,584 enrollees, who were enrolled with a median of 60 months (interquartile range of 59 to 60 months). Using this panel, we estimated the fraction of adverse outcomes, race/ethnicity, and median age among all enrollees and only those who received an opioid prescription, an opioid injection, both, or neither (see Table S5). For those with an opioid prescription, we calculated the average number of visits in the 30 days prior to the prescription, and the average distance to the five closest providers based on the Census block group of the last known home address before the prescription (see Table S7).
+
+\section{Propensity Score Models for Opioid Injection}
 
 To explore if rational addiction may drive first-time prescriptions for opioids, we examine data on adverse outcomes as a function of the patient's degree of knowledge that they are receiving an opioid. We use the fact that patients may receive opioids through epidural or intravenous injections during inpatient procedures. Under the assumption that these opioid recipients were less likely to be informed they were receiving an opioid than those receiving and filling a prescription from a physician, we would expect fewer adverse outcomes from opioids received through inpatient procedures than through prescriptions in a rational addiction framework.
 
@@ -133,9 +137,17 @@ To evaluate the balance of the weighted sample, we individually regressed each v
 
 Finally, we estimate the weighted logistic regressions $Y = \gamma I + \xi$ (see Table S6) and $Y = \eta X + \theta I + \zeta$ (see Table S7), with weights $w_i$ and error terms $\xi$ and $\zeta$. The significance of the coefficients $\gamma$ and $\theta$ for the opioid-injection status indicator $I$ test whether there is a systematic difference in outcomes between those who receive an opioid prescription versus an opioid injection, flexibly controlling for baseline characteristics. We find that the coefficients are not significant and have positive point estimates, suggesting opioid injection raises rather than lowers addiction risk if anything.
 
-\section{Population Estimates}
+\section{Modeling Correlation between Policy Effectivness and Risk}
 
-To estimate population-level characteristics of Medicaid enrollees in Rhode Island, we constructed a second panel of longterm Medicaid enrollees. We included all enrollees who were enrolled for at least six out of 12 months in each of the five years between 2007 and 2011. This panel comprises 120,584 enrollees, who were enrolled with a median of 60 months (interquartile range of 59 to 60 months). Using this panel, we estimated the fraction of adverse outcomes, race/ethnicity, and median age among all enrollees and only those who received an opioid prescription, an opioid injection, both, or neither (see Table S5). For those with an opioid prescription, we calculated the average number of visits in the 30 days prior to the prescription, and the average distance to the five closest providers based on the Census block group of the last known home address before the prescription (see Table S7).
+Consider the scenario where the policy effictiveness rate $\alpha_i$ for an individual $i$ is negatively correlated with $TP_i$, the risk that $i$ is a true positive. Assume for simplicity that $\alpha = 1 - \rho \frac{TP_T}{N_T}$ where $\alpha \in [0,1]$ and $\frac{TP_T}{N_T}$ is the true positive rate (or accuracy) of a population of size $N_T$ above a risk threshold $T$. The parameter $\rho$, which measures the degree of the negative correlation, lies in the range:
+
+\[ \left[0, \frac{1}{\max\limits_{T} \left( \frac{TP_T}{N_T} \right)}\right]. \]
+
+Figure S3 shows the break-even cost ratio across risk deciles for selected values of $\rho$. In the case of no correlation ($\rho=0$), the break-even cost ratio is the same as in the case $\alpha = 1$ from Figure 2. It is 0.232, which corresponds to a diversion cost of \$104,400, assuming an adverse-outcome cost of \$450,000.
+
+At the maximum value $\rho = 4.31$, which occurs for $\frac{TP}{N}$ in the top risk decile, $\alpha = 0$ and the policy is ineffective among the highest-risk individuals. However, it becomes effective again for lower-risk individuals. For the second risk decile, the ratio is 0.05, which corresponds to a diverstion cost of \$22,500.
+
+At intermediate values of $\rho$, the cost ratio takes on values similar to varying $\alpha$, as in Figure 2. For example, the cost ratio at $\rho=0.5$ in the top decile is the same as for $\alpha = 0.893$. 
 
 \footnotesize
 \bibliography{references}
@@ -391,6 +403,12 @@ J2180 & Injection, meperidine and promethazine hcl, up to 50 mg
 \caption{The fraction of true outcomes in the test sample. The vertical black line indicates the base rate of outcomes among the entire population, which is 0.057.}
 \centering
 \includegraphics[width=6in]{figures/FigureS2}
+\end{figure}
+
+\begin{figure}
+\caption{The break-even cost ratio for four values of the efficacy parameter $\rho$.}
+\centering
+\includegraphics[width=3.4in]{figures/FigureS3}
 \end{figure}
 
 \begin{figure}
