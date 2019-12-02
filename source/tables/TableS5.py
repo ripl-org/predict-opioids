@@ -25,9 +25,13 @@ with open(out_file, "w") as f:
             desc = "(Intercept)"
         else:
             desc = row.desc
+        if row.var == "INJECTION":
+            bold = r"\bf "
+        else:
+            bold = ""
         desc = desc[0].upper() + desc[1:]
-        print(r"{} & {:.3f} & ({:.3f} - {:.3f}) & {:.3f}{} \\".format(
-                  desc, row.odds, row.ci_lower, row.ci_upper, row.p, significance(row.p)),
+        print(r"{}{} & {}{:.3f} & {}({:.3f} - {:.3f}) & {}{:.3f}{} \\".format(
+                  bold, desc, bold, row.odds, bold, row.ci_lower, row.ci_upper, bold, row.p, significance(row.p)),
               file=f)
     print(r"\end{tabular}", file=f)
 

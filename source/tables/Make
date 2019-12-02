@@ -41,11 +41,11 @@ env.Python("#output/tables/TableS3.tex",
 env.Python("#output/tables/TableS5.tex",
            ["TableS5.py",
             "#output/features/manifest.tsv",
-            "#scratch/models/propensity/stage2.beta1.csv"])
+            "#scratch/models/propensity/stage2.beta2.csv"])
 env.Python("#output/tables/TableS6.tex",
            ["TableS5.py",
             "#output/features/manifest.tsv",
-            "#scratch/models/propensity/stage2.beta2.csv"])
+            "#scratch/models/propensity/stage2.beta1.csv"])
 
 # Table S13 - neural net AUCs
 tensors = ["DHS", "DLT", "DOC", "Medicaid", "Police", "all"]
