@@ -37,10 +37,20 @@ env.Python("#output/tables/TableS3.tex",
            ["TableS3.py",
             "#output/populations/CompareOpioids.csv"])
 
-# Table S12 - neural net AUCs
+# Table S5/S6 - weighted propensity score regressions
+env.Python("#output/tables/TableS5.tex",
+           ["TableS5.py",
+            "#output/features/manifest.tsv",
+            "#scratch/models/propensity/stage2.beta1.csv"])
+env.Python("#output/tables/TableS6.tex",
+           ["TableS5.py",
+            "#output/features/manifest.tsv",
+            "#scratch/models/propensity/stage2.beta2.csv"])
+
+# Table S13 - neural net AUCs
 tensors = ["DHS", "DLT", "DOC", "Medicaid", "Police", "all"]
-env.Python("#output/tables/TableS12.tex",
-           ["TableS12.py",
+env.Python("#output/tables/TableS13.tex",
+           ["TableS13.py",
             constants["RANDOM_SEED"],
             constants["PLOT_BOOTSTRAPS"],
             Value(",".join(outcomes)),
@@ -49,21 +59,11 @@ env.Python("#output/tables/TableS12.tex",
             for tensor in tensors
             for outcome in outcomes])
 
-# Table S13 - balance of propensity score weighting
-env.Python("#output/tables/TableS13.tex",
-           ["TableS13.py",
+# Table S15 - balance of propensity score weighting
+env.Python("#output/tables/TableS15.tex",
+           ["TableS15.py",
             "#output/features/manifest.tsv",
             "#scratch/models/propensity/balance.csv"])
-
-# Table S13/S14 - weighted propensity score regressions
-env.Python("#output/tables/TableS14.tex",
-           ["TableS14.py",
-            "#output/features/manifest.tsv",
-            "#scratch/models/propensity/stage2.beta1.csv"])
-env.Python("#output/tables/TableS15.tex",
-           ["TableS14.py",
-            "#output/features/manifest.tsv",
-            "#scratch/models/propensity/stage2.beta2.csv"])
 
 
 # vim: syntax=python expandtab sw=4 ts=4
