@@ -552,6 +552,11 @@ FUNCTION {format.tr.number}
   if$
 }
 
+FUNCTION {format.journal}
+{
+  "{\em\protect\JournalTitle{" journal * "}}" *
+}
+
 FUNCTION {format.article.crossref}
 { key empty$
     { journal empty$
@@ -559,8 +564,8 @@ FUNCTION {format.article.crossref}
 	  warning$
 	  ""
 	}
-	{ "In {\em " journal * "\/}" * }
-%    { "In " format.journal * "\/" * }
+%	{ "In {\em " journal * "\/}" * }
+    { "In " format.journal * "\/" * }
       if$
     }
     { "In " key * }
@@ -633,11 +638,6 @@ FUNCTION {format.incoll.inproc.crossref}
     { "in " format.crossref.editor * }
   if$
   " \cite{" * crossref * "}" *
-}
-
-FUNCTION {format.journal}
-{
-  "{\em\protect\JournalTitle{" journal * "}}" *
 }
 
 FUNCTION {article}

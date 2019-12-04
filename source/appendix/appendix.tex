@@ -1,6 +1,8 @@
 \documentclass[9pt,twoside]{pnas-new}
 \usepackage[flushleft]{threeparttable}
 \usepackage{tabularx}
+\usepackage{etoolbox}
+\AtBeginEnvironment{tabularx}{\sffamily}
 
 \templatetype{pnassupportinginfo}
 
@@ -135,15 +137,15 @@ Finally, we estimate the weighted logistic regressions $Y = \gamma I + \xi$ (see
 
 \section{Simulated Correlation between Policy Effectivness and Risk}
 
-Consider the scenario where the policy effictiveness rate $\alpha_i$ for an individual $i$ is negatively correlated with $TP_i$, the risk that $i$ is a true positive. Assume for simplicity that $\alpha = 1 - \rho \frac{TP_T}{N_T}$ where $\alpha \in [0,1]$ and $\frac{TP_T}{N_T}$ is the true positive rate (or accuracy) of a population of size $N_T$ above a risk threshold $T$. The parameter $\rho$, which measures the degree of the negative correlation, lies in the range:
+Consider the scenario where the policy effictiveness rate $\alpha_i$ for an individual $i$ is negatively correlated with the individual's probability of a true positive $TP_i$, through the linear relationship $\alpha_i = 1 - \rho \hat{Y}_i$, where $\alpha_i \in [0,1]$ and $\hat{Y}_i$ is the predicted risk for individual $i$. The parameter $\rho$, which measures the degree of the negative correlation, lies in the range:
 
-\[ \left[0, \frac{1}{\max\limits_{T} \left( \frac{TP_T}{N_T} \right)}\right]. \]
+\[ \left[0, \frac{1}{\max(\hat{Y}_i)}\right]. \]
 
-Figure S3 shows the break-even cost ratio across risk deciles for selected values of $\rho$. In the case of no correlation ($\rho=0$), the break-even cost ratio is the same as in the case $\alpha = 1$ from Figure 2. It is 0.232, which corresponds to a diversion cost of \$104,400, assuming an adverse-outcome cost of \$450,000.
+Figure S3 shows the break-even cost ratio across cumulative risk deciles for selected values of $\rho$, using the averaged predicted risk $E[\hat{Y}_i]$ across the individuals in the decile. In the case of no correlation ($\rho=0$), the break-even cost ratio is the same as in the case $\alpha=1$ from Figure 2. It is 0.232 for the top risk decile, which corresponds to a diversion cost of \$104,400, assuming an adverse-outcome cost of \$450,000.
 
-At the maximum value $\rho = 4.31$, which occurs for $\frac{TP}{N}$ in the top risk decile, $\alpha = 0$ and the policy is ineffective among the highest-risk individuals. However, it becomes effective again for lower-risk individuals. For the second risk decile, the ratio is 0.05, which corresponds to a diverstion cost of \$22,500. Under this assumption of strong negative correlation between $\alpha_i$ and $TP_i$, the break-even cost ratio of the policy increases by including lower-risk individuals.
+Intermediate values of $\rho$ have similar impacts on the break-even cost ratio as lowering the homogeneous policy effectiveness rate $\alpha$. For example, $\rho=0.5$ has a break-even cost ratio of 0.209 for the top risk decile, corresponding to a diversion cost of \$94,050. This is similar to the break-even cost ratio of 0.221 for the homogeneous $\alpha=0.893$.
 
-At intermediate values of $\rho$, the cost ratio takes on values similar to varying $\alpha$, as in Figure 2. For example, the cost ratio at $\rho=0.5$ in the top decile is the same as for $\alpha = 0.893$. 
+At the extreme value $\rho = 4.02$, which occurs for $E[\hat{Y}_i]=0.249$ in the top risk decile, $\alpha=0$ and diversion is completely ineffective among the highest-risk individuals. However, it is effective for lower-risk individuals. For the second risk decile, the ratio is 0.047, which corresponds to a diverstion cost of \$21,150. Under this assumption of strong negative correlation between $\alpha_i$ and $TP_i$, the break-even cost ratio of the policy increases by including lower-risk individuals.
 
 \section{Population Estimates}
 
