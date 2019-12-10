@@ -1,6 +1,7 @@
 Analysis code to reproduce results from the manuscript:
 
-Hastings JS, Howison M, Inman S. Improving policy with data and machine learning to prevent opioid dependence.
+Hastings JS, Howison M, Inman S. 
+Predicting high-risk opioid prescriptions before they are given.
 
 This project utilizes the [predictive modeling
 template](https://github.com/ripl-org/predictive-template) from [Research
