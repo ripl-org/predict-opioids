@@ -14,7 +14,7 @@ The code is organized as follows:
 
 | Subdirectory | Description |
 | --- | --- |
-| **input** | Raw data that are not stored in the repo. Please consult the awknowledgements section of the manuscript for more information on data sources. |
+| **input** | Raw data that are not stored in the repo. Please consult the Data Availability Statement in the manuscript for more information on data sources. |
 | **schema** | Schema files that describe the columns and data types in the raw data. |
 | **output** | The output of the analysis, which is also not stored in the repo. Figures and tables will be located in **output/figures** and **output/tables**. |
 | **scratch** | Staging area for large intermediate files. These files will be cached by SCons, so they often do not need to be recomputed again after they have been created the first time. SCons caches the output base on the full checksums of all dependencies. |
@@ -25,8 +25,8 @@ The code is organized as follows:
 | **source/features** | Source files for calculating baseline characteristics of the population, used in Table S1. |
 | **source/tensors** | Source files for building tensors from administrative records. |
 | **source/models** | Source files for training and tuning neural networks on the tensors. |
-| **source/figures** | Source files for generating Fig. 1-2 and S1-S2. |
-| **source/tables** | Source files for generating Table 1-2 and S1. |
+| **source/figures** | Source files for generating figures. |
+| **source/tables** | Source files for generating tables. |
 
 ## Contributors
 
